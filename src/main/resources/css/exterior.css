@@ -1,0 +1,107 @@
+.basic-btn {
+    -fx-max-width: 12;
+    -fx-max-height: 12;
+}
+
+.basic-pane:hover {
+    -fx-background-color: rgb(174, 174, 174); 
+}
+
+.basic-hover:hover {
+    -fx-background-color: rgb(219, 219, 219); 
+}
+
+.blue-green {
+    -fx-background-color: rgb(16, 188, 146);
+}
+
+.blue-green:hover {
+    -fx-background-color: rgb(16, 155, 105);
+}
+
+.round-background {
+    -fx-background-color: rgb(219, 219, 219); 
+}
+
+.round-border {
+    -fx-border-radius: 5px; 
+    -fx-border-color: rgb(219, 219, 219); 
+    -fx-border-width: 1px;
+}
+
+.no-light {
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+
+.combobox-btn-size {
+    -fx-background: white;
+    -fx-background-color: white;
+    -fx-font-size: 14px;
+    -fx-padding: 3px;
+}
+
+.combobox-btn-arrow .arrow-button{
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 3;
+}
+
+.combobox-btn-arrow .arrow-button .arrow{
+    -fx-mark-color: rgb(145, 145, 145);
+    -fx-shape: "M529.92 640.512L716.8 456.704a51.2 51.2 0 0 0-35.84-88.064H314.88a51.2 51.2 0 0 0-36.864 87.04l179.2 183.808a51.2 51.2 0 0 0 72.192 0z";
+}
+
+.combobox-btn-check .list-cell{
+    /* 设置文本的样式 */
+    -fx-text-fill: red; /* 改变文本颜色 */
+    -fx-font-size: 14px;
+    -fx-background-radius: 5px;
+}
+.combobox-btn-check .list-view{
+    -fx-background-radius: 5px;
+}
+
+.show-recv {
+    -fx-background-color: rgb(145, 145, 145);
+    -fx-shape: "M170.666667 213.333333h682.666666v85.333334H170.666667V213.333333z m0 512h426.666666v85.333334H170.666667v-85.333334z m0-256h682.666666v85.333334H170.666667v-85.333334z";
+}
+
+.table-view {
+    /*     Constants used throughout the tableview. */
+    -fx-table-header-border-color: transparent;
+    -fx-table-cell-border-color: -fx-box-border;
+    /*    Horizontal Lines*/
+    -fx-background-color: transparent;
+}
+
+.table-view .filler, .table-view .column-header
+{
+    -fx-size: 40;
+    -fx-border-style: null;
+    -fx-border-color: rgb(200.0, 200.0, 200.0);
+    -fx-border-width: 0 0 1 0;
+    -fx-background-color: transparent;
+}
+
+.table-view .show-hide-columns-button
+{
+    -fx-background-color: transparent;
+}
+
+.table-view .column-header .label,
+.table-view .column-drag-header .label
+{
+    -fx-alignment: CENTER_LEFT;
+}
+
+.table-view .column-header-background
+{
+    -fx-background-color: transparent;
+}
+
+.table-cell {
+    -fx-border-color: transparent;
+    -fx-border-width: 1;
+}
