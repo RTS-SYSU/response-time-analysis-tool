@@ -54,8 +54,7 @@
 }
 
 .combobox-btn-check .list-cell{
-    /* 设置文本的样式 */
-    -fx-text-fill: red; /* 改变文本颜色 */
+    -fx-text-fill: red;
     -fx-font-size: 14px;
     -fx-background-radius: 5px;
 }
