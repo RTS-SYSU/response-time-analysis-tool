@@ -33,11 +33,12 @@ public class SystemGenerator {
     AllocationGeneator allocation = new AllocationGeneator();
 
     public SystemGenerator(int minT, int maxT, boolean isPeriodLogUni, int total_partitions, int totalTasks, double rsf, int cs_len_low, int cs_len_high,
-                           AnalysisUtils.RESOURCES_RANGE numberOfResources, int number_of_max_access, boolean print) {
+                           AnalysisUtils.RESOURCES_RANGE numberOfResources, int number_of_max_access, double utilisation, boolean print) {
         /*周期范围*/
         this.minT = minT;
         this.maxT = maxT;
-        this.totalUtil = 0.05 * (double) totalTasks;//总系统利用率
+//        this.totalUtil = 0.05 * (double) totalTasks;//总系统利用率
+        this.totalUtil = utilisation;//总系统利用率
         this.total_partitions = total_partitions;//分区数 M 核心数
         this.total_tasks = totalTasks;
         this.isLogUni = isPeriodLogUni;

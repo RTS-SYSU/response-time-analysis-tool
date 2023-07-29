@@ -77,6 +77,27 @@
             </StackPane>
             <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
                <children>
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Utility">
+                     <padding>
+                        <Insets left="7.0" />
+                     </padding>
+                  </Label>
+                  <TextField fx:id="utility" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                     <cursor>
+                        <Cursor fx:constant="NONE" />
+                     </cursor>
+                     <StackPane.margin>
+                        <Insets right="7.0" />
+                     </StackPane.margin>
+                  </TextField>
+               </children>
+               <styleClass>
+                  <String fx:value="basic-pane" />
+                  <String fx:value="round-background" />
+               </styleClass>
+            </StackPane>
+            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <children>
                   <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Period range">
                      <padding>
                         <Insets left="7.0" />
@@ -209,7 +230,8 @@
                   <TableColumn prefWidth="89.0" text="Critical Level" />
                   <TableColumn prefWidth="67.0" text="Period" />
                   <TableColumn prefWidth="91.0" text="Deadline" />
-                  <TableColumn minWidth="0.0" prefWidth="66.0" text="WCET" />
+                  <TableColumn minWidth="0.0" prefWidth="66.0" text="C(LO) " />
+                  <TableColumn minWidth="0.0" prefWidth="66.0" text="C(HI)" />
                   <TableColumn prefWidth="178.0" text="Resource Access" />
                   <TableColumn prefWidth="131.0" text="Utilization" />
               </columns>

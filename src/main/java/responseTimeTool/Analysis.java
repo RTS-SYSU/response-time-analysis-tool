@@ -4,6 +4,7 @@ import responseTimeTool.analysis.*;
 import responseTimeTool.entity.Resource;
 import responseTimeTool.entity.SporadicTask;
 import responseTimeTool.generatorTools.AllocationGeneator;
+import responseTimeTool.generatorTools.PriorityGenerator;
 import responseTimeTool.generatorTools.SystemGenerator;
 import responseTimeTool.utils.AnalysisUtils;
 import responseTimeTool.utils.Factors;
@@ -20,7 +21,7 @@ public class Analysis {
         SystemGenerator generator = new SystemGenerator(factors.MIN_PERIOD, factors.MAX_PERIOD, true,
                 factors.TOTAL_PARTITIONS, factors.NUMBER_OF_TASKS,
                 factors.RESOURCE_SHARING_FACTOR, factors.CL_RANGE_LOW, factors.CL_RANGE_HIGH,
-                AnalysisUtils.RESOURCES_RANGE.PARTITIONS, factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE, false);
+                AnalysisUtils.RESOURCES_RANGE.PARTITIONS, factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE, factors.UTILISATION,false);
 
         ArrayList<SporadicTask> tasksToAlloc = null;
         ArrayList<Resource> resources = null;
@@ -40,6 +41,9 @@ public class Analysis {
             if (allocOK != 6) tasksToAlloc = null;
 
         }
+        ArrayList<ArrayList<SporadicTask>> temp = new ArrayList<>();
+        temp.add(tasksToAlloc);
+        new PriorityGenerator().assignPrioritiesByDM(temp);
         return new Pair(tasksToAlloc, resources);
     }
 
@@ -57,7 +61,6 @@ public class Analysis {
     }
 
     public boolean analysis(Factors factors, ArrayList<SporadicTask> tasksToAlloc, ArrayList<Resource> resources) {
-        //number of schedulable system for whole mode
         switch (factors.ALLOCATION) {
             case "WF" -> {
                 ArrayList<ArrayList<SporadicTask>> tasksWF = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 0);

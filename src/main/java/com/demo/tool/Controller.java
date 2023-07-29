@@ -78,6 +78,9 @@ public class Controller {
     private TextField taskNum;
 
     @FXML
+    private TextField utility;
+
+    @FXML
     private TableView<Object[]> table1;
 
     @FXML
@@ -118,7 +121,7 @@ public class Controller {
         for (SporadicTask task : tasks) {
             // id, partition, priority, critical level, period, deadline, WCET, resource access, utilization
             Object[] row = new Object[]{task.id, task.partition, task.priority, task.critical == 0 ? "LO" : "HI",
-                    task.period, task.deadline, task.WCET, task.resource_required_index, task.util};
+                    task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, task.util};
             data.add(row);
         }
         // 设置数据源到 TableView
@@ -241,7 +244,7 @@ public class Controller {
         initAnalysis();
 
         if (rangeT1.getText().isEmpty() || rangeT2.getText().isEmpty() || coreNum.getText().isEmpty() || rangeCSL1.getText().isEmpty() || rangeCSL2.getText().isEmpty()
-                || maxAccess.getText().isEmpty() || taskNum.getText().isEmpty() || allocation.getValue() == null) {
+                || maxAccess.getText().isEmpty() || taskNum.getText().isEmpty() || utility.getText().isEmpty() || allocation.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setContentText("Parameter settings are incomplete");
@@ -257,10 +260,11 @@ public class Controller {
         factors.CL_RANGE_HIGH = Integer.parseInt(judgeInteger(rangeCSL2));
         factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = Integer.parseInt(judgeInteger(maxAccess));
         factors.NUMBER_OF_TASKS = Integer.parseInt(judgeInteger(taskNum));
+        factors.UTILISATION = Double.parseDouble(judgeFloat(utility)) > 1.0 ? Double.parseDouble(judgeFloat(utility)) : 1.0;
         factors.ALLOCATION = allocation.getValue();
 
         if (factors.MIN_PERIOD == -1 || factors.MAX_PERIOD == -1 || factors.TOTAL_PARTITIONS == -1 || factors.CL_RANGE_LOW == -1 || factors.CL_RANGE_HIGH == -1 ||
-                factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE == -1 || factors.NUMBER_OF_TASKS == -1 || factors.RESOURCE_SHARING_FACTOR == -1 || allocation.getValue() == null)
+                factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE == -1 || factors.NUMBER_OF_TASKS == -1 || factors.UTILISATION == -1 || allocation.getValue() == null)
             return;
 
 

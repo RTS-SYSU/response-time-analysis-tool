@@ -10,7 +10,7 @@ public class Factors {
     public int NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = -1;   //一个任务可以访问一个资源的最大次数
     public int NUMBER_OF_TASKS = -1;
 
-    public double utilisation = -1;
+    public double UTILISATION = -1;
     public String ALLOCATION;
     public String SYSTEM_MODE;
     public double RESOURCE_SHARING_FACTOR = 0.3;    //资源共享因子

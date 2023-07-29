@@ -2,7 +2,6 @@ package responseTimeTool.analysis;
 
 import responseTimeTool.entity.Resource;
 import responseTimeTool.entity.SporadicTask;
-import responseTimeTool.generatorTools.PriorityGeneator;
 
 import java.util.ArrayList;
 
@@ -78,7 +77,7 @@ public class SchedulabilityForMCS {
                                                ArrayList<Resource> resources, boolean printDebug){
         if (tasks == null)
             return false;
-        new PriorityGeneator().assignPrioritiesByDM(tasks);
+//        new PriorityGenerator().assignPrioritiesByDM(tasks);
         if (resources != null && resources.size() > 0) {
             for (Resource res : resources) {
                 //res.csl
@@ -126,7 +125,7 @@ public class SchedulabilityForMCS {
         if (tasks == null)
             return false;
 
-        new PriorityGeneator().assignPrioritiesByDM(tasks);
+//        new PriorityGenerator().assignPrioritiesByDM(tasks);
 
         if (resources != null && resources.size() > 0) {
             for (Resource res : resources) {
