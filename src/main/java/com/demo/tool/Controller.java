@@ -78,9 +78,6 @@ public class Controller {
     private TextField taskNum;
 
     @FXML
-    private TextField utility;
-
-    @FXML
     private TableView<Object[]> table1;
 
     @FXML
@@ -107,8 +104,8 @@ public class Controller {
     @FXML
     void initComBox() {
         allocation.getItems().addAll("WF", "BF", "FF", "NF");
-        priority.getItems().addAll("EDF");
-        priority.setValue("EDF");
+        priority.getItems().addAll("DMPO");
+        priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
         RTM.getItems().addAll("MSRP");
         RTM.setValue("MSRP");
@@ -244,7 +241,7 @@ public class Controller {
         initAnalysis();
 
         if (rangeT1.getText().isEmpty() || rangeT2.getText().isEmpty() || coreNum.getText().isEmpty() || rangeCSL1.getText().isEmpty() || rangeCSL2.getText().isEmpty()
-                || maxAccess.getText().isEmpty() || taskNum.getText().isEmpty() || utility.getText().isEmpty() || allocation.getValue() == null) {
+                || maxAccess.getText().isEmpty() || taskNum.getText().isEmpty() || allocation.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setContentText("Parameter settings are incomplete");
@@ -260,7 +257,6 @@ public class Controller {
         factors.CL_RANGE_HIGH = Integer.parseInt(judgeInteger(rangeCSL2));
         factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = Integer.parseInt(judgeInteger(maxAccess));
         factors.NUMBER_OF_TASKS = Integer.parseInt(judgeInteger(taskNum));
-        factors.RESOURCE_SHARING_FACTOR = Double.parseDouble(judgeFloat(utility));
         factors.ALLOCATION = allocation.getValue();
 
         if (factors.MIN_PERIOD == -1 || factors.MAX_PERIOD == -1 || factors.TOTAL_PARTITIONS == -1 || factors.CL_RANGE_LOW == -1 || factors.CL_RANGE_HIGH == -1 ||

@@ -9,9 +9,11 @@ public class Factors {
     public int CL_RANGE_HIGH = -1;    //资源临界区长度
     public int NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = -1;   //一个任务可以访问一个资源的最大次数
     public int NUMBER_OF_TASKS = -1;
+
+    public double utilisation = -1;
     public String ALLOCATION;
     public String SYSTEM_MODE;
-    public double RESOURCE_SHARING_FACTOR = -1;    //资源共享因子
+    public double RESOURCE_SHARING_FACTOR = 0.3;    //资源共享因子
 
 
 }
