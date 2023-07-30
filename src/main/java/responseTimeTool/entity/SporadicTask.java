@@ -27,7 +27,7 @@ public class  SporadicTask {
 
 	public long WCET = 0;
 	public long pure_resource_execution_time = 0;	//执行资源的时间
-	public long Ri = 0, spin = 0, interference = 0, local = 0, total_blocking = 0, indirectspin = 0;
+	public long Ri = 0, spin = 0, interference = 0, local = 0, total_blocking = 0, indirect_spin = 0;	//interference 是高优先级任务的WCET+spin,indirect spin是高优先级任务的spin
 
 	public long Ri_HI = 0, Ri_LO = 0, Ri_Switch = 0;
 

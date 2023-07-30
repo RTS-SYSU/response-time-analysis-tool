@@ -115,6 +115,8 @@ public class SchedulabilityForMCS {
                 for (int j = 0; j < tasks.get(i).size(); j++) {
                     if (tasks.get(i).get(j).deadline < Ris[i][j])
                         return false;
+                    else
+                        tasks.get(i).get(j).Ri = Ris[i][j];     //made by c
                 }
             }
             return true;
@@ -185,16 +187,18 @@ public class SchedulabilityForMCS {
             for (int j = 0; j < highTasks.get(i).size(); j++) {
                 if (highTasks.get(i).get(j).deadline < Ris[i][j])
                     return false;
+                else
+                    highTasks.get(i).get(j).Ri_Switch = Ris[i][j];
             }
         }
 
-        for (int i = 0; i < highTasks.size(); i++) {
-            for (int j = 0; j < highTasks.get(i).size(); j++) {
-                highTasks.get(i).get(j).Ri_Switch = Ris[i][j];
-                //System.out.println(highTasks.get(i).get(j).toString());
-                //System.out.println(highTasks.get(i).get(j).Ris());
-            }
-        }
+//        for (int i = 0; i < highTasks.size(); i++) {
+//            for (int j = 0; j < highTasks.get(i).size(); j++) {
+//                highTasks.get(i).get(j).Ri_Switch = Ris[i][j];
+//                //System.out.println(highTasks.get(i).get(j).toString());
+//                //System.out.println(highTasks.get(i).get(j).Ris());
+//            }
+//        }
         return true;
     }
 }

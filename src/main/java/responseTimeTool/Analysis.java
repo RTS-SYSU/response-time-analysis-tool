@@ -1,6 +1,6 @@
 package responseTimeTool;
 
-import responseTimeTool.analysis.*;
+import responseTimeTool.analysis.SchedulabilityForMCS;
 import responseTimeTool.entity.Resource;
 import responseTimeTool.entity.SporadicTask;
 import responseTimeTool.generatorTools.AllocationGeneator;
@@ -16,12 +16,12 @@ public class Analysis {
 
     AllocationGeneator allocGenerator = new AllocationGeneator();
 
-    public Pair<ArrayList<SporadicTask>, ArrayList<Resource>> generateSystem(Factors factors) {
+    public Pair<ArrayList<ArrayList<SporadicTask>>, ArrayList<Resource>> generateSystem(Factors factors) {
         //系统任务生成
         SystemGenerator generator = new SystemGenerator(factors.MIN_PERIOD, factors.MAX_PERIOD, true,
                 factors.TOTAL_PARTITIONS, factors.NUMBER_OF_TASKS,
                 factors.RESOURCE_SHARING_FACTOR, factors.CL_RANGE_LOW, factors.CL_RANGE_HIGH,
-                AnalysisUtils.RESOURCES_RANGE.PARTITIONS, factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE, factors.UTILISATION,false);
+                AnalysisUtils.RESOURCES_RANGE.PARTITIONS, factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE, factors.UTILISATION, false);
 
         ArrayList<SporadicTask> tasksToAlloc = null;
         ArrayList<Resource> resources = null;
@@ -41,10 +41,23 @@ public class Analysis {
             if (allocOK != 6) tasksToAlloc = null;
 
         }
-        ArrayList<ArrayList<SporadicTask>> temp = new ArrayList<>();
-        temp.add(tasksToAlloc);
-        new PriorityGenerator().assignPrioritiesByDM(temp);
-        return new Pair(tasksToAlloc, resources);
+        ArrayList<ArrayList<SporadicTask>> tasks = null;
+        switch (factors.ALLOCATION) {
+            case "WF" -> {
+                tasks = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 0);
+            }
+            case "BF" -> {
+                tasks = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 1);
+            }
+            case "FF" -> {
+                tasks = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 2);
+            }
+            case "NF" -> {
+                tasks = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 3);
+            }
+        }
+        new PriorityGenerator().assignPrioritiesByDM(tasks);
+        return new Pair(tasks, resources);
     }
 
     public boolean chooseSystemMode(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, Factors factors) {
@@ -60,26 +73,8 @@ public class Analysis {
         return false;
     }
 
-    public boolean analysis(Factors factors, ArrayList<SporadicTask> tasksToAlloc, ArrayList<Resource> resources) {
-        switch (factors.ALLOCATION) {
-            case "WF" -> {
-                ArrayList<ArrayList<SporadicTask>> tasksWF = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 0);
-                return chooseSystemMode(tasksWF, resources, factors);
-            }
-            case "BF" -> {
-                ArrayList<ArrayList<SporadicTask>> tasksBF = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 1);
-                return chooseSystemMode(tasksBF, resources, factors);
-            }
-            case "FF" -> {
-                ArrayList<ArrayList<SporadicTask>> tasksFF = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 2);
-                return chooseSystemMode(tasksFF, resources, factors);
-            }
-            case "NF" -> {
-                ArrayList<ArrayList<SporadicTask>> tasksNF = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 3);
-                return chooseSystemMode(tasksNF, resources, factors);
-            }
-        }
-        return false;
+    public void analysis(Factors factors, ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources) {
+        factors.schedulable = chooseSystemMode(tasks, resources, factors);
 //        System.out.println("done");
     }
 }

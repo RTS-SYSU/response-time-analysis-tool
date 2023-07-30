@@ -98,7 +98,7 @@
             </StackPane>
             <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Period range">
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Period range (ms)">
                      <padding>
                         <Insets left="7.0" />
                      </padding>
@@ -148,7 +148,7 @@
             </StackPane>
             <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
                <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Critical section">
+                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Critical section (us)">
                      <padding>
                         <Insets left="7.0" />
                      </padding>
