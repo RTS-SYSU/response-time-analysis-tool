@@ -88,7 +88,7 @@ public class Controller {
 
     private Factors factors;
 
-    private Pair<ArrayList<SporadicTask>, ArrayList<Resource>> pair;
+    private Pair<ArrayList<ArrayList<SporadicTask>>, ArrayList<Resource>> pair;
 
     private boolean generateDone = false;
 
@@ -115,14 +115,17 @@ public class Controller {
     }
 
     @FXML
-    void fillTable1(ArrayList<SporadicTask> tasks) {
+    void fillTable1(ArrayList<ArrayList<SporadicTask>> tasks) {
         ObservableList<Object[]> data = FXCollections.observableArrayList();
 
-        for (SporadicTask task : tasks) {
-            // id, partition, priority, critical level, period, deadline, WCET, resource access, utilization
-            Object[] row = new Object[]{task.id, task.partition, task.priority, task.critical == 0 ? "LO" : "HI",
-                    task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, task.util};
-            data.add(row);
+        for (int i = 0; i < tasks.size(); i++) {
+            for (int j = 0; j < tasks.get(i).size(); j++) {
+                SporadicTask task = tasks.get(i).get(j);
+                // id, partition, priority, critical level, period, deadline, WCET, resource access, utilization
+                Object[] row = new Object[]{task.id, task.partition, task.priority, task.critical == 0 ? "LO" : "HI",
+                        task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, task.util};
+                data.add(row);
+            }
         }
         // 设置数据源到 TableView
         table1.getItems().clear();
@@ -146,15 +149,31 @@ public class Controller {
     }
 
     @FXML
-    void fillTable2(ArrayList<SporadicTask> tasks) {
+    void fillTable2(ArrayList<ArrayList<SporadicTask>> tasks) {
         ObservableList<Object[]> data = FXCollections.observableArrayList();
 
-        for (SporadicTask task : tasks) {
-            // id, partition, priority, response time, deadline, WCET
-            // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
-            Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri, task.deadline, task.WCET,
-                    task.pure_resource_execution_time, task.interference, task.spin, task.indirectspin, task.mrsp_arrivalblocking_overheads};
-            data.add(row);
+        if (systemMode.getValue() == "ModeSwitch") {
+            for (int i = 0; i < tasks.size(); i++) {
+                for (int j = 0; j < tasks.get(i).size(); j++) {
+                    SporadicTask task = tasks.get(i).get(j);
+                    // id, partition, priority, response time, deadline, WCET
+                    // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
+                    Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri_Switch, task.deadline, task.WCET,
+                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local};
+                    data.add(row);
+                }
+            }
+        } else {
+            for (int i = 0; i < tasks.size(); i++) {
+                for (int j = 0; j < tasks.get(i).size(); j++) {
+                    SporadicTask task = tasks.get(i).get(j);
+                    // id, partition, priority, response time, deadline, WCET
+                    // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
+                    Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri, task.deadline, task.WCET,
+                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local};
+                    data.add(row);
+                }
+            }
         }
         // 设置数据源到 TableView
         table2.getItems().clear();
@@ -182,12 +201,14 @@ public class Controller {
         if (loading.isVisible()) return;
         if (!generateDone) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
             alert.setContentText("Parameter settings are incomplete");
             alert.showAndWait();
             return;
         }
         if (systemMode.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
             alert.setContentText("System parameters are incomplete.");
             alert.showAndWait();
             return;
@@ -200,10 +221,10 @@ public class Controller {
         loading.setVisible(true);
 
         Analysis analysis = new Analysis();
-        boolean schedulable = analysis.analysis(factors, pair.getFirst(), pair.getSecond());
+        analysis.analysis(factors, pair.getFirst(), pair.getSecond());
         fillTable2(pair.getFirst());
 
-        showSchedulable(schedulable);
+        showSchedulable(factors.schedulable);
 
         /* set the start icon accessible */
         startIcon.setVisible(true);
@@ -260,7 +281,7 @@ public class Controller {
         factors.CL_RANGE_HIGH = Integer.parseInt(judgeInteger(rangeCSL2));
         factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = Integer.parseInt(judgeInteger(maxAccess));
         factors.NUMBER_OF_TASKS = Integer.parseInt(judgeInteger(taskNum));
-        factors.UTILISATION = Double.parseDouble(judgeFloat(utility)) > 1.0 ? Double.parseDouble(judgeFloat(utility)) : 1.0;
+        factors.UTILISATION = Double.parseDouble(judgeFloat(utility)) < 1.0 ? Double.parseDouble(judgeFloat(utility)) : 1.0;
         factors.ALLOCATION = allocation.getValue();
 
         if (factors.MIN_PERIOD == -1 || factors.MAX_PERIOD == -1 || factors.TOTAL_PARTITIONS == -1 || factors.CL_RANGE_LOW == -1 || factors.CL_RANGE_HIGH == -1 ||

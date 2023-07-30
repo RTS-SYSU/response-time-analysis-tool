@@ -15,5 +15,6 @@ public class Factors {
     public String SYSTEM_MODE;
     public double RESOURCE_SHARING_FACTOR = 0.3;    //资源共享因子
 
+    public boolean schedulable = false;
 
 }

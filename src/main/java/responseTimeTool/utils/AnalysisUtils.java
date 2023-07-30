@@ -76,7 +76,7 @@ public class AnalysisUtils {
 			for (int j = 0; j < task_on_a_partition.size(); j++) {
 				SporadicTask t = task_on_a_partition.get(j);
 				Ri[j] = t.Ri = t.WCET + t.pure_resource_execution_time;
-				t.spin = t.interference = t.local = t.indirectspin = t.total_blocking = 0;
+				t.spin = t.interference = t.local = t.indirect_spin = t.total_blocking = 0;
 				t.blocking_overheads = t.implementation_overheads = t.migration_overheads_plus = t.mrsp_arrivalblocking_overheads = t.fifonp_arrivalblocking_overheads = t.fifop_arrivalblocking_overheads = 0;
 
 			}
@@ -118,7 +118,7 @@ public class AnalysisUtils {
 						"T" + tasks.get(i).get(j).id + " RT: " + Ris[i][j] + ", P: " + tasks.get(i).get(j).priority + ", D: " + tasks.get(i).get(j).deadline + ", Critical: " + tasks.get(i).get(j).critical
 								+ ", S = " + tasks.get(i).get(j).spin + ", L = " + tasks.get(i).get(j).local + ", I = " + tasks.get(i).get(j).interference
 								+ ", WCET = " + tasks.get(i).get(j).WCET + ", Resource: " + tasks.get(i).get(j).pure_resource_execution_time + ", B = "
-								+ tasks.get(i).get(j).indirectspin + ", implementation_overheads: " + tasks.get(i).get(j).implementation_overheads);
+								+ tasks.get(i).get(j).indirect_spin + ", implementation_overheads: " + tasks.get(i).get(j).implementation_overheads);
 
 			}
 			System.out.println();
