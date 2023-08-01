@@ -2,7 +2,6 @@ package responseTimeTool.generatorTools;
 
 import responseTimeTool.entity.Resource;
 import responseTimeTool.entity.SporadicTask;
-import responseTimeTool.utils.AnalysisUtils;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -16,7 +15,8 @@ public class SystemGenerator {
     public int minT;
 
     public int number_of_max_access;
-    public AnalysisUtils.RESOURCES_RANGE range;
+//    public AnalysisUtils.RESOURCES_RANGE range;
+    public int range;
     public double rsf;
 
     public int total_tasks;
@@ -33,7 +33,7 @@ public class SystemGenerator {
     AllocationGeneator allocation = new AllocationGeneator();
 
     public SystemGenerator(int minT, int maxT, boolean isPeriodLogUni, int total_partitions, int totalTasks, double rsf, int cs_len_low, int cs_len_high,
-                           AnalysisUtils.RESOURCES_RANGE numberOfResources, int number_of_max_access, double utilisation, boolean print) {
+                           int numberOfResources, int number_of_max_access, double utilisation, boolean print) {
         /*周期范围*/
         this.minT = minT;
         this.maxT = maxT;
@@ -196,21 +196,7 @@ public class SystemGenerator {
     public ArrayList<Resource> generateResources() {
         /* generate resources from partitions/2 to partitions*2 */
         Random ran = new Random();
-        int number_of_resources = 0;
-
-        switch (range) {
-            case PARTITIONS:
-                number_of_resources = total_partitions;
-                break;
-            case HALF_PARITIONS:
-                number_of_resources = total_partitions / 2;
-                break;
-            case DOUBLE_PARTITIONS:
-                number_of_resources = total_partitions * 2;
-                break;
-            default:
-                break;
-        }
+        int number_of_resources = range;
 
         ArrayList<Resource> resources = new ArrayList<>(number_of_resources);
 

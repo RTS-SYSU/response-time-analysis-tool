@@ -11,6 +11,10 @@
     -fx-background-color: rgb(219, 219, 219); 
 }
 
+.basic-hover {
+    -fx-background-color: rgb(243, 243, 243);
+}
+
 .blue-green {
     -fx-background-color: rgb(16, 188, 146);
 }
