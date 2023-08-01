@@ -6,7 +6,6 @@ import responseTimeTool.entity.SporadicTask;
 import responseTimeTool.generatorTools.AllocationGeneator;
 import responseTimeTool.generatorTools.PriorityGenerator;
 import responseTimeTool.generatorTools.SystemGenerator;
-import responseTimeTool.utils.AnalysisUtils;
 import responseTimeTool.utils.Factors;
 import responseTimeTool.utils.Pair;
 
@@ -21,7 +20,7 @@ public class Analysis {
         SystemGenerator generator = new SystemGenerator(factors.MIN_PERIOD, factors.MAX_PERIOD, true,
                 factors.TOTAL_PARTITIONS, factors.NUMBER_OF_TASKS,
                 factors.RESOURCE_SHARING_FACTOR, factors.CL_RANGE_LOW, factors.CL_RANGE_HIGH,
-                AnalysisUtils.RESOURCES_RANGE.PARTITIONS, factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE, factors.UTILISATION, false);
+                factors.TOTAL_RESOURCES, factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE, factors.UTILISATION, false);
 
         ArrayList<SporadicTask> tasksToAlloc = null;
         ArrayList<Resource> resources = null;

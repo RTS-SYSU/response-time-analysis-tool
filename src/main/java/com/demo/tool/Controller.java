@@ -4,15 +4,18 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
+import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import responseTimeTool.Analysis;
 import responseTimeTool.entity.Resource;
 import responseTimeTool.entity.SporadicTask;
 import responseTimeTool.utils.Factors;
 import responseTimeTool.utils.Pair;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 
 public class Controller {
@@ -86,6 +89,38 @@ public class Controller {
     @FXML
     private TableView<Object[]> table2;
 
+    @FXML
+    private TableView<Object[]> table3;
+
+    @FXML
+    private VBox page11;
+
+    @FXML
+    private VBox page12;
+
+
+    @FXML
+    private VBox page21;
+
+    @FXML
+    private VBox page22;
+
+    @FXML
+    private StackPane page1btn;
+
+    @FXML
+    private StackPane page2btn;
+
+    @FXML
+    private TextField resourceNum;
+
+    @FXML
+    private TextField rsf;
+
+    @FXML
+    private Tooltip tipsForU;
+
+
     private Factors factors;
 
     private Pair<ArrayList<ArrayList<SporadicTask>>, ArrayList<Resource>> pair;
@@ -96,6 +131,25 @@ public class Controller {
     void initialize() {
         initComBox();
         initAnalysis();
+        initPageBtn();
+        tipsForU.setShowDelay(javafx.util.Duration.millis(100));
+        tipsForU.setHideDelay(javafx.util.Duration.millis(100));
+
+        utility.focusedProperty().addListener((observable, oldValue, newValue) -> {
+            if (newValue) {
+                Bounds screenBounds = page11.localToScreen(page11.getBoundsInLocal());
+                tipsForU.show(utility, screenBounds.getCenterX() + utility.getWidth()*0.4, screenBounds.getCenterY() -utility.getParent().getBoundsInLocal().getHeight()*2.75 );
+            }else {
+                tipsForU.hide();
+            }
+        });
+    }
+
+    @FXML
+    void initPageBtn() {
+        page1btn.getStyleClass().add("round-background");
+        page1btn.getStyleClass().add("basic-hover");
+        page2btn.getStyleClass().add("basic-hover");
     }
 
     @FXML
@@ -110,7 +164,7 @@ public class Controller {
         priority.getItems().addAll("DMPO");
         priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
-        RTM.getItems().addAll("MSRP");
+        RTM.getItems().addAll("MSRP", "Mrsp");
         RTM.setValue("MSRP");
     }
 
@@ -121,9 +175,13 @@ public class Controller {
         for (int i = 0; i < tasks.size(); i++) {
             for (int j = 0; j < tasks.get(i).size(); j++) {
                 SporadicTask task = tasks.get(i).get(j);
+
+                DecimalFormat df = new DecimalFormat("#.###");
+                String formattedValue = df.format(task.util);
+
                 // id, partition, priority, critical level, period, deadline, WCET, resource access, utilization
                 Object[] row = new Object[]{task.id, task.partition, task.priority, task.critical == 0 ? "LO" : "HI",
-                        task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, task.util};
+                        task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, formattedValue};
                 data.add(row);
             }
         }
@@ -134,6 +192,41 @@ public class Controller {
         // 将数据源中的数据与每个 TableColumn 进行绑定
         for (int i = 0; i < table1.getColumns().size(); i++) {
             TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table1.getColumns().get(i);
+
+            int columnIndex = i;
+            // 使用 lambda 表达式设置 CellValueFactory
+            column.setCellValueFactory(cellData -> {
+                Object[] rowData = cellData.getValue();
+                if (rowData.length > columnIndex) {
+                    Object cellValue = rowData[columnIndex];
+                    return cellValue != null ? new SimpleObjectProperty<>(cellValue) : null;
+                }
+                return null;
+            });
+        }
+    }
+
+    @FXML
+    void fillTable3(ArrayList<Resource> resources) {
+        ObservableList<Object[]> data = FXCollections.observableArrayList();
+
+        for (int i = 0; i < resources.size(); i++) {
+                Resource resource = resources.get(i);
+                ArrayList<Integer> tasksID = new ArrayList<>();
+                for (int j =0; j< resources.get(i).requested_tasks.size();j++){
+                    tasksID.add(resources.get(i).requested_tasks.get(j).id);
+                }
+                // id, csl, requested_tasks, partitions
+                Object[] row = new Object[]{resource.id, resource.csl, tasksID, resource.partitions};
+                data.add(row);
+        }
+        // 设置数据源到 TableView
+        table3.getItems().clear();
+        table3.getItems().addAll(data);
+
+        // 将数据源中的数据与每个 TableColumn 进行绑定
+        for (int i = 0; i < table3.getColumns().size(); i++) {
+            TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table3.getColumns().get(i);
 
             int columnIndex = i;
             // 使用 lambda 表达式设置 CellValueFactory
@@ -265,7 +358,8 @@ public class Controller {
         initAnalysis();
 
         if (rangeT1.getText().isEmpty() || rangeT2.getText().isEmpty() || coreNum.getText().isEmpty() || rangeCSL1.getText().isEmpty() || rangeCSL2.getText().isEmpty()
-                || maxAccess.getText().isEmpty() || taskNum.getText().isEmpty() || utility.getText().isEmpty() || allocation.getValue() == null) {
+                || maxAccess.getText().isEmpty() || taskNum.getText().isEmpty() || utility.getText().isEmpty() || resourceNum.getText().isEmpty()
+                || rsf.getText().isEmpty() || allocation.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setContentText("Parameter settings are incomplete");
@@ -281,11 +375,16 @@ public class Controller {
         factors.CL_RANGE_HIGH = Integer.parseInt(judgeInteger(rangeCSL2));
         factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = Integer.parseInt(judgeInteger(maxAccess));
         factors.NUMBER_OF_TASKS = Integer.parseInt(judgeInteger(taskNum));
-        factors.UTILISATION = Double.parseDouble(judgeFloat(utility)) < 1.0 ? Double.parseDouble(judgeFloat(utility)) : 1.0;
+        factors.UTILISATION = Double.parseDouble(judgeFloat(utility)) < factors.TOTAL_PARTITIONS ? Double.parseDouble(judgeFloat(utility)) : factors.TOTAL_PARTITIONS;
         factors.ALLOCATION = allocation.getValue();
 
+        factors.RESOURCE_SHARING_FACTOR = Double.parseDouble(judgeFloat(rsf)) < 1.0 ? Double.parseDouble(judgeFloat(rsf)) : 1.0;
+        factors.TOTAL_RESOURCES = Integer.parseInt(judgeInteger(resourceNum));
+
+
         if (factors.MIN_PERIOD == -1 || factors.MAX_PERIOD == -1 || factors.TOTAL_PARTITIONS == -1 || factors.CL_RANGE_LOW == -1 || factors.CL_RANGE_HIGH == -1 ||
-                factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE == -1 || factors.NUMBER_OF_TASKS == -1 || factors.UTILISATION == -1 || allocation.getValue() == null)
+                factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE == -1 || factors.NUMBER_OF_TASKS == -1 || factors.UTILISATION == -1 || factors.TOTAL_RESOURCES == -1 ||
+                factors.RESOURCE_SHARING_FACTOR == -1 || allocation.getValue() == null)
             return;
 
 
@@ -298,6 +397,7 @@ public class Controller {
 
 
         fillTable1(pair.getFirst());
+        fillTable3(pair.getSecond());
 
         generateDone = true;
 
@@ -314,6 +414,28 @@ public class Controller {
             scheduleNO.setVisible(true);
             scheduleYES.setVisible(false);
         }
+    }
+
+    @FXML
+    void onChangeToPage1() {
+        page1btn.getStyleClass().add("round-background");
+        page2btn.getStyleClass().remove("round-background");
+
+        page11.setVisible(true);
+        page12.setVisible(true);
+        page21.setVisible(false);
+        page22.setVisible(false);
+    }
+
+    @FXML
+    void onChangeToPage2() {
+        page1btn.getStyleClass().remove("round-background");
+        page2btn.getStyleClass().add("round-background");
+
+        page11.setVisible(false);
+        page12.setVisible(false);
+        page21.setVisible(true);
+        page22.setVisible(true);
     }
 
 }

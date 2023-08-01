@@ -8,19 +8,21 @@
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="535.0" prefWidth="1047.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.demo.tool.Controller">
+<HBox prefHeight="535.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.demo.tool.Controller">
    <children>
-      <VBox alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="230.0" stylesheets="@../../../css/exterior.css">
+      <VBox>
          <children>
-            <StackPane focusTraversable="true" prefHeight="129.0" prefWidth="236.0">
+            <StackPane fx:id="page1btn" focusTraversable="true" onMouseClicked="#onChangeToPage1" prefHeight="96.0" prefWidth="155.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css">
                <children>
-                  <Label alignment="CENTER" contentDisplay="CENTER" text="Parameter Setting" textAlignment="CENTER" StackPane.alignment="CENTER">
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Parameter Setting" textAlignment="CENTER" wrapText="true" StackPane.alignment="CENTER">
                      <padding>
                         <Insets right="12.0" />
                      </padding>
@@ -30,248 +32,306 @@
                   </Label>
                </children>
             </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+            <StackPane fx:id="page2btn" focusTraversable="true" onMouseClicked="#onChangeToPage2" prefHeight="96.0" prefWidth="155.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css">
                <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Cores" textAlignment="RIGHT" textOverrun="CLIP">
+                  <Label alignment="CENTER" contentDisplay="CENTER" maxWidth="1.7976931348623157E308" text="Analysis" textAlignment="CENTER" wrapText="true" StackPane.alignment="CENTER">
                      <padding>
-                        <Insets left="7.0" />
+                        <Insets right="12.0" />
                      </padding>
+                     <font>
+                        <Font size="14.0" />
+                     </font>
                   </Label>
-                  <TextField fx:id="coreNum" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                  </TextField>
-               </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-               <styleClass>
-                  <String fx:value="round-background" />
-                  <String fx:value="basic-pane" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Tasks">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <TextField fx:id="taskNum" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </TextField>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Utility">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <TextField fx:id="utility" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </TextField>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Period range (ms)">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <TextField fx:id="rangeT1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="58.0" />
-                     </StackPane.margin>
-                  </TextField>
-                  <TextField fx:id="rangeT2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </TextField>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="56.0" prefWidth="125.0" text="Resource Access Frequency " wrapText="true">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <TextField fx:id="maxAccess" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </TextField>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Critical section (us)">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <TextField fx:id="rangeCSL1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="58.0" />
-                     </StackPane.margin>
-                  </TextField>
-                  <TextField fx:id="rangeCSL2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
-                     <cursor>
-                        <Cursor fx:constant="NONE" />
-                     </cursor>
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </TextField>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Allocation">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <ComboBox fx:id="allocation" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="33.0" prefWidth="96.0" StackPane.alignment="CENTER_RIGHT">
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </ComboBox>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
-               <children>
-                  <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Priority ordering">
-                     <padding>
-                        <Insets left="7.0" />
-                     </padding>
-                  </Label>
-                  <ComboBox fx:id="priority" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="33.0" prefWidth="96.0" StackPane.alignment="CENTER_RIGHT">
-                     <StackPane.margin>
-                        <Insets right="7.0" />
-                     </StackPane.margin>
-                  </ComboBox>
-               </children>
-               <styleClass>
-                  <String fx:value="basic-pane" />
-                  <String fx:value="round-background" />
-               </styleClass>
-            </StackPane>
-            <StackPane fx:id="genRandom" onMouseClicked="#onGenerate" prefHeight="42.0" prefWidth="94.0" styleClass="blue-green" stylesheets="@../../../css/exterior.css">
-               <children>
-                  <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="230.0" stylesheets="@../../../css/exterior.css" />
-                  <Label fx:id="generateLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="blue-green" text="Generate" textFill="WHITE" StackPane.alignment="CENTER" />
-                  <Region fx:id="generating" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="34.0" style="-fx-background-color: white;" styleClass="icon-loading" stylesheets="@../../../css/exterior.css" visible="false" />
                </children>
             </StackPane>
          </children>
       </VBox>
-      <VBox prefHeight="544.0" prefWidth="864.0" HBox.hgrow="ALWAYS">
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
          <children>
-            <TableView fx:id="table1" focusTraversable="false" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
-              <columns>
-                <TableColumn editable="false" prefWidth="61.0" text="Task ID" />
-                <TableColumn prefWidth="56.0" text="Partition" />
-                  <TableColumn prefWidth="58.0" text="Priority" />
-                  <TableColumn prefWidth="89.0" text="Critical Level" />
-                  <TableColumn prefWidth="67.0" text="Period" />
-                  <TableColumn prefWidth="91.0" text="Deadline" />
-                  <TableColumn minWidth="0.0" prefWidth="66.0" text="C(LO) " />
-                  <TableColumn minWidth="0.0" prefWidth="66.0" text="C(HI)" />
-                  <TableColumn prefWidth="178.0" text="Resource Access" />
-                  <TableColumn prefWidth="131.0" text="Utilization" />
-              </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
-            <HBox minHeight="-Infinity" prefHeight="75.0" prefWidth="866.0" style="-fx-background-color: rgb(243, 243, 243);" VBox.vgrow="ALWAYS">
+            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <StackPane alignment="TOP_CENTER" prefHeight="81.0" prefWidth="236.0" HBox.hgrow="ALWAYS">
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Cores" textAlignment="RIGHT" textOverrun="CLIP">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="coreNum" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                        </TextField>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <styleClass>
+                        <String fx:value="round-background" />
+                        <String fx:value="basic-pane" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Tasks">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="taskNum" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Utilization">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="utility" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                           <tooltip>
+                              <Tooltip fx:id="tipsForU" text="Range from 0 to the number of cores" />
+                           </tooltip>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Period range (ms)">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="rangeT1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="58.0" />
+                           </StackPane.margin>
+                        </TextField>
+                        <TextField fx:id="rangeT2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label maxHeight="1.7976931348623157E308" prefHeight="56.0" prefWidth="125.0" text="Resources" wrapText="true">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="resourceNum" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label maxHeight="1.7976931348623157E308" prefHeight="56.0" prefWidth="125.0" text="Resource sharing factor" wrapText="true">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="rsf" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" prefHeight="56.0" prefWidth="125.0" text="Resource Access Frequency " wrapText="true">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="maxAccess" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="96.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Critical section (us)">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <TextField fx:id="rangeCSL1" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="58.0" />
+                           </StackPane.margin>
+                        </TextField>
+                        <TextField fx:id="rangeCSL2" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="35.0" prefWidth="45.0" styleClass="no-light" StackPane.alignment="CENTER_RIGHT">
+                           <cursor>
+                              <Cursor fx:constant="NONE" />
+                           </cursor>
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </TextField>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Allocation">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <ComboBox fx:id="allocation" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="33.0" prefWidth="96.0" StackPane.alignment="CENTER_RIGHT">
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </ComboBox>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label alignment="CENTER" maxHeight="1.7976931348623157E308" text="Priority ordering">
+                           <padding>
+                              <Insets left="7.0" />
+                           </padding>
+                        </Label>
+                        <ComboBox fx:id="priority" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="33.0" prefWidth="96.0" StackPane.alignment="CENTER_RIGHT">
+                           <StackPane.margin>
+                              <Insets right="7.0" />
+                           </StackPane.margin>
+                        </ComboBox>
+                     </children>
+                     <styleClass>
+                        <String fx:value="basic-pane" />
+                        <String fx:value="round-background" />
+                     </styleClass>
+                  </StackPane>
+                  <StackPane fx:id="genRandom" onMouseClicked="#onGenerate" prefHeight="109.0" prefWidth="223.0" styleClass="blue-green" stylesheets="@../../../css/exterior.css">
+                     <children>
+                        <Region maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="51.0" prefWidth="230.0" stylesheets="@../../../css/exterior.css" />
+                        <Label fx:id="generateLabel" alignment="CENTER" contentDisplay="CENTER" styleClass="blue-green" text="Generate" textFill="WHITE" StackPane.alignment="CENTER" />
+                        <Region fx:id="generating" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="34.0" style="-fx-background-color: white;" styleClass="icon-loading" stylesheets="@../../../css/exterior.css" visible="false" />
+                     </children>
+                  </StackPane>
+               </children>
+            </VBox>
+            <VBox fx:id="page12" layoutX="230.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                    <columns>
+                      <TableColumn editable="false" prefWidth="61.0" text="Task ID" />
+                      <TableColumn prefWidth="60.0" text="Partition" />
+                        <TableColumn prefWidth="76.0" text="Priority" />
+                        <TableColumn prefWidth="86.0" text="Critical Level" />
+                        <TableColumn prefWidth="60.0" text="Period" />
+                        <TableColumn prefWidth="71.0" text="Deadline" />
+                        <TableColumn minWidth="0.0" prefWidth="68.0" text="C(LO) " />
+                        <TableColumn minWidth="0.0" prefWidth="75.0" text="C(HI)" />
+                        <TableColumn prefWidth="136.0" text="Resource Access" />
+                        <TableColumn prefWidth="131.0" text="Utilization" />
+                    </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+                  <TableView fx:id="table3" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn editable="false" prefWidth="61.0" text="Resource ID" />
+                        <TableColumn prefWidth="60.0" text="Critial Section Length" />
+                        <TableColumn prefWidth="76.0" text="Requested Task" />
+                        <TableColumn prefWidth="86.0" text="Requested Partitions" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
+            <VBox fx:id="page21" alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="544.0" prefWidth="169.0" style="-fx-background-color: rgb(243, 243, 243);" stylesheets="@../../../css/exterior.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <StackPane alignment="TOP_CENTER" prefHeight="81.0" prefWidth="236.0">
                      <children>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="139.0" text="System Mode" textAlignment="CENTER" StackPane.alignment="TOP_CENTER" />
                         <ComboBox fx:id="systemMode" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="126.0" stylesheets="@../../../css/exterior.css" StackPane.alignment="CENTER" />
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="81.0" prefWidth="236.0" HBox.hgrow="ALWAYS">
+                  <StackPane prefHeight="81.0" prefWidth="236.0">
                      <children>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="139.0" text="Respone Time Analysis" textAlignment="CENTER" StackPane.alignment="TOP_CENTER" />
                         <ComboBox fx:id="RTM" focusTraversable="false" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="35.0" prefWidth="126.0" stylesheets="@../../../css/exterior.css" />
                      </children>
                   </StackPane>
-                  <StackPane fx:id="startAnalysis" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onStartAnalysis" prefHeight="77.0" prefWidth="119.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS">
-                     <children>
-                        <Label fx:id="startLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" focusTraversable="false" prefHeight="22.0" prefWidth="64.0" text="START" textAlignment="CENTER" StackPane.alignment="CENTER_RIGHT">
-                           <padding>
-                              <Insets right="12.0" />
-                           </padding>
-                           <StackPane.margin>
-                              <Insets right="20.0" />
-                           </StackPane.margin>
-                        </Label>
-                        <Region fx:id="startIcon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="21.0" styleClass="icon-start" stylesheets="@../../../css/exterior.css" StackPane.alignment="CENTER_LEFT">
-                           <StackPane.margin>
-                              <Insets left="10.0" />
-                           </StackPane.margin>
-                        </Region>
-                        <Region fx:id="loading" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="34.0" styleClass="icon-loading" stylesheets="@../../../css/exterior.css" visible="false" />
-                     </children>
-                  </StackPane>
-                  <StackPane alignment="TOP_CENTER" prefHeight="81.0" prefWidth="200.0" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS">
+                  <StackPane alignment="TOP_CENTER" prefHeight="81.0" prefWidth="200.0" stylesheets="@../../../css/exterior.css">
                      <children>
                         <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="139.0" text="Schedulability" textAlignment="CENTER" StackPane.alignment="TOP_CENTER">
                            <StackPane.margin>
@@ -290,27 +350,49 @@
                         </Label>
                      </children>
                   </StackPane>
+                  <StackPane fx:id="startAnalysis" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onStartAnalysis" prefHeight="77.0" prefWidth="119.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css">
+                     <children>
+                        <Label fx:id="startLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" focusTraversable="false" prefHeight="22.0" prefWidth="64.0" text="START" textAlignment="CENTER" StackPane.alignment="CENTER_RIGHT">
+                           <padding>
+                              <Insets right="12.0" />
+                           </padding>
+                           <StackPane.margin>
+                              <Insets right="20.0" />
+                           </StackPane.margin>
+                        </Label>
+                        <Region fx:id="startIcon" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="22.0" prefWidth="21.0" styleClass="icon-start" stylesheets="@../../../css/exterior.css" StackPane.alignment="CENTER_LEFT">
+                           <StackPane.margin>
+                              <Insets left="10.0" />
+                           </StackPane.margin>
+                        </Region>
+                        <Region fx:id="loading" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="37.0" prefWidth="34.0" styleClass="icon-loading" stylesheets="@../../../css/exterior.css" visible="false" />
+                     </children>
+                  </StackPane>
                </children>
-            </HBox>
-            <TableView fx:id="table2" focusTraversable="false" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
-               <columns>
-                  <TableColumn prefWidth="51.0" text="Task ID" />
-                  <TableColumn minWidth="9.0" prefWidth="63.0" text="Partition" />
-                  <TableColumn prefWidth="64.0" text="Priority" />
-                  <TableColumn minWidth="4.0" prefWidth="66.0" text="Response Time" />
-                  <TableColumn minWidth="0.0" prefWidth="65.0" text="Deadline" />
-                  <TableColumn prefWidth="60.0" text="WCET" />
-                  <TableColumn minWidth="0.0" prefWidth="111.0" text="Resource Execution Time" />
-                  <TableColumn prefWidth="104.0" text="Interference Time" />
-                  <TableColumn prefWidth="77.0" text="Spin Blocking" />
-                  <TableColumn prefWidth="95.0" text="Indirect Spin Blocking" />
-                  <TableColumn prefWidth="72.0" text="Arrival Blocking" />
-               </columns>
-               <columnResizePolicy>
-                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
-               </columnResizePolicy>
-            </TableView>
+            </VBox>
+            <VBox fx:id="page22" layoutX="240.0" layoutY="10.0" prefHeight="544.0" prefWidth="864.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <TableView fx:id="table2" focusTraversable="false" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn prefWidth="51.0" text="Task ID" />
+                        <TableColumn minWidth="9.0" prefWidth="63.0" text="Partition" />
+                        <TableColumn prefWidth="64.0" text="Priority" />
+                        <TableColumn minWidth="4.0" prefWidth="66.0" text="Response Time" />
+                        <TableColumn minWidth="0.0" prefWidth="65.0" text="Deadline" />
+                        <TableColumn prefWidth="60.0" text="WCET" />
+                        <TableColumn minWidth="0.0" prefWidth="111.0" text="Resource Execution Time" />
+                        <TableColumn prefWidth="104.0" text="Interference Time" />
+                        <TableColumn prefWidth="77.0" text="Spin Blocking" />
+                        <TableColumn prefWidth="95.0" text="Indirect Spin Blocking" />
+                        <TableColumn prefWidth="72.0" text="Arrival Blocking" />
+                     </columns>
+                     <columnResizePolicy>
+                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                     </columnResizePolicy>
+                  </TableView>
+               </children>
+            </VBox>
          </children>
-      </VBox>
+      </AnchorPane>
    </children>
 </HBox>
