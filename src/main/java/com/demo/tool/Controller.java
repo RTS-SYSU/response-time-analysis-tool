@@ -165,7 +165,6 @@ public class Controller {
         priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
         RTM.getItems().addAll("MSRP", "Mrsp");
-        RTM.setValue("MSRP");
     }
 
     @FXML
@@ -272,6 +271,7 @@ public class Controller {
         table2.getItems().clear();
         table2.getItems().addAll(data);
 
+
         // 将数据源中的数据与每个 TableColumn 进行绑定
         for (int i = 0; i < table2.getColumns().size(); i++) {
             TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table2.getColumns().get(i);
@@ -299,7 +299,7 @@ public class Controller {
             alert.showAndWait();
             return;
         }
-        if (systemMode.getValue() == null) {
+        if (systemMode.getValue() == null || RTM.getValue() == null) {
             Alert alert = new Alert(Alert.AlertType.WARNING);
             alert.setHeaderText(null);
             alert.setContentText("System parameters are incomplete.");
@@ -307,6 +307,7 @@ public class Controller {
             return;
         }
         factors.SYSTEM_MODE = systemMode.getValue();
+        factors.ANALYSIS_MODE = RTM.getValue();
 
         /* set the start icon inaccessible */
         startIcon.setVisible(false);

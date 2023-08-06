@@ -63,11 +63,11 @@ public class Analysis {
         SchedulabilityForMCS mcs = new SchedulabilityForMCS();
         switch (factors.SYSTEM_MODE) {
             case "LO":
-                if (mcs.isSchedulableForLowMode(tasks, resources, false)) return true;
+                if (mcs.isSchedulableForLowMode(factors.ANALYSIS_MODE, tasks, resources, false)) return true;
             case "HI":
-                if (mcs.isSchedulableForHighMode(tasks, resources, false)) return true;
+                if (mcs.isSchedulableForHighMode(factors.ANALYSIS_MODE, tasks, resources, false)) return true;
             case "ModeSwitch":
-                if (mcs.isSchedulableForModeSwitch(tasks, resources, false)) return true;
+                if (mcs.isSchedulableForModeSwitch(factors.ANALYSIS_MODE, tasks, resources, false)) return true;
         }
         return false;
     }

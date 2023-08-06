@@ -8,13 +8,13 @@ import java.util.ArrayList;
 public class SchedulabilityForMCS {
     MSRPOriginalForModeSwitch modeSwitch;
 
-    public SchedulabilityForMCS(){
+    public SchedulabilityForMCS() {
         modeSwitch = new MSRPOriginalForModeSwitch();
     }
 
 
-    public boolean isSchedulableForLowMode(ArrayList<ArrayList<SporadicTask>> tasks,
-                                           ArrayList<Resource> resources, boolean printDebug){
+    public boolean isSchedulableForLowMode(String rtm, ArrayList<ArrayList<SporadicTask>> tasks,
+                                           ArrayList<Resource> resources, boolean printDebug) {
 
         for (Resource res : resources) {
             res.csl = res.csl_low;
@@ -26,11 +26,17 @@ public class SchedulabilityForMCS {
             }
         }
 
-        boolean res = isSchedulableForStableMode(tasks, resources, printDebug);
-        if(res){
+        boolean res = isSchedulableForStableMode(rtm, tasks, resources, printDebug);
+        if (res) {
             for (ArrayList<SporadicTask> task : tasks) {
                 for (SporadicTask sporadicTask : task) {
                     sporadicTask.Ri_LO = sporadicTask.Ri;
+                }
+            }
+        } else {
+            for (ArrayList<SporadicTask> task : tasks) {
+                for (SporadicTask sporadicTask : task) {
+                    sporadicTask.Ri_LO = 0;
                 }
             }
         }
@@ -39,8 +45,8 @@ public class SchedulabilityForMCS {
 
     }
 
-    public boolean isSchedulableForHighMode(ArrayList<ArrayList<SporadicTask>> tasksToAlloc,
-                                           ArrayList<Resource> resources, boolean printDebug){
+    public boolean isSchedulableForHighMode(String rtm, ArrayList<ArrayList<SporadicTask>> tasksToAlloc,
+                                            ArrayList<Resource> resources, boolean printDebug) {
         ArrayList<ArrayList<SporadicTask>> tasks = new ArrayList<>();
 
         for (ArrayList<SporadicTask> sporadicTasks : tasksToAlloc) {
@@ -61,11 +67,17 @@ public class SchedulabilityForMCS {
             }
         }
 
-        boolean res = isSchedulableForStableMode(tasks, resources, printDebug);
-        if(res){
+        boolean res = isSchedulableForStableMode(rtm, tasks, resources, printDebug);
+        if (res) {
             for (ArrayList<SporadicTask> task : tasks) {
                 for (SporadicTask sporadicTask : task) {
                     sporadicTask.Ri_HI = sporadicTask.Ri;
+                }
+            }
+        } else {
+            for (ArrayList<SporadicTask> task : tasks) {
+                for (SporadicTask sporadicTask : task) {
+                    sporadicTask.Ri_LO = 0;
                 }
             }
         }
@@ -73,8 +85,8 @@ public class SchedulabilityForMCS {
     }
 
 
-    private boolean isSchedulableForStableMode(ArrayList<ArrayList<SporadicTask>> tasks,
-                                               ArrayList<Resource> resources, boolean printDebug){
+    private boolean isSchedulableForStableMode(String rtm, ArrayList<ArrayList<SporadicTask>> tasks,
+                                               ArrayList<Resource> resources, boolean printDebug) {
         if (tasks == null)
             return false;
 //        new PriorityGenerator().assignPrioritiesByDM(tasks);
@@ -105,25 +117,34 @@ public class SchedulabilityForMCS {
             }
         }
 
+
+        long[][] Ris = null;
+
         //MSRPNew msrp = new MSRPNew();
-            MSRPOriginal msrp = new MSRPOriginal();
+        switch (rtm) {
+            case "MSRP":
+                MSRPOriginal msrp = new MSRPOriginal();
+                Ris = msrp.getResponseTime(tasks, resources, false);
+                break;
+            case "Mrsp":
+                MrsPOriginal mrsp = new MrsPOriginal();
+                Ris = mrsp.getResponseTime(tasks, resources, false);
+                break;
+        }
 
-            long[][] Ris;
-            Ris = msrp.getResponseTime(tasks, resources, false);
-
-            for (int i = 0; i < tasks.size(); i++) {
-                for (int j = 0; j < tasks.get(i).size(); j++) {
-                    if (tasks.get(i).get(j).deadline < Ris[i][j])
-                        return false;
-                    else
-                        tasks.get(i).get(j).Ri = Ris[i][j];     //made by c
-                }
+        for (int i = 0; i < tasks.size(); i++) {
+            for (int j = 0; j < tasks.get(i).size(); j++) {
+                if (tasks.get(i).get(j).deadline < Ris[i][j])
+                    return false;
+                else
+                    tasks.get(i).get(j).Ri = Ris[i][j];     //made by c
             }
-            return true;
+        }
+        return true;
     }
 
-    public boolean isSchedulableForModeSwitch(ArrayList<ArrayList<SporadicTask>> tasks,
-                                 ArrayList<Resource> resources, boolean printDebug){
+    public boolean isSchedulableForModeSwitch(String rtm, ArrayList<ArrayList<SporadicTask>> tasks,
+                                              ArrayList<Resource> resources, boolean printDebug) {
         if (tasks == null)
             return false;
 
@@ -181,7 +202,7 @@ public class SchedulabilityForMCS {
 
         long[][] Ris;
 
-        Ris = this.modeSwitch.getResponseTime(highTasks,resources,lowTasks, false);
+        Ris = this.modeSwitch.getResponseTime(highTasks, resources, lowTasks, false);
 
         for (int i = 0; i < highTasks.size(); i++) {
             for (int j = 0; j < highTasks.get(i).size(); j++) {
