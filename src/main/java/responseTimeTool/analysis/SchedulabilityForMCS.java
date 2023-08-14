@@ -6,13 +6,6 @@ import responseTimeTool.entity.SporadicTask;
 import java.util.ArrayList;
 
 public class SchedulabilityForMCS {
-    MSRPOriginalForModeSwitch modeSwitch;
-
-    public SchedulabilityForMCS() {
-        modeSwitch = new MSRPOriginalForModeSwitch();
-    }
-
-
     public boolean isSchedulableForLowMode(String rtm, ArrayList<ArrayList<SporadicTask>> tasks,
                                            ArrayList<Resource> resources, boolean printDebug) {
 
@@ -200,9 +193,20 @@ public class SchedulabilityForMCS {
             lowTasks.add(low);
         }
 
-        long[][] Ris;
+        long[][] Ris = null;
 
-        Ris = this.modeSwitch.getResponseTime(highTasks, resources, lowTasks, false);
+        //MSRPNew msrp = new MSRPNew();
+        switch (rtm) {
+            case "MSRP":
+                MSRPOriginalForModeSwitch modeSwitch0 = new MSRPOriginalForModeSwitch();
+                Ris = modeSwitch0.getResponseTime(highTasks, resources, lowTasks, false);
+                break;
+            case "Mrsp":
+                MrspOriginalForModeSwitch modeSwitch1 = new MrspOriginalForModeSwitch();
+                Ris = modeSwitch1.getResponseTime(highTasks, resources, lowTasks, false);
+                break;
+        }
+
 
         for (int i = 0; i < highTasks.size(); i++) {
             for (int j = 0; j < highTasks.get(i).size(); j++) {
@@ -220,6 +224,7 @@ public class SchedulabilityForMCS {
 //                //System.out.println(highTasks.get(i).get(j).Ris());
 //            }
 //        }
+//        System.out.println("yes");
         return true;
     }
 }
