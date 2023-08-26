@@ -162,7 +162,7 @@ public class MrspOriginalForModeSwitch {
 	 * Calculate the local blocking for task t.
 	 */
 	private long localBlocking(SporadicTask t, ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, long[][] Ris, long Ri) {
-		ArrayList<Resource> LocalBlockingResources = getLocalBlockingResources(t, resources);
+		ArrayList<Resource> LocalBlockingResources = getLocalBlockingResources(t, resources, tasks.get(t.partition));
 		ArrayList<Long> local_blocking_each_resource = new ArrayList<>();
 
 		for (int i = 0; i < LocalBlockingResources.size(); i++) {
@@ -181,15 +181,13 @@ public class MrspOriginalForModeSwitch {
 	/*
 	 * gives a set of resources that can cause local blocking for a given task
 	 */
-	private ArrayList<Resource> getLocalBlockingResources(SporadicTask task, ArrayList<Resource> resources) {
+	private ArrayList<Resource> getLocalBlockingResources(SporadicTask task, ArrayList<Resource> resources,ArrayList<SporadicTask> localTasks) {
 		ArrayList<Resource> localBlockingResources = new ArrayList<>();
 		int partition = task.partition;
 
 		for (int i = 0; i < resources.size(); i++) {
 			Resource resource = resources.get(i);
-			int index = resource.partitions.indexOf(partition);
-			if (resource.ceiling.size() == 0 || index == -1) break;
-			if (resource.partitions.contains(partition) && resource.ceiling.get(index) >= task.priority) {
+			if (resource.partitions.contains(partition) && resource.getCeilingForProcessor(localTasks) >= task.priority) {
 				for (int j = 0; j < resource.requested_tasks.size(); j++) {
 					SporadicTask LP_task = resource.requested_tasks.get(j);
 					if (LP_task.partition == partition && LP_task.priority < task.priority) {
