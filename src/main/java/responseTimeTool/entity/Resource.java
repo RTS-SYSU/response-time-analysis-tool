@@ -10,6 +10,7 @@ public class Resource {
 	public long csl_high;  //临界资源上限
 
 	public ArrayList<SporadicTask> requested_tasks;	//请求该资源的任务列表
+
 	public ArrayList<Integer> partitions;	//请求该资源的分区列表
 	public ArrayList<Integer> ceiling;	// 资源的静态ceiling
 

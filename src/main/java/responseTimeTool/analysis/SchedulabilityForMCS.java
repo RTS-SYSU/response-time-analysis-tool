@@ -123,6 +123,10 @@ public class SchedulabilityForMCS {
                 MrsPOriginal mrsp = new MrsPOriginal();
                 Ris = mrsp.getResponseTime(tasks, resources, false);
                 break;
+            case "PWLP":
+                PWLPNew pwlp = new PWLPNew();
+                Ris = pwlp.getResponseTime(tasks, resources,true, false);
+                break;
         }
 
         for (int i = 0; i < tasks.size(); i++) {
@@ -204,6 +208,10 @@ public class SchedulabilityForMCS {
             case "Mrsp":
                 MrspOriginalForModeSwitch modeSwitch1 = new MrspOriginalForModeSwitch();
                 Ris = modeSwitch1.getResponseTime(highTasks, resources, lowTasks, false);
+                break;
+            case "PWLP":
+                PWLPNewForModeSwitch modeSwitch2 = new PWLPNewForModeSwitch();
+                Ris = modeSwitch2.getResponseTime(highTasks, resources, lowTasks, false);
                 break;
         }
 

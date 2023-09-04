@@ -64,10 +64,13 @@ public class Analysis {
         switch (factors.SYSTEM_MODE) {
             case "LO":
                 if (mcs.isSchedulableForLowMode(factors.ANALYSIS_MODE, tasks, resources, false)) return true;
+                break;
             case "HI":
                 if (mcs.isSchedulableForHighMode(factors.ANALYSIS_MODE, tasks, resources, false)) return true;
+                break;
             case "ModeSwitch":
                 if (mcs.isSchedulableForModeSwitch(factors.ANALYSIS_MODE, tasks, resources, false)) return true;
+                break;
         }
         return false;
     }
