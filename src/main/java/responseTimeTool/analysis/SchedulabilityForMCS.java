@@ -14,7 +14,6 @@ public class SchedulabilityForMCS {
         }
         for (ArrayList<SporadicTask> task : tasks) {
             for (SporadicTask sporadicTask : task) {
-                sporadicTask.PWLP_S = 0;
                 sporadicTask.WCET = sporadicTask.C_LOW;
                 sporadicTask.pure_resource_execution_time = sporadicTask.prec_LOW;
             }
@@ -98,6 +97,7 @@ public class SchedulabilityForMCS {
                 for (ArrayList<SporadicTask> sporadicTasks : tasks) {
                     /* for each task in the given partition */
                     for (SporadicTask task : sporadicTasks) {
+                        task.PWLP_S = 0;
                         if (task.resource_required_index.contains(resource.id - 1)) {
                             resource.requested_tasks.add(task);
                             if (!resource.partitions.contains(task.partition)) {
@@ -184,6 +184,7 @@ public class SchedulabilityForMCS {
             ArrayList<SporadicTask> high = new ArrayList<>();
             ArrayList<SporadicTask> low = new ArrayList<>();
             for (SporadicTask sporadicTask : task) {
+                sporadicTask.PWLP_S = 0;
                 if (sporadicTask.critical == 0) {
                     sporadicTask.WCET = sporadicTask.C_LOW;
                     sporadicTask.pure_resource_execution_time = sporadicTask.prec_LOW;

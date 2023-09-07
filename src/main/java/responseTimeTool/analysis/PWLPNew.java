@@ -68,11 +68,11 @@ public class PWLPNew {
             for (int j = 0; j < tasks.get(i).size(); j++) {
                 SporadicTask task = tasks.get(i).get(j);
                 task.spin_delay_by_preemptions = 0;
-                getSpinDelay(task, tasks, resources, response_time[i][j], response_time, btbHit);
+                long exec_preempted_T = getSpinDelay(task, tasks, resources, response_time[i][j], response_time, btbHit);
                 task.interference = highPriorityInterference(task, tasks, response_time[i][j], response_time, resources);
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j]);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.PWLP_S + task.interference + task.local +exec_preempted_T;
 
                 if (task.Ri > task.deadline)
                     return response_time_plus;
@@ -87,13 +87,16 @@ public class PWLPNew {
         long spin = 0;
         long indirect_spin = 0, direct_spin = 0;
         long PWLP_S = 0;
+        long exec_and_preempted_T = 0;
+
         ArrayList<ArrayList<Long>> requestsLeftOnRemoteP = new ArrayList<>();
         for (int i = 0; i < resources.size(); i++) {
             requestsLeftOnRemoteP.add(new ArrayList<Long>());
             Resource res = resources.get(i);
-            Pair<Long, Long> temp = getSpinDelayForOneResoruce(task, tasks, res, time, Ris, requestsLeftOnRemoteP.get(i), btbHit);
-            indirect_spin += temp.getFirst();
-            direct_spin += temp.getSecond();
+            ArrayList<Long> temp = getSpinDelayForOneResoruce(task, tasks, res, time, Ris, requestsLeftOnRemoteP.get(i), btbHit);
+            indirect_spin += temp.get(0);
+            direct_spin += temp.get(1);
+            exec_and_preempted_T += temp.get(2);
         }
 
         Pair<Long, Long> spin_all = new Pair<>(indirect_spin, direct_spin);
@@ -148,18 +151,20 @@ public class PWLPNew {
         task.spin = spin_all.getSecond();
         task.spin_delay_by_preemptions = request_by_preemptions;
 
-        return spin;
+        return exec_and_preempted_T;
     }
 
     //E
-    private Pair<Long, Long> getSpinDelayForOneResoruce(SporadicTask task, ArrayList<ArrayList<SporadicTask>> tasks, Resource resource, long time, long[][] Ris,
-                                                        ArrayList<Long> requestsLeftOnRemoteP, boolean btbHit) {
+    private ArrayList<Long> getSpinDelayForOneResoruce(SporadicTask task, ArrayList<ArrayList<SporadicTask>> tasks, Resource resource, long time, long[][] Ris,
+                                                       ArrayList<Long> requestsLeftOnRemoteP, boolean btbHit) {
         long spin = 0;
         long ncs = 0;
 
-        long xi = 0;
         long zeta = 0;
+
         long n = 0;
+        long indirect_spin = 0;
+        long direct_spin = 0;
 
         for (int i = 0; i < tasks.get(task.partition).size(); i++) {
             SporadicTask hpTask = tasks.get(task.partition).get(i);// local优先级高于tau_i的任务
@@ -186,20 +191,27 @@ public class PWLPNew {
                             int indexR = getIndexRInTask(remote_task, resource);
                             int number_of_release = (int) Math.ceil((double) (time + (btbHit ? Ris[i][j] : 0)) / (double) remote_task.period);
                             number_of_request_by_Remote_P += number_of_release * remote_task.number_of_access_in_one_release.get(indexR);
-                            xi += number_of_request_by_Remote_P;
                         }
                     }
+                    //min{local, remote m}
+                    indirect_spin += Long.min(zeta, number_of_request_by_Remote_P) * resource.csl;
+                    //min{N, max(remote_m-local_higher,0)}
+                    direct_spin += Long.min(n, Long.max(number_of_request_by_Remote_P - zeta, 0)) * resource.csl;
 
                     long possible_spin_delay = Long.min(number_of_request_by_Remote_P, ncs);
+
                     spin += possible_spin_delay;
                     if (number_of_request_by_Remote_P - ncs > 0)    // L做准备
                         requestsLeftOnRemoteP.add(number_of_request_by_Remote_P - ncs);
                 }
             }
         }
-        //<indirect,direct>
-        Pair<Long, Long> spin_all = new Pair<>(Long.min(zeta, xi) * resource.csl, Long.min(n, Long.max(xi - zeta, 0)) * resource.csl);
-
+        //<indirect,direct, preempted+exec>
+        ArrayList<Long> spin_all = new ArrayList<>();
+        spin_all.add(indirect_spin);
+        spin_all.add(direct_spin);
+        spin_all.add(ncs*resource.csl);
+//        spin * resource.csl + ncs * resource.csl;
         return spin_all;
     }
 
