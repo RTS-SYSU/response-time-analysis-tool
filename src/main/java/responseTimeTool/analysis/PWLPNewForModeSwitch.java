@@ -82,7 +82,7 @@ public class PWLPNewForModeSwitch {
                 task.interference = highPriorityInterference(task, tasks, lowTasks, response_time[i][j]);
                 task.local = localBlocking(task, tasks, lowTasks, resources, response_time, response_time[i][j]);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.PWLP_S + task.interference + task.local +exec_preempted_T;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.PWLP_S + task.interference + task.local + exec_preempted_T;
                 if (task.Ri > task.deadline)
                     return response_time_plus;
 
@@ -253,11 +253,15 @@ public class PWLPNewForModeSwitch {
                     long possible_spin_delay = Long.min(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P, ncs);
 
                     //min{local, remote m}
-                    indirect_spin += Long.min(ncs_hi, number_of_high_request_by_Remote_P) * resource.csl_high;
-                    indirect_spin += Long.min(ncs_lo, number_of_low_request_by_Remote_P) * resource.csl;
+                    long indirect_remote_times = number_of_high_request_by_Remote_P - ncs;
+                    indirect_spin += indirect_remote_times > 0 ?
+                            ncs * resource.csl_high : number_of_high_request_by_Remote_P * resource.csl_high + Math.abs(indirect_remote_times) * resource.csl;
+
                     //min{N, max(remote_m-local_higher,0)}
-                    direct_spin += Long.min(N_i_k, Long.max(number_of_high_request_by_Remote_P - ncs_hi, 0)) * resource.csl_high;
-                    direct_spin += Long.min(N_i_k, Long.max(number_of_low_request_by_Remote_P - ncs_lo, 0)) * resource.csl;
+                    long direct_remote_times_judge = indirect_remote_times + Long.min(N_i_k, Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0))
+                            - number_of_high_request_by_Remote_P;
+                    direct_spin += direct_remote_times_judge > 0 ?
+                            direct_remote_times_judge * resource.csl : Math.abs(direct_remote_times_judge) * resource.csl_high;
 
 
                     // 建立RBTQ
@@ -356,7 +360,7 @@ public class PWLPNewForModeSwitch {
                 for (int j = 0; j < resource.requested_tasks.size(); j++) {
                     if (tasks.contains(resource.requested_tasks.get(j))) {
                         SporadicTask LP_task = resource.requested_tasks.get(j);
-                        System.out.println("LO"+LP_task.C_LOW+"HI"+LP_task.C_HIGH);
+                        System.out.println("LO" + LP_task.C_LOW + "HI" + LP_task.C_HIGH);
                         if (LP_task.partition == partition && LP_task.priority < task.priority) {
                             localBlockingResources.add(resource);
                             break;
@@ -369,7 +373,7 @@ public class PWLPNewForModeSwitch {
                 for (int j = 0; j < resource.requested_tasks.size(); j++) {
                     if (tasks.contains(resource.requested_tasks.get(j))) {
                         SporadicTask LP_task = resource.requested_tasks.get(j);
-                        System.out.println("LO"+LP_task.C_LOW+"HI"+LP_task.C_HIGH);
+                        System.out.println("LO" + LP_task.C_LOW + "HI" + LP_task.C_HIGH);
                         if (LP_task.partition == partition && LP_task.priority < task.priority) {
                             localBlockingResources.add(resource);
                             break;
