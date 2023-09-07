@@ -251,7 +251,7 @@ public class Controller {
                     // id, partition, priority, response time, deadline, WCET
                     // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
                     Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri_Switch, task.deadline, task.WCET,
-                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local};
+                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S};
                     data.add(row);
                 }
             }
@@ -262,7 +262,7 @@ public class Controller {
                     // id, partition, priority, response time, deadline, WCET
                     // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
                     Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri, task.deadline, task.WCET,
-                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local};
+                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S};
                     data.add(row);
                 }
             }
