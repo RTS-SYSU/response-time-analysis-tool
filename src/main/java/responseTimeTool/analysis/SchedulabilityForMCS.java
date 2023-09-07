@@ -14,6 +14,7 @@ public class SchedulabilityForMCS {
         }
         for (ArrayList<SporadicTask> task : tasks) {
             for (SporadicTask sporadicTask : task) {
+                sporadicTask.PWLP_S = 0;
                 sporadicTask.WCET = sporadicTask.C_LOW;
                 sporadicTask.pure_resource_execution_time = sporadicTask.prec_LOW;
             }

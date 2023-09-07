@@ -385,6 +385,7 @@
                         <TableColumn prefWidth="77.0" text="Spin Blocking" />
                         <TableColumn prefWidth="95.0" text="Indirect Spin Blocking" />
                         <TableColumn prefWidth="72.0" text="Arrival Blocking" />
+                        <TableColumn prefWidth="72.0" text="S" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
