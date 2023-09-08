@@ -376,6 +376,7 @@
                      <columns>
                         <TableColumn prefWidth="51.0" text="Task ID" />
                         <TableColumn minWidth="9.0" prefWidth="63.0" text="Partition" />
+                        <TableColumn prefWidth="51.0" text="Critical Level" />
                         <TableColumn prefWidth="64.0" text="Priority" />
                         <TableColumn minWidth="4.0" prefWidth="66.0" text="Response Time" />
                         <TableColumn minWidth="0.0" prefWidth="65.0" text="Deadline" />
@@ -385,7 +386,7 @@
                         <TableColumn prefWidth="77.0" text="Spin Blocking" />
                         <TableColumn prefWidth="95.0" text="Indirect Spin Blocking" />
                         <TableColumn prefWidth="72.0" text="Arrival Blocking" />
-                        <TableColumn prefWidth="72.0" text="S" />
+                        <TableColumn prefWidth="72.0" text="Retry Cost" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />

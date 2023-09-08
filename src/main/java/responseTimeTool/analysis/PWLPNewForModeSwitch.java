@@ -255,7 +255,7 @@ public class PWLPNewForModeSwitch {
                     //min{local, remote m}
                     long indirect_remote_times = number_of_high_request_by_Remote_P - ncs;
                     indirect_spin += indirect_remote_times > 0 ?
-                            ncs * resource.csl_high : number_of_high_request_by_Remote_P * resource.csl_high + Long.min(Math.abs(indirect_remote_times), number_of_low_request_by_Remote_P) * resource.csl;
+                            ncs * resource.csl_high : number_of_high_request_by_Remote_P * resource.csl_high + Long.min(Math.abs(indirect_remote_times), number_of_low_request_by_Remote_P) * resource.csl_low;
 
                     //min{N, max(remote_m-local_higher,0)}
 //                    long direct_remote_times_judge = Long.max(indirect_remote_times, 0) + Long.min(N_i_k, Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0))
@@ -267,10 +267,10 @@ public class PWLPNewForModeSwitch {
                     if (number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs <= 0)
                         direct_spin += 0;
                     else if (indirect_remote_times <= 0)
-                        direct_spin += Long.min(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, N_i_k) * resource.csl;
+                        direct_spin += Long.min(Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0), N_i_k) * resource.csl_low;
                     else
                         direct_spin += indirect_remote_times > N_i_k ? N_i_k * resource.csl_high
-                                : indirect_remote_times * resource.csl_high + Long.min(N_i_k - indirect_remote_times, number_of_low_request_by_Remote_P) * resource.csl;
+                                : indirect_remote_times * resource.csl_high + Long.min(N_i_k - indirect_remote_times, number_of_low_request_by_Remote_P) * resource.csl_low;
 
 
                     // 建立RBTQ
@@ -281,7 +281,7 @@ public class PWLPNewForModeSwitch {
                     }
                     //min{local, remote m}
                     while (number_of_low_request_by_Remote_P > 0) {
-                        RBTQ.add(resource.csl);
+                        RBTQ.add(resource.csl_low);
                         number_of_low_request_by_Remote_P--;
                     }
 
@@ -300,7 +300,7 @@ public class PWLPNewForModeSwitch {
         ArrayList<Long> spin_all = new ArrayList<>();
         spin_all.add(indirect_spin);
         spin_all.add(direct_spin);
-        spin_all.add(N_i_k * resource.csl_high + ncs_lo * resource.csl + ncs_hi * resource.csl_high);
+        spin_all.add(N_i_k * resource.csl_high + ncs_lo * resource.csl_low + ncs_hi * resource.csl_high);
 //        return N_i_k * resource.csl_high + ncs_lo * resource.csl + ncs_hi * resource.csl_high + spin;
         return spin_all;
     }
@@ -341,7 +341,7 @@ public class PWLPNewForModeSwitch {
 
         for (int i = 0; i < LocalBlockingResources_LO.size(); i++) {
             Resource res = LocalBlockingResources_LO.get(i);
-            long local_blocking = res.csl;
+            long local_blocking = res.csl_low;
             local_blocking_each_resource.add(local_blocking);
         }
         for (int i = 0; i < LocalBlockingResources_HI.size(); i++) {

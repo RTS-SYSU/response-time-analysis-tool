@@ -138,8 +138,8 @@ public class Controller {
         utility.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
                 Bounds screenBounds = page11.localToScreen(page11.getBoundsInLocal());
-                tipsForU.show(utility, screenBounds.getCenterX() + utility.getWidth()*0.4, screenBounds.getCenterY() -utility.getParent().getBoundsInLocal().getHeight()*2.75 );
-            }else {
+                tipsForU.show(utility, screenBounds.getCenterX() + utility.getWidth() * 0.4, screenBounds.getCenterY() - utility.getParent().getBoundsInLocal().getHeight() * 2.75);
+            } else {
                 tipsForU.hide();
             }
         });
@@ -210,14 +210,14 @@ public class Controller {
         ObservableList<Object[]> data = FXCollections.observableArrayList();
 
         for (int i = 0; i < resources.size(); i++) {
-                Resource resource = resources.get(i);
-                ArrayList<Integer> tasksID = new ArrayList<>();
-                for (int j =0; j< resources.get(i).requested_tasks.size();j++){
-                    tasksID.add(resources.get(i).requested_tasks.get(j).id);
-                }
-                // id, csl, requested_tasks, partitions
-                Object[] row = new Object[]{resource.id, resource.csl, tasksID, resource.partitions};
-                data.add(row);
+            Resource resource = resources.get(i);
+            ArrayList<Integer> tasksID = new ArrayList<>();
+            for (int j = 0; j < resources.get(i).requested_tasks.size(); j++) {
+                tasksID.add(resources.get(i).requested_tasks.get(j).id);
+            }
+            // id, csl, requested_tasks, partitions
+            Object[] row = new Object[]{resource.id, resource.csl, tasksID, resource.partitions};
+            data.add(row);
         }
         // 设置数据源到 TableView
         table3.getItems().clear();
@@ -248,11 +248,26 @@ public class Controller {
             for (int i = 0; i < tasks.size(); i++) {
                 for (int j = 0; j < tasks.get(i).size(); j++) {
                     SporadicTask task = tasks.get(i).get(j);
-                    // id, partition, priority, response time, deadline, WCET
-                    // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
-                    Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri_Switch, task.deadline, task.WCET,
-                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S};
-                    data.add(row);
+                    if (task.critical == 1) {     //只显示HI任务
+                        // id, partition, priority, response time, deadline, WCET
+                        // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
+                        Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri_Switch, task.deadline, task.WCET,
+                                task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S};
+                        data.add(row);
+                    }
+                }
+            }
+        } else if (systemMode.getValue() == "HI") {
+            for (int i = 0; i < tasks.size(); i++) {
+                for (int j = 0; j < tasks.get(i).size(); j++) {
+                    SporadicTask task = tasks.get(i).get(j);
+                    if (task.critical == 1) {
+                        // id, partition, priority, response time, deadline, WCET
+                        // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
+                        Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri, task.deadline, task.WCET,
+                                task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S};
+                        data.add(row);
+                    }
                 }
             }
         } else {
@@ -261,7 +276,7 @@ public class Controller {
                     SporadicTask task = tasks.get(i).get(j);
                     // id, partition, priority, response time, deadline, WCET
                     // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
-                    Object[] row = new Object[]{task.id, task.partition, task.priority, task.Ri, task.deadline, task.WCET,
+                    Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri, task.deadline, task.WCET,
                             task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S};
                     data.add(row);
                 }
