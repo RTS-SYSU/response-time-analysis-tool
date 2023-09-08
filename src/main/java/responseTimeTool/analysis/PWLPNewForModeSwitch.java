@@ -255,13 +255,22 @@ public class PWLPNewForModeSwitch {
                     //min{local, remote m}
                     long indirect_remote_times = number_of_high_request_by_Remote_P - ncs;
                     indirect_spin += indirect_remote_times > 0 ?
-                            ncs * resource.csl_high : number_of_high_request_by_Remote_P * resource.csl_high + Math.abs(indirect_remote_times) * resource.csl;
+                            ncs * resource.csl_high : number_of_high_request_by_Remote_P * resource.csl_high + Long.min(Math.abs(indirect_remote_times), number_of_low_request_by_Remote_P) * resource.csl;
 
                     //min{N, max(remote_m-local_higher,0)}
-                    long direct_remote_times_judge = indirect_remote_times + Long.min(N_i_k, Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0))
-                            - number_of_high_request_by_Remote_P;
-                    direct_spin += direct_remote_times_judge > 0 ?
-                            direct_remote_times_judge * resource.csl : Math.abs(direct_remote_times_judge) * resource.csl_high;
+//                    long direct_remote_times_judge = Long.max(indirect_remote_times, 0) + Long.min(N_i_k, Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0))
+//                            - number_of_high_request_by_Remote_P;
+//                    direct_spin += direct_remote_times_judge > 0 ?
+//                            Long.min(direct_remote_times_judge, number_of_low_request_by_Remote_P) * resource.csl
+//                            : Long.min(Math.abs(direct_remote_times_judge), number_of_high_request_by_Remote_P) * resource.csl_high;
+
+                    if (number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs <= 0)
+                        direct_spin += 0;
+                    else if (indirect_remote_times <= 0)
+                        direct_spin += Long.min(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, N_i_k) * resource.csl;
+                    else
+                        direct_spin += indirect_remote_times > N_i_k ? N_i_k * resource.csl_high
+                                : indirect_remote_times * resource.csl_high + Long.min(N_i_k - indirect_remote_times, number_of_low_request_by_Remote_P) * resource.csl;
 
 
                     // 建立RBTQ
