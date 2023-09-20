@@ -120,6 +120,10 @@ public class SchedulabilityForMCS {
                 MSRPOriginal msrp = new MSRPOriginal();
                 Ris = msrp.getResponseTime(tasks, resources, false);
                 break;
+            case "MSRPNew":
+                MSRPNew msrpNew = new MSRPNew();
+                Ris = msrpNew.getResponseTime(tasks, resources, true);
+                break;
             case "Mrsp":
                 MrsPOriginal mrsp = new MrsPOriginal();
                 Ris = mrsp.getResponseTime(tasks, resources, false);
@@ -214,6 +218,10 @@ public class SchedulabilityForMCS {
             case "PWLP":
                 PWLPNewForModeSwitch modeSwitch2 = new PWLPNewForModeSwitch();
                 Ris = modeSwitch2.getResponseTime(highTasks, resources, lowTasks, false);
+                break;
+            case "MSRPNew":
+                MSRPNewForModeSwitch modeSwitch3 = new MSRPNewForModeSwitch();
+                Ris = modeSwitch3.getResponseTime(highTasks, resources, lowTasks, false);
                 break;
         }
 

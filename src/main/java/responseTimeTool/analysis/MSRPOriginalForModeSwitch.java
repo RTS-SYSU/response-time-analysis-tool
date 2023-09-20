@@ -16,8 +16,9 @@ public class MSRPOriginalForModeSwitch {
 		boolean isEqual = false, missDeadline = false;
 		count = 0;
 
-		for (int i = 0; i < init_Ri.length; i++)
+		for (int i = 0; i < init_Ri.length; i++) {
 			response_time[i] = new long[init_Ri[i].length];
+		}
 
 		new AnalysisUtils().cloneList(init_Ri, response_time);
 

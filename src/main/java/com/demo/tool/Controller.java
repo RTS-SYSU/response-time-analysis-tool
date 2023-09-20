@@ -164,7 +164,7 @@ public class Controller {
         priority.getItems().addAll("DMPO");
         priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
-        RTM.getItems().addAll("MSRP", "Mrsp", "PWLP");
+        RTM.getItems().addAll("MSRP", "MSRPNew", "Mrsp", "PWLP");
     }
 
     @FXML
