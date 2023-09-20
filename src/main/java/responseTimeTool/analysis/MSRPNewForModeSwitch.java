@@ -10,7 +10,7 @@ public class MSRPNewForModeSwitch {
 
     long count = 0;
 
-    public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources,ArrayList<ArrayList<SporadicTask>> lowTasks ,boolean printDebug) {
+    public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, ArrayList<ArrayList<SporadicTask>> lowTasks, boolean printDebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
 
         long[][] response_time = new long[tasks.size()][];
@@ -23,10 +23,18 @@ public class MSRPNewForModeSwitch {
 
         new AnalysisUtils().cloneList(init_Ri, response_time);
 
+        for (int i = 0; i < lowTasks.size(); i++) {
+            for (int j = 0; j < lowTasks.get(i).size(); j++) {
+                SporadicTask task = lowTasks.get(i).get(j);
+                task.spin = directRemoteDelay(task, tasks, resources, response_time, task.Ri_LO, true) + task.pure_resource_execution_time;
+            }
+
+        }
+
         /* a huge busy window to get a fixed Ri */
         while (!isEqual) {
             isEqual = true;
-            long[][] response_time_plus = busyWindow(tasks, resources,lowTasks,response_time, true);
+            long[][] response_time_plus = busyWindow(tasks, resources, lowTasks, response_time, true);
 
             for (int i = 0; i < response_time_plus.length; i++) {
                 for (int j = 0; j < response_time_plus[i].length; j++) {
@@ -57,7 +65,7 @@ public class MSRPNewForModeSwitch {
         return response_time;
     }
 
-    public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources,ArrayList<ArrayList<SporadicTask>> lowTasks, boolean btbHit, boolean printDebug) {
+    public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, ArrayList<ArrayList<SporadicTask>> lowTasks, boolean btbHit, boolean printDebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
 
         long[][] response_time = new long[tasks.size()][];
@@ -70,17 +78,17 @@ public class MSRPNewForModeSwitch {
 
         new AnalysisUtils().cloneList(init_Ri, response_time);
 
-        for(int i=0;i<lowTasks.size();i++){
-            for(int j=0;j<lowTasks.get(i).size();j++){
+        for (int i = 0; i < lowTasks.size(); i++) {
+            for (int j = 0; j < lowTasks.get(i).size(); j++) {
                 SporadicTask task = lowTasks.get(i).get(j);
-                task.spin = directRemoteDelay(task, tasks, resources, response_time, response_time[i][j], btbHit) + task.pure_resource_execution_time;
+                task.spin = directRemoteDelay(task, tasks, resources, response_time, task.Ri_LO, btbHit) + task.pure_resource_execution_time;
             }
         }
 
         /* a huge busy window to get a fixed Ri */
         while (!isEqual) {
             isEqual = true;
-            long[][] response_time_plus = busyWindow(tasks, resources,lowTasks, response_time, btbHit);
+            long[][] response_time_plus = busyWindow(tasks, resources, lowTasks, response_time, btbHit);
 
             for (int i = 0; i < response_time_plus.length; i++) {
                 for (int j = 0; j < response_time_plus[i].length; j++) {
@@ -126,9 +134,9 @@ public class MSRPNewForModeSwitch {
                 task.interference = highPriorityInterference(task, tasks, response_time[i][j], response_time, resources, btbHit);
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j], btbHit);
 
-                long lowInterference = highPriorityInterference(task, lowTasks,task.Ri_LO,response_time,resources, btbHit);
+                long lowInterference = highPriorityInterferenceForLowTask(task, lowTasks, task.Ri_LO, response_time, resources, btbHit);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local+lowInterference;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local + lowInterference;
 
                 if (task.Ri > task.deadline)
                     return response_time_plus;
@@ -154,6 +162,24 @@ public class MSRPNewForModeSwitch {
                 interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET);
 
                 long btb_interference = getIndirectSpinDelay(hpTask, Ri, Ris[partition][i], Ris, allTasks, resources, btbHit);
+                interference += btb_interference;
+            }
+        }
+        return interference;
+    }
+
+    private long highPriorityInterferenceForLowTask(SporadicTask t, ArrayList<ArrayList<SporadicTask>> lowTasks, long Ri, long[][] Ris, ArrayList<Resource> resources,
+                                          boolean btbHit) {
+        long interference = 0;
+        int partition = t.partition;
+        ArrayList<SporadicTask> tasks = lowTasks.get(partition);
+
+        for (int i = 0; i < tasks.size(); i++) {
+            if (tasks.get(i).priority < t.priority) {
+                SporadicTask lpTask = tasks.get(i);
+                interference += Math.ceil((double) (Ri) / (double) lpTask.period) * (lpTask.WCET);
+
+                long btb_interference = getIndirectSpinDelay(lpTask, Ri, Ris[partition][i], Ris, lowTasks, resources, btbHit);
                 interference += btb_interference;
             }
         }

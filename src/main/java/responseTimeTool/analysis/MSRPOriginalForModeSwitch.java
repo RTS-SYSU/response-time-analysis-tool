@@ -73,8 +73,8 @@ public class MSRPOriginalForModeSwitch {
 
 				task.spin = resourceAccessingTime(task, resources);
 				task.interference = highPriorityInterference(task, tasks, response_time[i][j]);
-				task.indirect_spin = highPriorityIndirectSpin(task, tasks, response_time[i][j]);
 				task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j]);
+				task.indirect_spin = highPriorityIndirectSpin(task, tasks, response_time[i][j]);
 				long lowInterference = highPriorityLowTaskInterference(task, lowTasks, task.Ri_LO);
 
 				response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local + lowInterference;
@@ -104,6 +104,19 @@ public class MSRPOriginalForModeSwitch {
 		return interference;
 	}
 
+	private long highPriorityLowTaskInterference(SporadicTask t, ArrayList<ArrayList<SporadicTask>> lowTasks, long Ri){
+		long interference = 0;
+		int partition = t.partition;
+			ArrayList<SporadicTask> tasks = lowTasks.get(partition);
+
+		for (int i = 0; i < tasks.size(); i++) {
+			if (tasks.get(i).priority < t.priority) {
+				SporadicTask hpTask = tasks.get(i);
+				interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + hpTask.spin);
+			}
+		}
+		return interference;
+	}
 	/*
 	 *
 	 * Calculate the indirect spin
@@ -123,20 +136,7 @@ public class MSRPOriginalForModeSwitch {
 		return indirect_spin;
 	}
 
-	private long highPriorityLowTaskInterference(SporadicTask t, ArrayList<ArrayList<SporadicTask>> lowTasks, long Ri){
-		long interference = 0;
-		int partition = t.partition;
-		ArrayList<SporadicTask> tasks = lowTasks.get(partition);
 
-		for (int i = 0; i < tasks.size(); i++) {
-			if (tasks.get(i).priority > t.priority) {
-				SporadicTask hpTask = tasks.get(i);
-
-				interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + hpTask.spin);
-			}
-		}
-		return interference;
-	}
 
 	/*
 	 * Calculate the spin delay for a given task t.

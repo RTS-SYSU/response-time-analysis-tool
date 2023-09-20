@@ -221,7 +221,7 @@ public class SchedulabilityForMCS {
                 break;
             case "MSRPNew":
                 MSRPNewForModeSwitch modeSwitch3 = new MSRPNewForModeSwitch();
-                Ris = modeSwitch3.getResponseTime(highTasks, resources, lowTasks, false);
+                Ris = modeSwitch3.getResponseTime(highTasks, resources, lowTasks, true);
                 break;
         }
 
