@@ -7,12 +7,10 @@ import responseTimeTool.utils.AnalysisUtils;
 import java.util.ArrayList;
 
 public class MSRPNew {
-
     long count = 0;
 
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean printDebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
-
         long[][] response_time = new long[tasks.size()][];
         boolean isEqual = false, missDeadline = false;
         count = 0;
@@ -266,7 +264,7 @@ public class MSRPNew {
      * is required by the given task.
      */
     private int getNoSpinDelay(SporadicTask task, Resource resource, ArrayList<ArrayList<SporadicTask>> tasks, long[][] Ris, long Ri, boolean btbHit) {
-        int number_of_spin_dealy = 0;
+        int number_of_spin_delay = 0;
 
         for (int i = 0; i < tasks.size(); i++) {
             if (i != task.partition) {
@@ -281,13 +279,13 @@ public class MSRPNew {
                     }
                 }
                 int getNoRFromHP = getNoRFromHP(resource, task, tasks.get(task.partition), Ris[task.partition], Ri, btbHit);
-                int possible_spin_delay = number_of_request_by_Remote_P - getNoRFromHP < 0 ? 0 : number_of_request_by_Remote_P - getNoRFromHP;
+                int possible_spin_delay = Math.max(number_of_request_by_Remote_P - getNoRFromHP, 0);
 
                 int NoRFromT = task.number_of_access_in_one_release.get(getIndexRInTask(task, resource));
-                number_of_spin_dealy += Integer.min(possible_spin_delay, NoRFromT);
+                number_of_spin_delay += Integer.min(possible_spin_delay, NoRFromT);
             }
         }
-        return number_of_spin_dealy;
+        return number_of_spin_delay;
     }
 
     private int getNoRRemote(Resource resource, ArrayList<SporadicTask> tasks, long[] Ris, long Ri, boolean btbHit) {
