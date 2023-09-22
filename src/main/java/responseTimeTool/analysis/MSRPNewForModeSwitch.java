@@ -389,14 +389,12 @@ public class MSRPNewForModeSwitch {
     private long getRemoteBlockingTime(SporadicTask task, ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<ArrayList<SporadicTask>> LowTasks, ArrayList<Resource> resources, long time, long[][] Ris) {
         long BlockingTime = 0;
 
-        ArrayList<ArrayList<ArrayList<Long>>> requestsLeftOnRemoteP = new ArrayList<>();
         for (int i = 0; i < resources.size(); i++) {
-            requestsLeftOnRemoteP.add(new ArrayList<>());
             Resource res = resources.get(i);
             ArrayList<ArrayList<Long>> RBTQs = getRBTQs(task, tasks, LowTasks, res, time, Ris);
             long ncs = getNcs(task, tasks, LowTasks, res, time, Ris);
             // Sum (Pm!=P(ti)) RBTQ(ncs)
-            for (int m = 0; m < tasks.size(); m++) {
+            for (int m = 0; m < res.partitions.size(); m++) {
                 if (task.partition != m) {
                     var RBTQ = RBTQs.get(m);
                     BlockingTime += RBTQ.get((int) ncs);
