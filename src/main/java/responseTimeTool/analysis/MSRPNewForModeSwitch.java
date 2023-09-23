@@ -394,7 +394,7 @@ public class MSRPNewForModeSwitch {
             ArrayList<ArrayList<Long>> RBTQs = getRBTQs(task, tasks, LowTasks, res, time, Ris);
             long ncs = getNcs(task, tasks, LowTasks, res, time, Ris);
             // Sum (Pm!=P(ti)) RBTQ(ncs)
-            for (int m = 0; m < res.partitions.size(); m++) {
+            for (int m = 0; m < tasks.size(); m++) {
                 if (task.partition != m) {
                     var RBTQ = RBTQs.get(m);
                     BlockingTime += RBTQ.get((int) ncs);
