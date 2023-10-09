@@ -130,16 +130,19 @@ public class SchedulabilityForMCS {
                 break;
             case "PWLP":
                 PWLPNew pwlp = new PWLPNew();
-                Ris = pwlp.getResponseTime(tasks, resources,true, false);
+                Ris = pwlp.getResponseTime(tasks, resources, true, false);
                 break;
         }
 
         for (int i = 0; i < tasks.size(); i++) {
             for (int j = 0; j < tasks.get(i).size(); j++) {
-                if (tasks.get(i).get(j).deadline < Ris[i][j])
+                if (tasks.get(i).get(j).deadline < Ris[i][j]) {
+                    tasks.get(i).get(j).schedulable = 0;
                     return false;
-                else
+                } else {
                     tasks.get(i).get(j).Ri = Ris[i][j];     //made by c
+                    tasks.get(i).get(j).schedulable = 1;     //made by c
+                }
             }
         }
         return true;
@@ -228,10 +231,13 @@ public class SchedulabilityForMCS {
 
         for (int i = 0; i < highTasks.size(); i++) {
             for (int j = 0; j < highTasks.get(i).size(); j++) {
-                if (highTasks.get(i).get(j).deadline < Ris[i][j])
+                if (highTasks.get(i).get(j).deadline < Ris[i][j]) {
+                    highTasks.get(i).get(j).schedulable = 0;
                     return false;
-                else
+                } else {
                     highTasks.get(i).get(j).Ri_Switch = Ris[i][j];
+                    highTasks.get(i).get(j).schedulable = 1;
+                }
             }
         }
 

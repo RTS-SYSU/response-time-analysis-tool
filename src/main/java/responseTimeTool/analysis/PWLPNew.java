@@ -218,6 +218,9 @@ public class PWLPNew {
     /*
      * Calculate the local high priority tasks' interference for a given task t.
      * CI is a set of computation time of local tasks, including spin delay.
+     *
+     * last part of the formula
+     *
      */
     private long highPriorityInterference(SporadicTask t, ArrayList<ArrayList<SporadicTask>> allTasks, long time, long[][] Ris, ArrayList<Resource> resources) {
         long interference = 0;

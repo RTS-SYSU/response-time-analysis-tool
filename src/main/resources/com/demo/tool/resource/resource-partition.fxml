@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="60.0" prefWidth="119.1333" style="-fx-background-radius: 1.2em;" styleClass="basic" stylesheets="@../../../../css/resource-factor.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="partitionId">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Label>
+   </children>
+</StackPane>

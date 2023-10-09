@@ -6,4 +6,5 @@ open module com.example.demo {
     requires org.kordamp.bootstrapfx.core;
 
     exports com.demo.tool;
+    exports com.demo.tool.resource;
 }
