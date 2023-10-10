@@ -55,52 +55,6 @@ public class MSRPNew {
         return response_time;
     }
 
-    public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean btbHit, boolean printDebug) {
-        long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
-
-        long[][] response_time = new long[tasks.size()][];
-        boolean isEqual = false, missDeadline = false;
-        count = 0;
-
-        for (int i = 0; i < init_Ri.length; i++) {
-            response_time[i] = new long[init_Ri[i].length];
-        }
-
-        new AnalysisUtils().cloneList(init_Ri, response_time);
-
-        /* a huge busy window to get a fixed Ri */
-        while (!isEqual) {
-            isEqual = true;
-            long[][] response_time_plus = busyWindow(tasks, resources, response_time, btbHit);
-
-            for (int i = 0; i < response_time_plus.length; i++) {
-                for (int j = 0; j < response_time_plus[i].length; j++) {
-                    if (response_time[i][j] != response_time_plus[i][j])
-                        isEqual = false;
-
-                    if (response_time_plus[i][j] > tasks.get(i).get(j).deadline)
-                        missDeadline = true;
-                }
-            }
-
-            count++;
-            new AnalysisUtils().cloneList(response_time_plus, response_time);
-
-            if (missDeadline)
-                break;
-        }
-
-        if (printDebug) {
-            if (missDeadline)
-                System.out.println("FIFONP JAVA    after " + count + " tims of recursion, the tasks miss the deadline.");
-            else
-                System.out.println("FIFONP JAVA    after " + count + " tims of recursion, we got the response time.");
-
-            new AnalysisUtils().printResponseTime(response_time, tasks);
-        }
-
-        return response_time;
-    }
 
     private long[][] busyWindow(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, long[][] response_time, boolean btbHit) {
         long[][] response_time_plus = new long[tasks.size()][];

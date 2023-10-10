@@ -44,6 +44,8 @@ public class  SporadicTask {
 	public int[] resource_required_index_copy = null;
 	public int[] number_of_access_in_one_release_copy = null;
 
+	public int schedulable = -1 ;
+
 
 	public SporadicTask(int priority, long t, long clo,  int partition, int id,  int critical) {
 		this(priority, t, clo,  partition, id, -1, critical, 2);

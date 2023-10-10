@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.StackPane?>
+
+<StackPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="150.0" style="-fx-background-radius: 1.2em;" styleClass="basic" stylesheets="@../../../../css/resource-factor.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+   <children>
+      <Label fx:id="resourceId">
+         <StackPane.margin>
+            <Insets />
+         </StackPane.margin>
+      </Label>
+      <Label fx:id="csl">
+         <StackPane.margin>
+            <Insets top="40.0" />
+         </StackPane.margin>
+      </Label>
+      <Label fx:id="accessTime">
+         <StackPane.margin>
+            <Insets top="80.0" />
+         </StackPane.margin>
+      </Label>
+   </children>
+</StackPane>

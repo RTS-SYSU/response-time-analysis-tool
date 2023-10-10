@@ -1,0 +1,35 @@
+.basic:hover {
+    -fx-background-color: rgb(219, 219, 219);
+}
+
+.basic {
+    -fx-background-color: rgb(243, 243, 243);
+}
+
+.resource-clicked {
+    -fx-background-color: rgb(219, 219, 219);
+}
+
+.resource-change-when-task-clicked {
+    -fx-background-color: lightgreen;
+}
+
+.resource-change-when-task-clicked:hover {
+    -fx-background-color: rgb(16, 155, 105);
+}
+
+.partition-change-when-task-clicked {
+    -fx-background-color: lightgreen;
+}
+
+.partition-change-when-task-clicked:hover {
+    -fx-background-color: rgb(16, 155, 105);
+}
+
+.resource-clicked-change-all{
+    -fx-background-color: lightsalmon ;
+}
+
+.resource-clicked-change-all:hover {
+    -fx-background-color: salmon;
+}
