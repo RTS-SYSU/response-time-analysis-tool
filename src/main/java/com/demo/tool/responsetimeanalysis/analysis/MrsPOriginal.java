@@ -1,12 +1,12 @@
-package responseTimeTool.analysis;
+package com.demo.tool.responsetimeanalysis.analysis;
 
-import responseTimeTool.entity.Resource;
-import responseTimeTool.entity.SporadicTask;
-import responseTimeTool.utils.AnalysisUtils;
+import com.demo.tool.responsetimeanalysis.entity.Resource;
+import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
+import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
 
 import java.util.ArrayList;
 
-public class MSRPOriginal {
+public class MrsPOriginal {
     long count = 0;
 
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean printBebug) {
@@ -30,6 +30,7 @@ public class MSRPOriginal {
                 for (int j = 0; j < response_time_plus[i].length; j++) {
                     if (response_time[i][j] != response_time_plus[i][j])
                         isEqual = false;
+
                     if (response_time_plus[i][j] > tasks.get(i).get(j).deadline)
                         missDeadline = true;
                 }
@@ -44,9 +45,9 @@ public class MSRPOriginal {
 
         if (printBebug) {
             if (missDeadline)
-                System.out.println("MSRPRTA    after " + count + " tims of recursion, the tasks miss the deadline.");
+                System.out.println("OriginalMrsPRTA    after " + count + " tims of recursion, the tasks miss the deadline.");
             else
-                System.out.println("MSRPRTA	   after " + count + " tims of recursion, we got the response time.");
+                System.out.println("OriginalMrsPRTA    after " + count + " tims of recursion, we got the response time.");
 
             new AnalysisUtils().printResponseTime(response_time, tasks);
         }
@@ -56,7 +57,6 @@ public class MSRPOriginal {
 
     private long[][] busyWindow(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, long[][] response_time) {
         long[][] response_time_plus = new long[tasks.size()][];
-
         for (int i = 0; i < response_time.length; i++)
             response_time_plus[i] = new long[response_time[i].length];
 
@@ -150,25 +150,13 @@ public class MSRPOriginal {
     /*
      * gives a set of resources that can cause local blocking for a given task
      */
-    private ArrayList<Resource> getLocalBlockingResources(SporadicTask task, ArrayList<Resource> resources, ArrayList<SporadicTask> localTasks) {
+    private ArrayList<Resource> getLocalBlockingResources(SporadicTask task, ArrayList<Resource> resources,ArrayList<SporadicTask> localTasks) {
         ArrayList<Resource> localBlockingResources = new ArrayList<>();
         int partition = task.partition;
 
         for (int i = 0; i < resources.size(); i++) {
             Resource resource = resources.get(i);
-
-            if (resource.partitions.size() == 1 && resource.partitions.get(0) == task.partition
-                    && resource.getCeilingForProcessor(localTasks) >= task.priority) {
-                for (int j = 0; j < resource.requested_tasks.size(); j++) {
-                    SporadicTask LP_task = resource.requested_tasks.get(j);
-                    if (LP_task.partition == partition && LP_task.priority < task.priority) {
-                        localBlockingResources.add(resource);
-                        break;
-                    }
-                }
-            }
-
-            if (resource.partitions.size() > 1 && resource.partitions.contains(task.partition)) {
+            if (resource.partitions.contains(partition) && resource.getCeilingForProcessor(localTasks) >= task.priority) {
                 for (int j = 0; j < resource.requested_tasks.size(); j++) {
                     SporadicTask LP_task = resource.requested_tasks.get(j);
                     if (LP_task.partition == partition && LP_task.priority < task.priority) {

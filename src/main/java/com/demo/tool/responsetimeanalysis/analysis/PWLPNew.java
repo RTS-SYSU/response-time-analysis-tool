@@ -1,9 +1,9 @@
-package responseTimeTool.analysis;
+package com.demo.tool.responsetimeanalysis.analysis;
 
-import responseTimeTool.entity.Resource;
-import responseTimeTool.entity.SporadicTask;
-import responseTimeTool.utils.AnalysisUtils;
-import responseTimeTool.utils.Pair;
+import com.demo.tool.responsetimeanalysis.entity.Resource;
+import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
+import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import com.demo.tool.responsetimeanalysis.utils.Pair;
 
 import java.util.ArrayList;
 import java.util.HashSet;

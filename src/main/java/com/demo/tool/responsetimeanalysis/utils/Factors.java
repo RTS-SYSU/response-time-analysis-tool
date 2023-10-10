@@ -1,4 +1,4 @@
-package responseTimeTool.utils;
+package com.demo.tool.responsetimeanalysis.utils;
 
 public class Factors {
     public int MAX_PERIOD = -1;//周期范围

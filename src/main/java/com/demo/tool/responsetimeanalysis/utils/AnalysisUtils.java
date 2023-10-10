@@ -1,6 +1,6 @@
-package responseTimeTool.utils;
+package com.demo.tool.responsetimeanalysis.utils;
 
-import responseTimeTool.entity.SporadicTask;
+import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 
 import java.util.ArrayList;
 

@@ -305,7 +305,7 @@
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                   </TableView>
-                  <HBox minHeight="-Infinity" prefHeight="209.6" prefWidth="811.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="209.6" prefWidth="811.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                      <children>
                         <VBox prefHeight="209.6" prefWidth="714.8" HBox.hgrow="ALWAYS">
                            <children>

@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public class ResourcePaneController extends StackPane {
     private int id;
-    private Label idLabel;
-    private Label csl;
-    private Label taskAccessTime;
+    private final Label idLabel;
+    private final Label csl;
+    private final Label taskAccessTime;
     public StackPane root;
 
     public int getID() {

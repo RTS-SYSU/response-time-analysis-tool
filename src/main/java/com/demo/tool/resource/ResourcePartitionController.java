@@ -8,7 +8,7 @@ import javafx.scene.layout.StackPane;
 import java.io.IOException;
 
 public class ResourcePartitionController extends StackPane {
-    private Label idLabel;
+    private final Label idLabel;
     private int id;
     public StackPane root;
 

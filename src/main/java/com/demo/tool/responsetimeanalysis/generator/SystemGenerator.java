@@ -1,7 +1,7 @@
-package responseTimeTool.generatorTools;
+package com.demo.tool.responsetimeanalysis.generator;
 
-import responseTimeTool.entity.Resource;
-import responseTimeTool.entity.SporadicTask;
+import com.demo.tool.responsetimeanalysis.entity.Resource;
+import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -130,7 +130,7 @@ public class SystemGenerator {
         periods.sort((p1, p2) -> Double.compare(p1, p2));
 
 
-        /* generate utils */
+        /* generate Utils */
         UUnifastDiscard unifastDiscard = new UUnifastDiscard(totalUtil, total_tasks, 1000); // 输入系统任务总利用率 和任务个数。返回的是每个任务的利用率
         ArrayList<Double> utils = null;
         while (true) {
@@ -147,7 +147,7 @@ public class SystemGenerator {
         }
 
         if (print) {
-            System.out.print("task utils: ");
+            System.out.print("task Utils: ");
             double tt = 0;
             for (int i = 0; i < utils.size(); i++) {
                 tt += utils.get(i);
@@ -362,6 +362,47 @@ public class SystemGenerator {
         }
         System.out.println(resource_usage);
         System.out.println("---------------------------------------------------------------------------------");
+    }
+    private void updateResourceRequiredPri(ArrayList<ArrayList<SporadicTask>> generatedTaskSets, ArrayList<Resource> resources){
+        for(int i = 0 ; i < generatedTaskSets.size(); i++){
+            for(int j = 0 ; j < generatedTaskSets.get(i).size(); j++){
+                SporadicTask task = generatedTaskSets.get(i).get(j);
+                ArrayList<Integer> resourceIndexList = task.resource_required_index;
+                task.resource_required_priority = new ArrayList<>();
+                for (int k = 0 ; k < resourceIndexList.size(); k++){
+                    Resource re = resources.get(resourceIndexList.get(k));
+                    int max_i_pri = 0;
+                    // 遍历第i号处理器上的所有任务，找到该处理器上所有任务的最高优先级
+                    for(int w = 0 ; w < generatedTaskSets.get(i).size(); w++) {
+                        if(generatedTaskSets.get(i).get(w).priority > max_i_pri){
+                            max_i_pri = generatedTaskSets.get(i).get(w).priority;
+                        }
+                    }
 
+                    int protocol = re.protocol;
+                    boolean isGlobal = re.isGlobal;
+                    int ceiling_pri = re.getCeilingForProcessor(generatedTaskSets,task.partition);
+
+                    if(!isGlobal){
+                        task.resource_required_priority.add(ceiling_pri);
+                    }
+                    else{
+                        switch (protocol) {
+                            case 1 -> task.resource_required_priority.add(max_i_pri + 1);
+                            case 2 -> task.resource_required_priority.add(task.priority);
+                            case 3 ->
+                                    task.resource_required_priority.add((int) Math.ceil(task.priority + ((double)(ceiling_pri - task.priority) / 2.0)));
+                            case 4, 6 -> task.resource_required_priority.add(ceiling_pri);
+                            case 5, 7 ->
+                                    task.resource_required_priority.add((int) Math.ceil(ceiling_pri + (max_i_pri - ceiling_pri) / 2.0));
+                            default -> {
+                                System.err.print("NO RULES");
+                                System.exit(-1);
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 }

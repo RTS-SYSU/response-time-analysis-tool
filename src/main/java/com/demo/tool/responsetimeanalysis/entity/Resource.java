@@ -1,4 +1,4 @@
-package responseTimeTool.entity;
+package com.demo.tool.responsetimeanalysis.entity;
 
 import java.util.ArrayList;
 
@@ -8,14 +8,12 @@ public class Resource {
 	public long csl;  // 临界资源长度
 	public long csl_low;  //临界资源下限
 	public long csl_high;  //临界资源上限
-
 	public ArrayList<SporadicTask> requested_tasks;	//请求该资源的任务列表
-
 	public ArrayList<Integer> partitions;	//请求该资源的分区列表
 	public ArrayList<Integer> ceiling;	// 资源的静态ceiling
-
-
+	public int protocol;
 	public boolean isGlobal = false;
+
 
 	public Resource(int id, long cs_len) {
 		this.id = id;
@@ -61,3 +59,4 @@ public class Resource {
 		return ceiling;
 	}
 }
+

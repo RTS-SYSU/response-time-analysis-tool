@@ -2,6 +2,10 @@ package com.demo.tool;
 
 import com.demo.tool.resource.ResourcePaneController;
 import com.demo.tool.resource.ResourcePartitionController;
+import com.demo.tool.responsetimeanalysis.entity.Resource;
+import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
+import com.demo.tool.responsetimeanalysis.utils.Factors;
+import com.demo.tool.responsetimeanalysis.utils.Pair;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -13,15 +17,13 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import responseTimeTool.Analysis;
-import responseTimeTool.entity.Resource;
-import responseTimeTool.entity.SporadicTask;
-import responseTimeTool.utils.Factors;
-import responseTimeTool.utils.Pair;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashSet;
+
+import static com.demo.tool.Utils.judgeFloat;
+import static com.demo.tool.Utils.judgeInteger;
 
 public class Controller {
     @FXML
@@ -49,8 +51,6 @@ public class Controller {
     @FXML
     private ComboBox<String> RTM;
     @FXML
-    private StackPane genRandom;
-    @FXML
     private Region loading;
     @FXML
     private Region generating;
@@ -60,8 +60,6 @@ public class Controller {
     private Label scheduleNO;
     @FXML
     private Label scheduleYES;
-    @FXML
-    private StackPane startAnalysis;
     @FXML
     private Region startIcon;
     @FXML
@@ -74,8 +72,6 @@ public class Controller {
     private TableView<Object[]> table1;
     @FXML
     private TableView<Object[]> table2;
-    @FXML
-    private TableView<Object[]> table3;
     @FXML
     private VBox page11;
     @FXML
@@ -130,7 +126,7 @@ public class Controller {
     void initialize() {
         initComBox();
         initAnalysis();
-        initPageBtn();
+        initPageBtnStyle();
         tipsForU.setShowDelay(javafx.util.Duration.millis(100));
         tipsForU.setHideDelay(javafx.util.Duration.millis(100));
 
@@ -138,7 +134,7 @@ public class Controller {
         table2.getSortOrder().addListener((ListChangeListener<? super TableColumn<Object[], ?>>) change -> {
             table2.refresh(); // 重新渲染表格以更新行样式
         });
-        changeColorWithSort();
+        resultTableChangeColorWithSort();
 
         utility.focusedProperty().addListener((observable, oldValue, newValue) -> {
             if (newValue) {
@@ -148,34 +144,30 @@ public class Controller {
                 tipsForU.hide();
             }
         });
-
         //test
         test0();
     }
 
-    @FXML
-    void initPageBtn() {
+    void initPageBtnStyle() {
         page1btn.getStyleClass().add("round-background");
         page1btn.getStyleClass().add("basic-hover");
         page2btn.getStyleClass().add("basic-hover");
     }
 
-    @FXML
     void initAnalysis() {
         factors = new Factors();
         pair = new Pair<>();
     }
 
-    @FXML
     void initComBox() {
         allocation.getItems().addAll("WF", "BF", "FF", "NF");
         priority.getItems().addAll("DMPO");
         priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
-        RTM.getItems().addAll("MSRP", "MSRPNew", "Mrsp", "PWLP");
+        RTM.getItems().addAll("MSRP", "MSRPNew", "Mrsp", "PWLP", "Dynamic");
     }
 
-    void changeColorWithSort() {
+    void resultTableChangeColorWithSort() {
         ObservableList<Object[]> data = table2.getItems();
         table2.setRowFactory(tv -> new TableRow<Object[]>() {
             @Override
@@ -189,7 +181,7 @@ public class Controller {
                         Object[] currentRow = data.get(rowIndex);
                         if (currentRow != null && currentRow.length > 0) {
                             int value = (int) currentRow[currentRow.length - 1];
-                            System.out.println(currentRow[0] + " " + value);
+//                            System.out.println(currentRow[0] + " " + value);
                             if (value == 0) {
                                 setStyle("-fx-background-color: lightcoral;");
                             } else if (value == 1) {
@@ -204,30 +196,17 @@ public class Controller {
         });
     }
 
-    @FXML
-    void fillTable1(ArrayList<ArrayList<SporadicTask>> tasks) {
-        ObservableList<Object[]> data = FXCollections.observableArrayList();
-
-        for (int i = 0; i < tasks.size(); i++) {
-            for (int j = 0; j < tasks.get(i).size(); j++) {
-                SporadicTask task = tasks.get(i).get(j);
-
-                DecimalFormat df = new DecimalFormat("#.###");
-                String formattedValue = df.format(task.util);
-
-                // id, partition, priority, critical level, period, deadline, WCET, resource access, utilization
-                Object[] row = new Object[]{task.id, task.partition, task.priority, task.critical == 0 ? "LO" : "HI",
-                        task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, formattedValue};
-                data.add(row);
-            }
-        }
+    /**
+     * bind the data with the table column
+     */
+    void fillTable(TableView table, ObservableList<Object[]> data) {
         // 设置数据源到 TableView
-        table1.getItems().clear();
-        table1.getItems().addAll(data);
+        table.getItems().clear();
+        table.getItems().addAll(data);
 
         // 将数据源中的数据与每个 TableColumn 进行绑定
-        for (int i = 0; i < table1.getColumns().size(); i++) {
-            TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table1.getColumns().get(i);
+        for (int i = 0; i < table.getColumns().size(); i++) {
+            TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table.getColumns().get(i);
 
             int columnIndex = i;
             // 使用 lambda 表达式设置 CellValueFactory
@@ -242,59 +221,28 @@ public class Controller {
         }
     }
 
-//    @FXML
-//    void fillTable3(ArrayList<Resource> resources) {
-//        ObservableList<Object[]> data = FXCollections.observableArrayList();
-//
-//        for (int i = 0; i < resources.size(); i++) {
-//            Resource resource = resources.get(i);
-//            ArrayList<Integer> tasksID = new ArrayList<>();
-//            for (int j = 0; j < resources.get(i).requested_tasks.size(); j++) {
-//                tasksID.add(resources.get(i).requested_tasks.get(j).id);
-//            }
-//            // id, csl, requested_tasks, partitions
-//            Object[] row = new Object[]{resource.id, resource.csl, tasksID, resource.partitions};
-//            data.add(row);
-//        }
-//        // 设置数据源到 TableView
-//        table3.getItems().clear();
-//        table3.getItems().addAll(data);
-//
-//        // 将数据源中的数据与每个 TableColumn 进行绑定
-//        for (int i = 0; i < table3.getColumns().size(); i++) {
-//            TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table3.getColumns().get(i);
-//
-//            int columnIndex = i;
-//            // 使用 lambda 表达式设置 CellValueFactory
-//            column.setCellValueFactory(cellData -> {
-//                Object[] rowData = cellData.getValue();
-//                if (rowData.length > columnIndex) {
-//                    Object cellValue = rowData[columnIndex];
-//                    return cellValue != null ? new SimpleObjectProperty<>(cellValue) : null;
-//                }
-//                return null;
-//            });
-//        }
-//    }
-
-//    @FXML
-//    void generateResourcePartition(ArrayList<Integer> partition) {
-//        HBox contentHBox = new HBox();
-//        for (int j = 0; j < partition.size(); j++) {
-//            ResourcePartitionController rtc = new ResourcePartitionController();
-//            rtc.getPartitionId().setText("Partition " + partition.get(j));
-//            contentHBox.getChildren().add(rtc);
-//        }
-//        pPartition.setContent(contentHBox);
-//    }
+    void generateTasksTable(ArrayList<ArrayList<SporadicTask>> tasks) {
+        ObservableList<Object[]> data = FXCollections.observableArrayList();
+        for (ArrayList<SporadicTask> sporadicTasks : tasks) {
+            for (SporadicTask task : sporadicTasks) {
+                DecimalFormat df = new DecimalFormat("#.###");
+                String formattedValue = df.format(task.util);
+                // id, partition, priority, critical level, period, deadline, WCET, resource access, utilization
+                Object[] row = new Object[]{task.id, task.partition, task.priority, task.critical == 0 ? "LO" : "HI",
+                        task.period, task.deadline, task.C_LOW, task.C_HIGH, task.resource_required_index, formattedValue};
+                data.add(row);
+            }
+        }
+        fillTable(table1, data);
+    }
 
     void generateResource(ArrayList<Resource> resources) {
         HBox contentHBox = new HBox();
-        for (int i = 0; i < resources.size(); i++) {
+        for (Resource resource : resources) {
             ResourcePaneController rpc = new ResourcePaneController();
-            rpc.getResourceId().setText("Resource " + (resources.get(i).id - 1));
-            rpc.setID(resources.get(i).id);
-            rpc.getCsl().setText("csl " + resources.get(i).csl);
+            rpc.getResourceId().setText("Resource " + (resource.id - 1));
+            rpc.setID(resource.id);
+            rpc.getCsl().setText("csl " + resource.csl);
 
             contentHBox.getChildren().add(rpc);
         }
@@ -348,7 +296,7 @@ public class Controller {
         for (Object[] item : table1.getItems()) {
             if (item != null && item.length > 0) {
                 table1.setRowFactory(tv -> {
-                    TableRow<Object[]> row = new TableRow<Object[]>() {
+                    TableRow<Object[]> row = new TableRow<>() {
                         @Override
                         protected void updateItem(Object[] item, boolean empty) {
                             super.updateItem(item, empty);
@@ -447,7 +395,7 @@ public class Controller {
             rpc.setOnMouseClicked(event -> {
                 // clean first
                 cleanStyleBeforeChange("resource-change-when-task-clicked");
-                
+
                 int lastShowingResource = currentShowingResource;
                 resourceClickedShowPartition(true);
                 resourceClickedShowTask(true);
@@ -481,8 +429,8 @@ public class Controller {
             rpc.backToNormal("resource-clicked-change-all");
         }
 
-        for (int i = 0; i < partitions.size(); i++) {
-            ResourcePartitionController rpc = (ResourcePartitionController) partitionPane.getChildren().get(partitions.get(i));
+        for (Integer partition : partitions) {
+            ResourcePartitionController rpc = (ResourcePartitionController) partitionPane.getChildren().get(partition);
             if (restore) rpc.backToNormal("resource-clicked-change-all");
             else rpc.onRespond("resource-clicked-change-all");
         }
@@ -493,29 +441,26 @@ public class Controller {
         if (currentShowingResource == -1 && restore) return;
         HashSet<Integer> tasksId = new HashSet<>();
         ArrayList<SporadicTask> tasks = pair.getSecond().get(currentShowingResource - 1).requested_tasks;
-        for (int i = 0; i < tasks.size(); i++) tasksId.add(tasks.get(i).id);
+        for (SporadicTask task : tasks) tasksId.add(task.id);
         System.out.println(tasksId);
         if (restore) table1.setRowFactory(null);
         else {
             for (Object[] item : table1.getItems()) {
                 if (item != null && item.length > 0) {
-                    table1.setRowFactory(tv -> {
-                        TableRow<Object[]> row = new TableRow<Object[]>() {
-                            @Override
-                            protected void updateItem(Object[] item, boolean empty) {
-                                super.updateItem(item, empty);
-                                if (item == null || empty) {
-                                    setStyle("");
+                    table1.setRowFactory(tv -> new TableRow<>() {
+                        @Override
+                        protected void updateItem(Object[] item1, boolean empty) {
+                            super.updateItem(item1, empty);
+                            if (item1 == null || empty) {
+                                setStyle("");
+                            } else {
+                                if (tasksId.contains((int) item1[0])) {
+                                    setStyle("-fx-background-color: lightsalmon;");
                                 } else {
-                                    if (tasksId.contains(item[0])) {
-                                        setStyle("-fx-background-color: lightsalmon;");
-                                    } else {
-                                        setStyle("");
-                                    }
+                                    setStyle("");
                                 }
                             }
-                        };
-                        return row;
+                        }
                     });
                 }
             }
@@ -523,69 +468,30 @@ public class Controller {
         table1.refresh();
     }
 
-    @FXML
-    void fillTable2(ArrayList<ArrayList<SporadicTask>> tasks) {
+    void generateResponseTimeTable(ArrayList<ArrayList<SporadicTask>> tasks) {
         ObservableList<Object[]> data = FXCollections.observableArrayList();
-        ObservableList<Integer> schedulables = FXCollections.observableArrayList();
-
-        if (systemMode.getValue() == "ModeSwitch") {
-            for (int i = 0; i < tasks.size(); i++) {
-                for (int j = 0; j < tasks.get(i).size(); j++) {
-                    SporadicTask task = tasks.get(i).get(j);
+        for (ArrayList<SporadicTask> sporadicTasks : tasks) {
+            for (SporadicTask task : sporadicTasks) {
+                if (systemMode.getValue() == "ModeSwitch" || systemMode.getValue() == "HI") {
+                    long Ri = task.Ri_Switch;
+                    if (systemMode.getValue() == "HI") Ri = task.Ri_HI;
                     if (task.critical == 1) {     //只显示HI任务
                         // id, partition, priority, response time, deadline, WCET
                         // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
-                        Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri_Switch, task.deadline, task.WCET,
+                        Object[] row = new Object[]{task.id, task.partition, "HI", task.priority, Ri, task.deadline, task.WCET,
                                 task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, task.schedulable};
                         data.add(row);
-                        schedulables.add(task.schedulable);
                     }
-                }
-            }
-        } else if (systemMode.getValue() == "HI") {
-            for (int i = 0; i < tasks.size(); i++) {
-                for (int j = 0; j < tasks.get(i).size(); j++) {
-                    SporadicTask task = tasks.get(i).get(j);
-                    if (task.critical == 1) {
-                        // id, partition, priority, response time, deadline, WCET
-                        // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
-                        Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri, task.deadline, task.WCET,
-                                task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, task.schedulable};
-                        data.add(row);
-                        schedulables.add(task.schedulable);
-                    }
-                }
-            }
-        } else {
-            for (int i = 0; i < tasks.size(); i++) {
-                for (int j = 0; j < tasks.get(i).size(); j++) {
-                    SporadicTask task = tasks.get(i).get(j);
+                } else {
                     // id, partition, priority, response time, deadline, WCET
                     // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
-                    Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri, task.deadline, task.WCET,
+                    Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri_LO, task.deadline, task.WCET,
                             task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, task.schedulable};
                     data.add(row);
-                    schedulables.add(task.schedulable);
                 }
             }
         }
-        // 设置数据源到 TableView
-        table2.getItems().clear();
-        table2.getItems().addAll(data);
-        // 将数据源中的数据与每个 TableColumn 进行绑定
-        for (int i = 0; i < table2.getColumns().size(); i++) {
-            TableColumn<Object[], Object> column = (TableColumn<Object[], Object>) table2.getColumns().get(i);
-            int columnIndex = i;
-            // 使用 lambda 表达式设置 CellValueFactory
-            column.setCellValueFactory(cellData -> {
-                Object[] rowData = cellData.getValue();
-                if (rowData.length > columnIndex) {
-                    Object cellValue = rowData[columnIndex];
-                    return cellValue != null ? new SimpleObjectProperty<>(cellValue) : null;
-                }
-                return null;
-            });
-        }
+        fillTable(table2, data);
     }
 
     @FXML
@@ -615,7 +521,7 @@ public class Controller {
 
         Analysis analysis = new Analysis();
         analysis.analysis(factors, pair.getFirst(), pair.getSecond());
-        fillTable2(pair.getFirst());
+        generateResponseTimeTable(pair.getFirst());
 
         showSchedulable(factors.schedulable);
 
@@ -623,32 +529,6 @@ public class Controller {
         startIcon.setVisible(true);
         startLabel.setVisible(true);
         loading.setVisible(false);
-    }
-
-    public String judgeInteger(TextField textField) {
-        if (!textField.getText().matches("\\d+")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("WARNING");
-            alert.setHeaderText(null);
-            alert.setContentText("The input can only be a positive integer");
-            alert.showAndWait();
-            textField.clear();
-            return "-1";
-        }
-        return textField.getText();
-    }
-
-    public String judgeFloat(TextField textField) {
-        if (!textField.getText().matches("\\d*\\.?\\d+")) {
-            Alert alert = new Alert(Alert.AlertType.ERROR);
-            alert.setTitle("WARNING");
-            alert.setHeaderText(null);
-            alert.setContentText("The input can only be a floating-point number");
-            alert.showAndWait();
-            textField.clear();
-            return "-1";
-        }
-        return textField.getText();
     }
 
     @FXML
@@ -696,7 +576,7 @@ public class Controller {
         pair = analysis.generateSystem(factors);
 
 
-        fillTable1(pair.getFirst());
+        generateTasksTable(pair.getFirst());
 //        fillTable3(pair.getSecond());
         generateResource(pair.getSecond());
         generatePartition();
