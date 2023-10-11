@@ -1,4 +1,4 @@
-package responseTimeTool.generatorTools;
+package com.demo.tool.responsetimeanalysis.generator;
 
 import java.util.ArrayList;
 import java.util.Random;

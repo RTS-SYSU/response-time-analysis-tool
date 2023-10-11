@@ -1,4 +1,4 @@
-package responseTimeTool.utils;
+package com.demo.tool.responsetimeanalysis.utils;
 
 public class Pair<A, B> {
     private A first;

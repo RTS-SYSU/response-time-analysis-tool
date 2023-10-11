@@ -1,4 +1,4 @@
-package responseTimeTool.utils;
+package com.demo.tool.responsetimeanalysis.utils;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
