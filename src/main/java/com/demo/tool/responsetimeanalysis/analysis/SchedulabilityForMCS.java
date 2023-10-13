@@ -137,6 +137,10 @@ public class SchedulabilityForMCS {
                 MrsPOriginal mrsp = new MrsPOriginal();
                 Ris = mrsp.getResponseTime(tasks, resources, false);
                 break;
+            case "MrspNew":
+                MrspNew Mrsp = new MrspNew();
+                Ris = Mrsp.getResponseTime(tasks, resources, true, false);
+                break;
             case "PWLP":
                 PWLPNew pwlp = new PWLPNew();
                 Ris = pwlp.getResponseTime(tasks, resources, true, false);
