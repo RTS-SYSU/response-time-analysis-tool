@@ -513,6 +513,7 @@ public class Controller {
         }
         factors.SYSTEM_MODE = systemMode.getValue();
         factors.ANALYSIS_MODE = RTM.getValue();
+        factors.PRIORITY = priority.getValue();
 
         /* set the start icon inaccessible */
         startIcon.setVisible(false);
