@@ -513,7 +513,6 @@ public class Controller {
         }
         factors.SYSTEM_MODE = systemMode.getValue();
         factors.ANALYSIS_MODE = RTM.getValue();
-        factors.PRIORITY = priority.getValue();
 
         /* set the start icon inaccessible */
         startIcon.setVisible(false);
@@ -561,7 +560,7 @@ public class Controller {
 
         factors.RESOURCE_SHARING_FACTOR = Math.min(Double.parseDouble(judgeFloat(rsf)), 1.0);
         factors.TOTAL_RESOURCES = Integer.parseInt(judgeInteger(resourceNum));
-
+        factors.PRIORITY = priority.getValue();
 
         if (factors.MIN_PERIOD == -1 || factors.MAX_PERIOD == -1 || factors.TOTAL_PARTITIONS == -1 || factors.CL_RANGE_LOW == -1 || factors.CL_RANGE_HIGH == -1 ||
                 factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE == -1 || factors.NUMBER_OF_TASKS == -1 || factors.UTILISATION == -1 || factors.TOTAL_RESOURCES == -1 ||
