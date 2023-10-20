@@ -47,7 +47,9 @@ public class Analysis {
             case "NF" -> tasks = allocGenerator.allocateTasks(tasksToAlloc, resources, factors.TOTAL_PARTITIONS, 3);
 
         }
-        new PriorityGenerator().assignPrioritiesByDM(tasks);
+        switch (factors.PRIORITY) {
+            case "DMPO" -> new PriorityGenerator().assignPrioritiesByDM(tasks);
+        }
         return new Pair<>(tasks, resources);
     }
 

@@ -14,6 +14,7 @@ public class Factors {
     public String ALLOCATION;
     public String SYSTEM_MODE;
     public String ANALYSIS_MODE;
+    public String PRIORITY;
     public double RESOURCE_SHARING_FACTOR = -1;    //资源共享因子
     public int TOTAL_RESOURCES = -1;
 

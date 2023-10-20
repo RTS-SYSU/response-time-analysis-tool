@@ -73,7 +73,8 @@ public class MrspOriginalForModeSwitch {
 				task.spin = resourceAccessingTime(task, resources);
 				task.interference = highPriorityInterference(task, tasks, response_time[i][j]);
 				task.indirect_spin = highPriorityIndirectSpin(task, tasks, response_time[i][j]);
-				task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j]);
+				task.local = Math.max(localBlocking(task, tasks, resources, response_time, response_time[i][j]),
+						localBlocking(task, lowTasks, resources, response_time, response_time[i][j]));
 				long lowInterference = highPriorityLowTaskInterference(task, lowTasks, task.Ri_LO);
 
 				response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local + lowInterference;

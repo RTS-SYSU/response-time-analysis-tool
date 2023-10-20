@@ -61,9 +61,6 @@ public class AnalysisUtils {
 	public static double FULL_CONTEXT_SWTICH1 = (double) (CXS) / (double) 1000;
 	public static double FULL_CONTEXT_SWTICH2 = (double) (LITMUS_COMPLETE + CXS * 2 + LITMUS_RELEASE) / (double) 1000;
 
-
-
-
 	public long[][] initResponseTime(ArrayList<ArrayList<SporadicTask>> tasks) {
 		long[][] response_times = new long[tasks.size()][];
 

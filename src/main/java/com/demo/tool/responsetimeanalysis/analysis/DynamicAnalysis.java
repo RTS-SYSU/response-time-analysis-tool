@@ -1,9 +1,8 @@
 package com.demo.tool.responsetimeanalysis.analysis;
 
-import  com.demo.tool.responsetimeanalysis.entity.Resource;
-import  com.demo.tool.responsetimeanalysis.entity.SporadicTask;
-import  com.demo.tool.responsetimeanalysis.generator.PriorityGenerator;
-import  com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import com.demo.tool.responsetimeanalysis.entity.Resource;
+import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
+import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -13,19 +12,19 @@ public class DynamicAnalysis {
         if (history.size() < size) {
             return null;
         }
-        ArrayList<Long> differ_list = new ArrayList<Long>();
-        Integer DIFFER_A_INDEX = null,DIFFER_B_INDEX = null;
-        for(int i = 0 ; i < history.size() - 1; i++){
+        ArrayList<Long> differ_list = new ArrayList<>();
+        Integer DIFFER_A_INDEX = null, DIFFER_B_INDEX = null;
+        for (int i = 0; i < history.size() - 1; i++) {
             ArrayList<ArrayList<Long>> Compare_A = history.get(i);
-            ArrayList<ArrayList<Long>> Compare_B = history.get(i+1);
+            ArrayList<ArrayList<Long>> Compare_B = history.get(i + 1);
             int differ = 0;
-            Long DIFFER_A = null,DIFFER_B = null;
+            Long DIFFER_A = null, DIFFER_B = null;
 
-            for(int j = 0 ; j < Compare_A.size(); j++){
-                for(int k = 0 ; k < Compare_A.get(j).size(); k++){
+            for (int j = 0; j < Compare_A.size(); j++) {
+                for (int k = 0; k < Compare_A.get(j).size(); k++) {
                     Long A = Compare_A.get(j).get(k);
                     Long B = Compare_B.get(j).get(k);
-                    if(!Objects.equals(A, B)){
+                    if (!Objects.equals(A, B)) {
                         DIFFER_A = A;
                         DIFFER_A_INDEX = j;
                         DIFFER_B = B;
@@ -35,21 +34,21 @@ public class DynamicAnalysis {
                 }
             }
 
-            if(differ != 1){
+            if (differ != 1) {
                 history.remove(0);
                 return null;
-            } else{
-                if(i == 0){
+            } else {
+                if (i == 0) {
                     differ_list.add(DIFFER_A);
                     differ_list.add(DIFFER_B);
-                } else{
+                } else {
                     differ_list.add(DIFFER_B);
                 }
             }
         }
 
-        for(int i = 0 ; i < differ_list.size() - 2; i++){
-            if(!Objects.equals(differ_list.get(i), differ_list.get(i + 2))){
+        for (int i = 0; i < differ_list.size() - 2; i++) {
+            if (!Objects.equals(differ_list.get(i), differ_list.get(i + 2))) {
                 history.remove(0);
                 return null;
             }
@@ -58,27 +57,22 @@ public class DynamicAnalysis {
         long[] re = new long[3];
         re[0] = DIFFER_A_INDEX;
         re[1] = DIFFER_B_INDEX;
-        re[2] = (long)Math.ceil((differ_list.get(0) + differ_list.get(1)) / 2.0);
+        re[2] = (long) Math.ceil((differ_list.get(0) + differ_list.get(1)) / 2.0);
         return re;
     }
 
 
-    /** for stable mode**/
+    /**
+     * for stable mode
+     **/
     // random the protocol for each resource -> update resource request priority
     public long[][] getResponseTimeByDMPO(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, int extendCal, boolean testSchedulability,
                                           boolean btbHit, boolean useRi, boolean useDM, boolean printDebug) {
-        if (tasks == null)
-            return null;
+        if (tasks == null) return null;
 
-        // 在此处赋予优先级
-        if (useDM) {
-            // assign priorities by Deadline Monotonic
-            tasks = new PriorityGenerator().assignPrioritiesByDM(tasks);
-        } else {
-            for (int i = 0; i < tasks.size(); i++) {
-                tasks.get(i).sort((t1, t2) -> -Integer.compare(t1.priority, t2.priority));
-            }
-        }
+        // 在此处赋予优先级，已经由前端使用DMPO，否则就是下面这个
+        if (!useDM) for (ArrayList<SporadicTask> task : tasks)
+            task.sort((t1, t2) -> -Integer.compare(t1.priority, t2.priority));
 
         long count = 0; // The number of calculations
         long np = 0; // The NP section length if MrsP is applied
@@ -111,7 +105,6 @@ public class DynamicAnalysis {
             boolean should_finish = true;
             long[][] response_time_plus = busyWindow(tasks, resources, response_time, AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION, np, extendCal,
                     testSchedulability, btbHit, useRi);
-
 
             for (int i = 0; i < response_time_plus.length; i++) {
                 for (int j = 0; j < response_time_plus[i].length; j++) {
@@ -279,7 +272,7 @@ public class DynamicAnalysis {
                 requestsLeftOnRemoteP.add(new ArrayList<Long>());
                 fifo_resources.add(res);
                 spin += getSpinDelayForOneResoruce(task, tasks, res, requestsLeftOnRemoteP.get(requestsLeftOnRemoteP.size() - 1), Ris, time, btbHit, useRi);
-            } else{
+            } else {
                 requestsLeftOnRemoteP.add(new ArrayList<Long>());
             }
         }
@@ -298,7 +291,7 @@ public class DynamicAnalysis {
                     // 在这个高优先级任务的'优先级'下，抢占次数
                     preemptions = (int) Math.ceil((time) / (double) tasks.get(task.partition).get(i).period);
                     sum_preemptions += preemptions;
-                    pp.put(high_task_priority,preemptions);
+                    pp.put(high_task_priority, preemptions);
                 }
             }
             task.implementation_overheads += sum_preemptions * (AnalysisUtils.FIFOP_CANCEL);
@@ -317,12 +310,12 @@ public class DynamicAnalysis {
             // 1. 需要计算访问各requestsLeftOnRemoteP的csl-Queue；
             ArrayList<ArrayList<Long>> all_csl_queue = new ArrayList<>();
 
-            for(int p = 0 ; p < requestsLeftOnRemoteP.size(); p++){
+            for (int p = 0; p < requestsLeftOnRemoteP.size(); p++) {
                 ArrayList<Long> rlorp = new ArrayList<>(requestsLeftOnRemoteP.get(p));
                 ArrayList<Long> csl_queue = new ArrayList<>();
-                while(rlorp.size() != 0){
+                while (rlorp.size() != 0) {
                     csl_queue.add(rlorp.size() * resources.get(p).csl);
-                    for(int q = 0; q < rlorp.size(); q++){
+                    for (int q = 0; q < rlorp.size(); q++) {
                         rlorp.set(q, rlorp.get(q) - 1);
                         if (rlorp.get(q) < 1) {
                             rlorp.remove(q);
@@ -374,13 +367,13 @@ public class DynamicAnalysis {
                             (e1, e2) -> e1,
                             LinkedHashMap::new));
             ArrayList<Long> sum_array = new ArrayList<>();
-            if(sortedwww.size() > 0){
+            if (sortedwww.size() > 0) {
                 List<Map.Entry<Set<Integer>, Long>> entryList = new ArrayList<>(sortedwww.entrySet());
                 Long sum_preempt = 0L;
                 // 迭代过程优化
-                for(int i = 0 ; i < entryList.size(); i++){
+                for (int i = 0; i < entryList.size(); i++) {
                     Map.Entry<Set<Integer>, Long> A = entryList.get(i);
-                    Map.Entry<Set<Integer>, Long> B = i == entryList.size() -1 ? null : entryList.get(i+1);
+                    Map.Entry<Set<Integer>, Long> B = i == entryList.size() - 1 ? null : entryList.get(i + 1);
                     Set<Integer> A_list = A.getKey();
                     Set<Integer> B_list = B == null ? new HashSet<>() : B.getKey();
                     Long A_preempt = A.getValue();
@@ -397,11 +390,11 @@ public class DynamicAnalysis {
                     // sum_array和sum_list合并
                     sum_array.addAll(sum_list);
                     Collections.sort(sum_array, (o1, o2) -> o2.compareTo(o1));
-                    ArrayList<Long> subList = new ArrayList<>(sum_array.subList(0, (int)Math.min(sum_array.size(),sum_preempt)));
+                    ArrayList<Long> subList = new ArrayList<>(sum_array.subList(0, (int) Math.min(sum_array.size(), sum_preempt)));
                     sum_array = subList;
                 }
             }
-            for(Long num : sum_array) {
+            for (Long num : sum_array) {
                 spin += num;
             }
 
@@ -744,7 +737,7 @@ public class DynamicAnalysis {
         for (int i = 0; i < resources.size(); i++) {
             Resource resource = resources.get(i);
             // local resources that have a higher ceiling
-            if(resource.protocol >=2 && resource.protocol <= 5){
+            if (resource.protocol >= 2 && resource.protocol <= 5) {
                 if (resource.partitions.size() == 1 && resource.partitions.get(0) == partition
                         && resource.getCeilingForProcessor(localTasks) >= task.priority) {
                     for (int j = 0; j < resource.requested_tasks.size(); j++) {
@@ -762,7 +755,7 @@ public class DynamicAnalysis {
                         if (LP_task.partition == partition && LP_task.priority < task.priority) {
                             int rIndex = LP_task.resource_required_index.indexOf(resource.id - 1);
                             int pri = LP_task.resource_required_priority.get(rIndex);
-                            if(pri > task.priority){
+                            if (pri > task.priority) {
                                 localBlockingResources.add(resource);
                                 break;
                             }
@@ -820,7 +813,7 @@ public class DynamicAnalysis {
             // int ceiling = resource.getCeilingForProcessor(tasksOnItsParititon);
             int max_pri = getMaxPriorityOfLocalTasks(tasksOnItsParititon);
             int ceiling_pri = resource.getCeilingForProcessor(tasksOnItsParititon);
-            int compare_pri = (int) Math.ceil(ceiling_pri + ((double)(max_pri - ceiling_pri) / 2.0));
+            int compare_pri = (int) Math.ceil(ceiling_pri + ((double) (max_pri - ceiling_pri) / 2.0));
             if (resource.protocol == 6 && resource.partitions.contains(partition) && minCeiling > ceiling_pri) {
                 minCeiling = ceiling_pri;
             }
@@ -919,7 +912,7 @@ public class DynamicAnalysis {
 
             int max_pri = getMaxPriorityOfLocalTasks(localTasks);
             int ceiling_pri = resource.getCeilingForProcessor(localTasks);
-            int compare_pri = (int) Math.ceil(ceiling_pri + ((double)(max_pri - ceiling_pri) / 2.0));
+            int compare_pri = (int) Math.ceil(ceiling_pri + ((double) (max_pri - ceiling_pri) / 2.0));
 
             if (resource.protocol == 7 && resource.partitions.contains(partition) && compare_pri >= task.priority) {
                 for (int j = 0; j < resource.requested_tasks.size(); j++) {
@@ -964,21 +957,21 @@ public class DynamicAnalysis {
         return migrationCost(calT, resource, tasks, migration_targets, oneMig, np);
     }
 
-    private int getMaxPriorityOfPartition(ArrayList<ArrayList<SporadicTask>> tasks, int partition){
+    private int getMaxPriorityOfPartition(ArrayList<ArrayList<SporadicTask>> tasks, int partition) {
         ArrayList<SporadicTask> taskset = tasks.get(partition);
         int max_priority = -1;
-        for(SporadicTask t: taskset){
-            if(t.priority > max_priority){
+        for (SporadicTask t : taskset) {
+            if (t.priority > max_priority) {
                 max_priority = t.priority;
             }
         }
         return max_priority;
     }
 
-    private int getMaxPriorityOfLocalTasks(ArrayList<SporadicTask> tasks){
+    private int getMaxPriorityOfLocalTasks(ArrayList<SporadicTask> tasks) {
         int max_priority = -1;
-        for(SporadicTask t: tasks){
-            if(t.priority > max_priority){
+        for (SporadicTask t : tasks) {
+            if (t.priority > max_priority) {
                 max_priority = t.priority;
             }
         }
@@ -994,13 +987,13 @@ public class DynamicAnalysis {
         for (int i = 0; i < migration_targets.size(); i++) {
             int partition = migration_targets.get(i);
 
-            if(resource.protocol == 6){
+            if (resource.protocol == 6) {
                 if (tasks.get(partition).get(0).priority > resource.getCeilingForProcessor(tasks, partition))
                     migration_targets_with_P.add(migration_targets.get(i));
             } else if (resource.protocol == 7) {
-                int max_pri = getMaxPriorityOfPartition(tasks,partition);
+                int max_pri = getMaxPriorityOfPartition(tasks, partition);
                 int ceiling_pri = resource.getCeilingForProcessor(tasks, partition);
-                int compare_pri = (int) Math.ceil(ceiling_pri + ((double)(max_pri - ceiling_pri) / 2.0));
+                int compare_pri = (int) Math.ceil(ceiling_pri + ((double) (max_pri - ceiling_pri) / 2.0));
                 if (tasks.get(partition).get(0).priority > compare_pri)
                     migration_targets_with_P.add(migration_targets.get(i));
             }
@@ -1084,13 +1077,13 @@ public class DynamicAnalysis {
 
                 // 条件修改
 
-                if(resource.protocol == 6){
+                if (resource.protocol == 6) {
                     if (hpTask.priority > resource.getCeilingForProcessor(tasks, partition_with_p))
                         migCost += Math.ceil((duration) / hpTask.period) * oneMig;
                 } else if (resource.protocol == 7) {
-                    int max_pri = getMaxPriorityOfPartition(tasks,partition_with_p);
+                    int max_pri = getMaxPriorityOfPartition(tasks, partition_with_p);
                     int ceiling_pri = resource.getCeilingForProcessor(tasks, partition_with_p);
-                    int compare_pri = (int) Math.ceil(ceiling_pri + ((double)(max_pri - ceiling_pri) / 2.0));
+                    int compare_pri = (int) Math.ceil(ceiling_pri + ((double) (max_pri - ceiling_pri) / 2.0));
                     if (hpTask.priority > compare_pri)
                         migCost += Math.ceil((duration) / hpTask.period) * oneMig;
                 }
