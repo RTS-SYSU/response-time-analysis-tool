@@ -234,17 +234,21 @@ public class SchedulabilityForMCS {
                 MrspOriginalForModeSwitch modeSwitch1 = new MrspOriginalForModeSwitch();
                 Ris = modeSwitch1.getResponseTime(highTasks, resources, lowTasks, false);
                 break;
-            case "PWLP":
-                PWLPNewForModeSwitch modeSwitch2 = new PWLPNewForModeSwitch();
+            case "MrspNew":
+                MrspNewForModeSwitch modeSwitch2 = new MrspNewForModeSwitch();
                 Ris = modeSwitch2.getResponseTime(highTasks, resources, lowTasks, false);
                 break;
+            case "PWLP":
+                PWLPNewForModeSwitch modeSwitch3 = new PWLPNewForModeSwitch();
+                Ris = modeSwitch3.getResponseTime(highTasks, resources, lowTasks, false);
+                break;
             case "MSRPNew":
-                MSRPNewForModeSwitch modeSwitch3 = new MSRPNewForModeSwitch();
-                Ris = modeSwitch3.getResponseTime(highTasks, resources, lowTasks, true);
+                MSRPNewForModeSwitch modeSwitch4 = new MSRPNewForModeSwitch();
+                Ris = modeSwitch4.getResponseTime(highTasks, resources, lowTasks, true);
                 break;
             case "Dynamic":
-                DynamicAnalysisForModeSwitch modeSwitch4 = new DynamicAnalysisForModeSwitch();
-                Ris = modeSwitch4.getResponseTimeByDMPO(highTasks, resources, lowTasks, 1, true, true, true, true, false);
+                DynamicAnalysisForModeSwitch modeSwitch5 = new DynamicAnalysisForModeSwitch();
+                Ris = modeSwitch5.getResponseTimeByDMPO(highTasks, resources, lowTasks, 1, true, true, true, true, false);
         }
 
 
