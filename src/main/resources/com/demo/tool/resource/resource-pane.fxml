@@ -3,23 +3,33 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.text.Font?>
 
 <StackPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="150.0" style="-fx-background-radius: 1.2em;" styleClass="basic" stylesheets="@../../../../css/resource-factor.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="resourceId">
+      <Label fx:id="resourceId" wrapText="true">
          <StackPane.margin>
-            <Insets />
+            <Insets bottom="70.0" />
          </StackPane.margin>
+         <font>
+            <Font name="Britannic Bold" size="20.0" />
+         </font>
       </Label>
       <Label fx:id="csl">
          <StackPane.margin>
-            <Insets top="40.0" />
+            <Insets />
          </StackPane.margin>
+         <font>
+            <Font name="Britannic Bold" size="20.0" />
+         </font>
       </Label>
-      <Label fx:id="accessTime">
+      <Label fx:id="accessTime" textAlignment="CENTER" wrapText="true">
          <StackPane.margin>
-            <Insets top="80.0" />
+            <Insets top="70.0" />
          </StackPane.margin>
+         <font>
+            <Font name="Britannic Bold" size="20.0" />
+         </font>
       </Label>
    </children>
 </StackPane>

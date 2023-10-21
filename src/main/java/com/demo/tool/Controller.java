@@ -145,7 +145,7 @@ public class Controller {
             }
         });
         //test
-//        test0();
+        test0();
     }
 
     void initPageBtnStyle() {

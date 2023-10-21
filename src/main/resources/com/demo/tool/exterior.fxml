@@ -288,7 +288,7 @@
             </VBox>
             <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="662.0" prefWidth="865.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="662.0" prefWidth="865.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn editable="false" prefWidth="61.0" text="Task ID" />
                       <TableColumn prefWidth="60.0" text="Partition" />
