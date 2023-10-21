@@ -110,7 +110,7 @@ public class MrspNew {
             SporadicTask hpTask = tasks.get(task.partition).get(i);// local优先级高于tau_i的任务
             //判断关键级
             //if(hpTask.critical == mode)
-            migrateCost += getMIG(task, tasks, resources, time, Ris[hpTask.partition][i], time, Ris, btbHit);
+            migrateCost += getMIG(hpTask, tasks, resources, time, Ris[hpTask.partition][i], time, Ris, btbHit);
         }
 
         return migrateCost;
@@ -301,7 +301,7 @@ public class MrspNew {
         var processers = new HashSet<Integer>();
         var partitions = resource.partitions;
         for (Integer partition : partitions) {
-            var nrp = getNumberOfRequestByRemoteP(task, tasks, resource, time, Ris, btbHit);
+            var nrp = getNumberOfRequestByRemoteP(task, tasks, resource, partition, time, Ris, btbHit);
             var nlp = getNumberOfRequestByLocalP(task, tasks, resource, time, Ris, btbHit);
             if (task.partition != partition && nrp - nlp - nth + 1 > 0) {
                 processers.add(partition);
@@ -346,23 +346,22 @@ public class MrspNew {
      * @author: Chen
      * @date: 2023/9/24 0:40
      */
-    private long getNumberOfRequestByRemoteP(SporadicTask task, ArrayList<ArrayList<SporadicTask>> tasks, Resource resource, long time, long[][] Ris, boolean btbHit) {
+    private long getNumberOfRequestByRemoteP(SporadicTask task, ArrayList<ArrayList<SporadicTask>> tasks, Resource resource, int partition, long time, long[][] Ris, boolean btbHit) {
 
         long number_of_request_by_Remote_P = 0;
         //remote核心的请求次数
-        for (int i = 0; i < tasks.size(); i++) {
-            if (task.partition != i) {
-                /* For each remote partition */
-                for (int j = 0; j < tasks.get(i).size(); j++) {
-                    if (tasks.get(i).get(j).resource_required_index.contains(resource.id - 1)) {
-                        SporadicTask remote_task = tasks.get(i).get(j);
-                        int indexR = getIndexRInTask(remote_task, resource);
-                        int number_of_release = (int) Math.ceil((double) (time + (btbHit ? Ris[i][j] : 0)) / (double) remote_task.period);
-                        number_of_request_by_Remote_P += (long) number_of_release * remote_task.number_of_access_in_one_release.get(indexR);
 
-                    }
-                }
+        /* For each remote partition */
+        for (int j = 0; j < tasks.get(partition).size(); j++) {
+            if (tasks.get(partition).get(j).resource_required_index.contains(resource.id - 1)) {
+                SporadicTask remote_task = tasks.get(partition).get(j);
+                int indexR = getIndexRInTask(remote_task, resource);
+                int number_of_release = (int) Math.ceil((double) (time + (btbHit ? Ris[partition][j] : 0)) / (double) remote_task.period);
+                number_of_request_by_Remote_P += (long) number_of_release * remote_task.number_of_access_in_one_release.get(indexR);
+
             }
+
+
         }
         return number_of_request_by_Remote_P;
     }
