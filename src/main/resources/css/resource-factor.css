@@ -11,25 +11,25 @@
 }
 
 .resource-change-when-task-clicked {
-    -fx-background-color: lightgreen;
+    -fx-background-color: rgb(207, 249, 207);
 }
 
 .resource-change-when-task-clicked:hover {
-    -fx-background-color: rgb(16, 155, 105);
+    -fx-background-color: rgb(177, 235, 177);
 }
 
 .partition-change-when-task-clicked {
-    -fx-background-color: lightgreen;
+    -fx-background-color: rgb(207, 249, 207);
 }
 
 .partition-change-when-task-clicked:hover {
-    -fx-background-color: rgb(16, 155, 105);
+    -fx-background-color: rgb(177, 235, 177);
 }
 
 .resource-clicked-change-all{
-    -fx-background-color: lightsalmon ;
+    -fx-background-color: rgb(247, 209, 193) ;
 }
 
 .resource-clicked-change-all:hover {
-    -fx-background-color: salmon;
+    -fx-background-color: rgb(249, 195, 172);
 }
