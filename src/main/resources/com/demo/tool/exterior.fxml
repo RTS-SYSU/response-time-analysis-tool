@@ -17,9 +17,9 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<HBox prefHeight="535.0" prefWidth="1200.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.demo.tool.Controller">
+<VBox style="-fx-background-color: whitie;" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.demo.tool.Controller">
    <children>
-      <VBox>
+      <HBox prefHeight="52.0" prefWidth="1094.0">
          <children>
             <StackPane fx:id="page1btn" focusTraversable="true" onMouseClicked="#onChangeToPage1" prefHeight="96.0" prefWidth="155.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css">
                <children>
@@ -46,8 +46,8 @@
                </children>
             </StackPane>
          </children>
-      </VBox>
-      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" HBox.hgrow="ALWAYS">
+      </HBox>
+      <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="600.0" prefWidth="1200.0" VBox.vgrow="ALWAYS">
          <children>
             <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
@@ -291,21 +291,21 @@
                   <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="311.0" prefWidth="841.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                     <columns>
                       <TableColumn editable="false" prefWidth="61.0" text="Task ID" />
-                      <TableColumn prefWidth="60.0" text="Partition" />
-                        <TableColumn prefWidth="76.0" text="Priority" />
-                        <TableColumn prefWidth="86.0" text="Critical Level" />
-                        <TableColumn prefWidth="60.0" text="Period" />
-                        <TableColumn prefWidth="71.0" text="Deadline" />
-                        <TableColumn minWidth="0.0" prefWidth="68.0" text="C(LO) " />
-                        <TableColumn minWidth="0.0" prefWidth="75.0" text="C(HI)" />
-                        <TableColumn prefWidth="136.0" text="Resource Access" />
-                        <TableColumn prefWidth="131.0" text="Utilization" />
+                      <TableColumn editable="false" prefWidth="60.0" text="Partition" />
+                        <TableColumn editable="false" prefWidth="76.0" text="Priority" />
+                        <TableColumn editable="false" prefWidth="86.0" text="Critical Level" />
+                        <TableColumn editable="false" prefWidth="60.0" text="Period" />
+                        <TableColumn editable="false" prefWidth="71.0" text="Deadline" />
+                        <TableColumn editable="false" minWidth="0.0" prefWidth="68.0" text="C(LO) " />
+                        <TableColumn editable="false" minWidth="0.0" prefWidth="75.0" text="C(HI)" />
+                        <TableColumn editable="false" minWidth="0.0" prefWidth="179.0" text="Resource Access" />
+                        <TableColumn editable="false" prefWidth="178.0" text="Utilization" />
                     </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
                      </columnResizePolicy>
                      <VBox.margin>
-                        <Insets bottom="2.0" left="2.0" top="2.0" />
+                        <Insets bottom="10.0" left="8.0" right="10.0" top="10.0" />
                      </VBox.margin>
                   </TableView>
                   <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="209.6" prefWidth="811.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
@@ -314,9 +314,13 @@
                            <children>
                               <ScrollPane fx:id="pResource" prefHeight="140.0" prefWidth="864.0" styleClass="no-light" vbarPolicy="NEVER" vmax="0.0">
                                  <VBox.margin>
-                                    <Insets bottom="1.0" />
+                                    <Insets bottom="10.0" left="8.0" right="10.0" top="10.0" />
+                                 </VBox.margin>
+                              </ScrollPane>
+                              <ScrollPane fx:id="pPartition" prefHeight="70.0" prefWidth="714.8" styleClass="no-light" vbarPolicy="NEVER" vmax="0.0">
+                                 <VBox.margin>
+                                    <Insets bottom="10.0" left="8.0" right="10.0" top="10.0" />
                                  </VBox.margin></ScrollPane>
-                              <ScrollPane fx:id="pPartition" prefHeight="70.0" prefWidth="714.8" styleClass="no-light" vbarPolicy="NEVER" vmax="0.0" />
                            </children>
                         </VBox>
                      </children>
@@ -356,7 +360,7 @@
                         </Label>
                      </children>
                   </StackPane>
-                  <StackPane fx:id="startAnalysis" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" onMouseClicked="#onStartAnalysis" prefHeight="77.0" prefWidth="119.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css">
+                  <StackPane fx:id="startAnalysis" onMouseClicked="#onStartAnalysis" prefHeight="77.0" prefWidth="119.0" styleClass="basic-hover" stylesheets="@../../../css/exterior.css">
                      <children>
                         <Label fx:id="startLabel" alignment="CENTER_RIGHT" contentDisplay="CENTER" focusTraversable="false" prefHeight="22.0" prefWidth="64.0" text="START" textAlignment="CENTER" StackPane.alignment="CENTER_RIGHT">
                            <padding>
@@ -378,21 +382,22 @@
             </VBox>
             <VBox fx:id="page22" layoutX="240.0" layoutY="10.0" prefHeight="544.0" prefWidth="864.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="169.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="table2" focusTraversable="false" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="table2" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="538.0" prefWidth="811.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn prefWidth="51.0" text="Task ID" />
-                        <TableColumn minWidth="9.0" prefWidth="63.0" text="Partition" />
-                        <TableColumn prefWidth="51.0" text="Critical Level" />
-                        <TableColumn prefWidth="64.0" text="Priority" />
-                        <TableColumn minWidth="4.0" prefWidth="66.0" text="Response Time" />
-                        <TableColumn minWidth="0.0" prefWidth="65.0" text="Deadline" />
-                        <TableColumn prefWidth="60.0" text="WCET" />
-                        <TableColumn minWidth="0.0" prefWidth="111.0" text="Resource Execution Time" />
-                        <TableColumn prefWidth="104.0" text="Interference Time" />
-                        <TableColumn prefWidth="77.0" text="Spin Blocking" />
+                        <TableColumn minWidth="9.0" prefWidth="96.0" text="Partition" />
+                        <TableColumn prefWidth="78.0" text="Critical Level" />
+                        <TableColumn minWidth="7.0" prefWidth="73.0" text="Priority" />
+                        <TableColumn minWidth="0.0" prefWidth="0.0" text="Response Time" />
+                        <TableColumn minWidth="0.0" prefWidth="96.0" text="Deadline" />
+                        <TableColumn prefWidth="65.0" text="WCET" />
+                        <TableColumn minWidth="0.0" prefWidth="106.0" text="Resource Execution Time" />
+                        <TableColumn prefWidth="90.0" text="Interference Time" />
+                        <TableColumn prefWidth="60.0" text="Spin Blocking" />
                         <TableColumn prefWidth="95.0" text="Indirect Spin Blocking" />
                         <TableColumn prefWidth="72.0" text="Arrival Blocking" />
-                        <TableColumn prefWidth="72.0" text="Retry Cost" />
+                        <TableColumn prefWidth="61.0" text="Retry Cost" />
+                        <TableColumn prefWidth="83.0" text="Status" />
                      </columns>
                      <columnResizePolicy>
                         <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
@@ -403,4 +408,4 @@
          </children>
       </AnchorPane>
    </children>
-</HBox>
+</VBox>

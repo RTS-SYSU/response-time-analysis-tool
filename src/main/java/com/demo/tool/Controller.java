@@ -17,6 +17,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
+import javafx.util.Callback;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -100,7 +101,7 @@ public class Controller {
 
     private int taskShowing = -1;
     private boolean taskClickedFactoryAwake = false;
-    private int taskClickCount = 0;
+    private int taskClickCount = 1;
     private int currentShowingResource = -1;
     private int resourceClickCount = 0;
 
@@ -145,7 +146,7 @@ public class Controller {
             }
         });
         //test
-//        test0();
+        test0();
     }
 
     void initPageBtnStyle() {
@@ -180,18 +181,37 @@ public class Controller {
                     if (rowIndex >= 0 && rowIndex < data.size()) {
                         Object[] currentRow = data.get(rowIndex);
                         if (currentRow != null && currentRow.length > 0) {
-                            int value = (int) currentRow[currentRow.length - 1];
+                            String value = (String) currentRow[currentRow.length - 1];
 //                            System.out.println(currentRow[0] + " " + value);
-                            if (value == 0) {
+                            if (value.equals("Unschedulable")) {
                                 setStyle("-fx-background-color: lightcoral;");
-                            } else if (value == 1) {
-                                setStyle("-fx-background-color: lightgreen;");
                             } else {
-                                setStyle(""); // 处理其他情况或确保没有样式应用
+                                setStyle("");
                             }
                         }
                     }
                 }
+            }
+        });
+
+        TableColumn<Object[], String> targetColumn = (TableColumn<Object[], String>) table2.getColumns().get(table2.getColumns().size() - 1);
+
+        targetColumn.setCellFactory(column -> new TableCell<Object[], String>() {
+            @Override
+            protected void updateItem(String item, boolean empty) {
+                super.updateItem(item, empty); // 确保单元格内容正常显示
+                if (empty || item == null) {
+                    setStyle(""); // 处理空单元格的情况
+                } else {
+                    if (item.equals("Accept")) {
+                        // 在原有样式的基础上追加背景颜色样式
+                        setStyle("-fx-background-color: lightgreen;-fx-text-fill: white;");
+                    } else {
+                        if (item.equals("Unschedulable")) setStyle("-fx-text-fill: white;");
+                        else setStyle("");
+                    }
+                }
+                setText(item);
             }
         });
     }
@@ -234,6 +254,40 @@ public class Controller {
             }
         }
         fillTable(table1, data);
+    }
+
+    void generateResourceAccessButton() {
+        TableColumn<Object[], ArrayList> resourceAccess = (TableColumn<Object[], ArrayList>) table1.getColumns().get(table1.getColumns().size() - 2);
+        resourceAccess.setCellFactory(createButtonCellFactory());
+        resourceAccess.setText("Resource Access");
+    }
+
+    private Callback<TableColumn<Object[], ArrayList>, TableCell<Object[], ArrayList>> createButtonCellFactory() {
+        return new Callback<TableColumn<Object[], ArrayList>, TableCell<Object[], ArrayList>>() {
+            @Override
+            public TableCell<Object[], ArrayList> call(final TableColumn<Object[], ArrayList> param) {
+                return new TableCell<Object[], ArrayList>() {
+                    private final Button button = new Button("View");
+                    {
+                        button.setStyle("-fx-background-color: lightgreen;-fx-text-fill: white;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;");
+                        button.setOnAction(event -> {
+                            Object[] item = getTableView().getItems().get(getIndex());
+                            taskClicked(item);
+                        });
+                    }
+
+                    @Override
+                    protected void updateItem(ArrayList item, boolean empty) {
+                        super.updateItem(item, empty);
+                        if (empty) {
+                            setGraphic(null);
+                        } else {
+                            setGraphic(button);
+                        }
+                    }
+                };
+            }
+        };
     }
 
     void generateResource(ArrayList<Resource> resources) {
@@ -281,65 +335,107 @@ public class Controller {
                 // clean first
                 cleanStyleBeforeChange("resource-clicked-change-all");
 
-                taskClicked();
+//                taskClicked();
                 table1.refresh();
             }
         });
     }
 
+//     双击控件弃用，换成按钮
+//    /**
+//     * link task table to resource and partition block by define a new row factory
+//     * -> click table row twice to light the task
+//     * and call demonstration of resource with access time and partition
+//     **/
+//    void taskClicked() {
+//        for (Object[] item : table1.getItems()) {
+//            if (item != null && item.length > 0) {
+//                table1.setRowFactory(tv -> {
+//                    TableRow<Object[]> row = new TableRow<>() {
+//                        @Override
+//                        protected void updateItem(Object[] item, boolean empty) {
+//                            super.updateItem(item, empty);
+//                            if (item == null || empty) setStyle("");
+//                            else {
+//                                if (taskShowing == (int) item[0]) setStyle("-fx-background-color: lightgreen;");
+//                                else setStyle("");
+//                            }
+//                        }
+//                    };
+//                    row.setOnMouseClicked(event -> {
+//                        if (event.getClickCount() == 2 && (!row.isEmpty())) {
+//                            Object[] selectedItem = table1.getSelectionModel().getSelectedItem();
+//                            System.out.println("Select No.   " + selectedItem[0]);
+//                            if (taskShowing == (int) selectedItem[0]) {
+//                                taskClickCount++;
+//                            } else {
+//                                taskClickCount = 1;
+//                                // 恢复上一个双击行的背景颜色
+//                                if (taskShowing != -1) {
+//                                    table1.refresh();
+//                                    taskClickedShowResourceAndPartition(taskShowing, true);
+//                                }
+//                            }
+//                            if (taskClickCount % 2 == 0) {
+//                                // 双击同一行两次，恢复原样
+//                                taskClickedShowResourceAndPartition(taskShowing, true);
+//                                table1.refresh();
+//                                taskShowing = -1;
+//                            } else {
+//                                // 更改当前行的背景颜色为绿色
+//                                taskShowing = (int) selectedItem[0];
+//                                table1.refresh();
+//                                taskClickedShowResourceAndPartition(taskShowing, false);
+//                            }
+//                        }
+//                        taskClickedFactoryAwake = true;
+//                        System.out.println("task click awake!!！");
+//                    });
+//                    return row;
+//                });
+//            }
+//        }
+//    }
+
     /**
-     * link task table to resource and partition block by define a new row factory
-     * -> click table row twice to light the task
-     * and call demonstration of resource with access time and partition
+     * click resource access button to show
      **/
-    void taskClicked() {
-        for (Object[] item : table1.getItems()) {
-            if (item != null && item.length > 0) {
-                table1.setRowFactory(tv -> {
-                    TableRow<Object[]> row = new TableRow<>() {
-                        @Override
-                        protected void updateItem(Object[] item, boolean empty) {
-                            super.updateItem(item, empty);
-                            if (item == null || empty) setStyle("");
-                            else {
-                                if (taskShowing == (int) item[0]) setStyle("-fx-background-color: lightgreen;");
-                                else setStyle("");
-                            }
-                        }
-                    };
-                    row.setOnMouseClicked(event -> {
-                        if (event.getClickCount() == 2 && (!row.isEmpty())) {
-                            Object[] selectedItem = table1.getSelectionModel().getSelectedItem();
-                            System.out.println("Select No.   " + selectedItem[0]);
-                            if (taskShowing == (int) selectedItem[0]) {
-                                taskClickCount++;
-                            } else {
-                                taskClickCount = 1;
-                                // 恢复上一个双击行的背景颜色
-                                if (taskShowing != -1) {
-                                    table1.refresh();
-                                    taskClickedShowResourceAndPartition(taskShowing, true);
-                                }
-                            }
-                            if (taskClickCount % 2 == 0) {
-                                // 双击同一行两次，恢复原样
-                                taskClickedShowResourceAndPartition(taskShowing, true);
-                                table1.refresh();
-                                taskShowing = -1;
-                            } else {
-                                // 更改当前行的背景颜色为绿色
-                                taskShowing = (int) selectedItem[0];
-                                table1.refresh();
-                                taskClickedShowResourceAndPartition(taskShowing, false);
-                            }
-                        }
-                        taskClickedFactoryAwake = true;
-                        System.out.println("task click awake!!！");
-                    });
-                    return row;
-                });
+    void taskClicked(Object[] rowItem) {
+        if (taskShowing == (int) rowItem[0]) {
+            taskClickCount = 0;
+        } else {
+            taskClickCount = 1;
+            // 恢复上一个双击行的背景颜色
+            if (taskShowing != -1) {
+                table1.refresh();
+                taskClickedShowResourceAndPartition(taskShowing, true);
             }
         }
+        if (taskClickCount == 0) {
+            taskClickedShowResourceAndPartition(taskShowing, true);
+            table1.refresh();
+            taskShowing = -1;
+        } else {
+            // 更改当前行的背景颜色为绿色
+            taskShowing = (int) rowItem[0];
+            table1.refresh();
+            taskClickedShowResourceAndPartition(taskShowing, false);
+        }
+        table1.setRowFactory(tv -> {
+            TableRow<Object[]> row = new TableRow<>() {
+                @Override
+                protected void updateItem(Object[] item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (item == null || empty) setStyle("");
+                    else {
+                        if (taskShowing == (int) item[0]) setStyle("-fx-background-color: lightgreen;");
+                        else setStyle("");
+                    }
+                }
+            };
+
+            return row;
+        });
     }
 
     /**
@@ -472,6 +568,9 @@ public class Controller {
         ObservableList<Object[]> data = FXCollections.observableArrayList();
         for (ArrayList<SporadicTask> sporadicTasks : tasks) {
             for (SporadicTask task : sporadicTasks) {
+                String schedulable = "Unresolved";
+                if (task.schedulable == 1) schedulable = "Accept";
+                else if (task.schedulable == 0)schedulable = "Unschedulable";
                 if (systemMode.getValue() == "ModeSwitch" || systemMode.getValue() == "HI") {
                     long Ri = task.Ri_Switch;
                     if (systemMode.getValue() == "HI") Ri = task.Ri_HI;
@@ -479,14 +578,14 @@ public class Controller {
                         // id, partition, priority, response time, deadline, WCET
                         // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
                         Object[] row = new Object[]{task.id, task.partition, "HI", task.priority, Ri, task.deadline, task.WCET,
-                                task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, task.schedulable};
+                                task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, schedulable};
                         data.add(row);
                     }
                 } else {
                     // id, partition, priority, response time, deadline, WCET
                     // resource execution time, interference time, spin blocking, indirect spin blocking, arrival blocking
                     Object[] row = new Object[]{task.id, task.partition, task.critical == 0 ? "LO" : "HI", task.priority, task.Ri_LO, task.deadline, task.WCET,
-                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, task.schedulable};
+                            task.pure_resource_execution_time, task.interference, task.spin, task.indirect_spin, task.local, task.PWLP_S, schedulable};
                     data.add(row);
                 }
             }
@@ -588,8 +687,9 @@ public class Controller {
         generating.setVisible(false);
 
         // show data on the screen
-        onWakeUpTaskClicked();
-        taskClicked();
+//        onWakeUpTaskClicked();
+//        taskClicked();
+        generateResourceAccessButton();
         resourceClicked();
     }
 
