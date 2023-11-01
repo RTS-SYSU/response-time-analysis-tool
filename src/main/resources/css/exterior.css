@@ -82,56 +82,53 @@
 
 /****** table view *****/
 
-.table-view {
-    /*     Constants used throughout the tableview. */
+/*.table-view {
+    *//*     Constants used throughout the tableview. *//*
     -fx-table-header-border-color: transparent;
     -fx-table-cell-border-color: -fx-box-border;
     -fx-background-color: transparent;
     -fx-border-radius: 5px;
     -fx-border-color: rgb(48, 48, 48);
-}
+}*/
 
 .table-view .filler, .table-view .column-header
 {
     -fx-size: 40;
-    -fx-border-color: rgb(48, 48, 48);
+    -fx-border-color: rgb(235, 235, 235);
     -fx-border-width: 0px 0.5px 0.5px 0px;
-    -fx-background-color: transparent;
+/*    -fx-background-color: transparent;*/
     -fx-min-width: 80px;
     -fx-min-height: 80px;
 }
 
 .table-view .column-header .label{
-    -fx-text-fill: rgb(208, 211, 212);
+    -fx-background-color: linear-gradient(to top, rgb(219, 219, 219) 0%, rgb(235, 235, 235) 50%, white 100%);
     -fx-ellipsis-string: none; 
     -fx-text-overrun: clip;
     -fx-wrap-text: true;
-    -fx-font-size: 20px;
+  /*  -fx-font-size: 20px;*/
     -fx-alignment: CENTER;
-    -fx-font-weight: bold;
 
 }
 .table-view .column-drag-header .label
 {
     -fx-alignment: CENTER;
-    -fx-border-color: rgb(48, 48, 48);
+    -fx-border-color: rgb(235, 235, 235);
 }
 
-.table-view .column-header-background
+/*.table-view .column-header-background
 {
     -fx-background-color: transparent;
-}
+}*/
 
 .table-cell {
-    -fx-border-color: rgb(48, 48, 48);
+    -fx-border-color: rgb(235, 235, 235);
     -fx-border-width: 0px 0.5px 0.5px 0px;
     -fx-min-width: 80px;
-    -fx-min-height: 80px;
-    -fx-text-fill: rgb(208, 211, 212);
+    -fx-min-height: 40px;
 
     -fx-font-size: 15px;
     -fx-alignment: CENTER;
-    -fx-font-weight: bold;
 }
 .table-row-cell:selected {
     -fx-background-color: lightblue; /* 选中行的背景颜色 */

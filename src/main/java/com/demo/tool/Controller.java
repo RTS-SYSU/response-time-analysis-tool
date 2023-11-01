@@ -184,7 +184,7 @@ public class Controller {
                             String value = (String) currentRow[currentRow.length - 1];
 //                            System.out.println(currentRow[0] + " " + value);
                             if (value.equals("Unschedulable")) {
-                                setStyle("-fx-background-color: lightcoral;");
+                                setStyle("-fx-background-color: rgb(240, 211, 211);");
                             } else {
                                 setStyle("");
                             }
@@ -205,9 +205,9 @@ public class Controller {
                 } else {
                     if (item.equals("Accept")) {
                         // 在原有样式的基础上追加背景颜色样式
-                        setStyle("-fx-background-color: lightgreen;-fx-text-fill: white;");
+                        setStyle("-fx-text-fill: rgb(22, 202, 173);");
                     } else {
-                        if (item.equals("Unschedulable")) setStyle("-fx-text-fill: white;");
+                        if (item.equals("Unschedulable")) setStyle("-fx-text-fill: rgb(173, 67, 62);");
                         else setStyle("");
                     }
                 }
@@ -269,7 +269,7 @@ public class Controller {
                 return new TableCell<Object[], ArrayList>() {
                     private final Button button = new Button("View");
                     {
-                        button.setStyle("-fx-background-color: lightgreen;-fx-text-fill: white;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;");
+                        button.setStyle("-fx-background-color: rgb(22, 202, 173);-fx-text-fill: white;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;");
                         button.setOnAction(event -> {
                             Object[] item = getTableView().getItems().get(getIndex());
                             taskClicked(item);
@@ -357,7 +357,7 @@ public class Controller {
 //                            super.updateItem(item, empty);
 //                            if (item == null || empty) setStyle("");
 //                            else {
-//                                if (taskShowing == (int) item[0]) setStyle("-fx-background-color: lightgreen;");
+//                                if (taskShowing == (int) item[0]) setStyle("-fx-background-color: rgb(22, 202, 173);");
 //                                else setStyle("");
 //                            }
 //                        }
@@ -428,7 +428,7 @@ public class Controller {
                     super.updateItem(item, empty);
                     if (item == null || empty) setStyle("");
                     else {
-                        if (taskShowing == (int) item[0]) setStyle("-fx-background-color: lightgreen;");
+                        if (taskShowing == (int) item[0]) setStyle("-fx-background-color: rgb(22, 202, 173);");
                         else setStyle("");
                     }
                 }
