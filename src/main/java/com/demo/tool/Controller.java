@@ -269,10 +269,41 @@ public class Controller {
                 return new TableCell<Object[], ArrayList>() {
                     private final Button button = new Button("View");
                     {
-                        button.setStyle("-fx-background-color: rgb(22, 202, 173);-fx-text-fill: white;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;");
+//                        button.setStyle("-fx-background-color: rgb(22, 202, 173);-fx-text-fill: white;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;");
+                        button.setStyle("-fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));" +
+                                "-fx-background-insets: 0, 1; -fx-faint-focus-color: transparent;" +
+                                "-fx-background-radius: 5px; -fx-text-fill: white;" +
+                                "-fx-font-weight: bold;-fx-font-size: 14px;");
                         button.setOnAction(event -> {
                             Object[] item = getTableView().getItems().get(getIndex());
                             taskClicked(item);
+                        });
+                        // 鼠标进入时的样式
+                        button.setOnMouseEntered(e -> {
+                            button.setStyle("-fx-background-color: linear-gradient(to top, rgb(17, 183, 168), rgb(17, 152, 130));" +
+                                    "-fx-background-insets: 0, 1; -fx-background-radius: 5px; -fx-text-fill: white;" +
+                                    "-fx-font-weight: bold; -fx-font-size: 14px;");
+                        });
+                        // 鼠标退出时的样式
+                        button.setOnMouseExited(e -> {
+                            button.setStyle("-fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));" +
+                                "-fx-background-insets: 0, 1; -fx-faint-focus-color: transparent;" +
+                                "-fx-background-radius: 5px; -fx-text-fill: white;" +
+                                "-fx-font-weight: bold;-fx-font-size: 14px;");
+                        });
+
+                        // 按下时的样式
+                        button.setOnMousePressed(e -> {
+                            button.setStyle("-fx-background-color: linear-gradient(to top, rgb(11, 101, 86), rgb(65, 122, 112));" +
+                                    "-fx-background-insets: 0, 1; -fx-background-radius: 5px; -fx-text-fill: white;" +
+                                    "-fx-font-weight: bold; -fx-font-size: 14px;");
+                        });
+
+                        // 恢复正常样式
+                        button.setOnMouseReleased(e -> {
+                            button.setStyle("-fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));" +
+                                    "-fx-background-insets: 0, 1; -fx-background-radius: 5px; -fx-text-fill: white;" +
+                                    "-fx-font-weight: bold; -fx-font-size: 14px;");
                         });
                     }
 

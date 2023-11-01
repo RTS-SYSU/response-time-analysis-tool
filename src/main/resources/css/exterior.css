@@ -105,7 +105,7 @@
     -fx-background-color: linear-gradient(to top, rgb(219, 219, 219) 0%, rgb(235, 235, 235) 50%, white 100%);
     -fx-ellipsis-string: none; 
     -fx-text-overrun: clip;
-    -fx-wrap-text: true;
+    -fx-wrap-text: false;
   /*  -fx-font-size: 20px;*/
     -fx-alignment: CENTER;
 
