@@ -3,7 +3,10 @@
 }
 
 .basic {
-    -fx-background-color: rgb(243, 243, 243);
+    /* -fx-background-color: linear-gradient(to top, rgb(219, 219, 219) 0%, white 100%); */
+    -fx-background-color: white;
+    -fx-border-color: rgb(219, 219, 219);
+    -fx-border-radius: 1.2em;
 }
 
 .resource-clicked {
@@ -11,25 +14,32 @@
 }
 
 .resource-change-when-task-clicked {
-    -fx-background-color: rgb(207, 249, 207);
+    -fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));
+    -fx-border-color: rgb(22, 202, 173);
+    -fx-border-radius: 1.2em;
 }
 
 .resource-change-when-task-clicked:hover {
-    -fx-background-color: rgb(177, 235, 177);
+    -fx-background-color: rgb(22, 202, 173);
 }
 
 .partition-change-when-task-clicked {
-    -fx-background-color: rgb(207, 249, 207);
+    -fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));
+    -fx-border-color: rgb(22, 202, 173);
+    -fx-border-radius: 1.2em;
 }
 
 .partition-change-when-task-clicked:hover {
-    -fx-background-color: rgb(177, 235, 177);
+    -fx-background-color: rgb(22, 202, 173);
+
 }
 
 .resource-clicked-change-all{
-    -fx-background-color: rgb(247, 209, 193) ;
+    -fx-background-color: linear-gradient(to bottom, rgb(255, 239, 193), rgb(255, 218, 105));
+    -fx-border-color: rgb(255, 218, 105);
+    -fx-border-radius: 1.2em;
 }
 
 .resource-clicked-change-all:hover {
-    -fx-background-color: rgb(249, 195, 172);
+    -fx-background-color: rgb(255, 218, 105);
 }

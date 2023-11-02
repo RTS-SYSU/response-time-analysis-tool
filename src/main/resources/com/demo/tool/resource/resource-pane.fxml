@@ -2,34 +2,42 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.effect.Blend?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<StackPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="130.0" prefWidth="150.0" style="-fx-background-radius: 1.2em;" styleClass="basic" stylesheets="@../../../../css/resource-factor.css" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<VBox alignment="TOP_CENTER" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="136.0" prefWidth="100.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <children>
-      <Label fx:id="resourceId" wrapText="true">
-         <StackPane.margin>
-            <Insets bottom="70.0" />
-         </StackPane.margin>
+      <StackPane fx:id="pane" maxHeight="1.7976931348623157E308" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="100.0" style="-fx-background-radius: 1.2em;" styleClass="basic" stylesheets="@../../../../css/resource-factor.css">
+         <children>
+            <Label fx:id="resourceId" alignment="CENTER" prefHeight="58.0" prefWidth="100.0" textAlignment="CENTER" wrapText="true">
+               <StackPane.margin>
+                  <Insets />
+               </StackPane.margin>
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <tooltip>
+                  <Tooltip fx:id="cslT" text="length: --" />
+               </tooltip>
+            </Label>
+         </children>
+         <VBox.margin>
+            <Insets top="6.0" />
+         </VBox.margin>
+      </StackPane>
+      <Label fx:id="accessTime" alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="100.0" text="--">
+         <VBox.margin>
+            <Insets top="8.0" />
+         </VBox.margin>
          <font>
-            <Font name="Britannic Bold" size="20.0" />
+            <Font size="15.0" />
          </font>
-      </Label>
-      <Label fx:id="csl">
-         <StackPane.margin>
-            <Insets />
-         </StackPane.margin>
-         <font>
-            <Font name="Britannic Bold" size="20.0" />
-         </font>
-      </Label>
-      <Label fx:id="accessTime" textAlignment="CENTER" wrapText="true">
-         <StackPane.margin>
-            <Insets top="70.0" />
-         </StackPane.margin>
-         <font>
-            <Font name="Britannic Bold" size="20.0" />
-         </font>
+         <effect>
+            <Blend />
+         </effect>
       </Label>
    </children>
-</StackPane>
+</VBox>

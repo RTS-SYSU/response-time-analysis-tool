@@ -165,7 +165,7 @@ public class Controller {
         priority.getItems().addAll("DMPO");
         priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
-        RTM.getItems().addAll("MSRP", "MSRPNew", "Mrsp","MrspNew", "PWLP", "Dynamic");
+        RTM.getItems().addAll("MSRP", "MSRPNew", "Mrsp", "MrspNew", "PWLP", "Dynamic");
     }
 
     void resultTableChangeColorWithSort() {
@@ -268,6 +268,7 @@ public class Controller {
             public TableCell<Object[], ArrayList> call(final TableColumn<Object[], ArrayList> param) {
                 return new TableCell<Object[], ArrayList>() {
                     private final Button button = new Button("View");
+
                     {
 //                        button.setStyle("-fx-background-color: rgb(22, 202, 173);-fx-text-fill: white;-fx-focus-color: transparent;-fx-faint-focus-color: transparent;");
                         button.setStyle("-fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));" +
@@ -276,6 +277,7 @@ public class Controller {
                                 "-fx-font-weight: bold;-fx-font-size: 14px;");
                         button.setOnAction(event -> {
                             Object[] item = getTableView().getItems().get(getIndex());
+                            taskClickCount = 1;
                             taskClicked(item);
                         });
                         // 鼠标进入时的样式
@@ -287,9 +289,9 @@ public class Controller {
                         // 鼠标退出时的样式
                         button.setOnMouseExited(e -> {
                             button.setStyle("-fx-background-color: linear-gradient(to top, rgb(22, 202, 173), rgb(130, 244, 224));" +
-                                "-fx-background-insets: 0, 1; -fx-faint-focus-color: transparent;" +
-                                "-fx-background-radius: 5px; -fx-text-fill: white;" +
-                                "-fx-font-weight: bold;-fx-font-size: 14px;");
+                                    "-fx-background-insets: 0, 1; -fx-faint-focus-color: transparent;" +
+                                    "-fx-background-radius: 5px; -fx-text-fill: white;" +
+                                    "-fx-font-weight: bold;-fx-font-size: 14px;");
                         });
 
                         // 按下时的样式
@@ -324,10 +326,10 @@ public class Controller {
     void generateResource(ArrayList<Resource> resources) {
         HBox contentHBox = new HBox();
         for (Resource resource : resources) {
-            ResourcePaneController rpc = new ResourcePaneController();
-            rpc.getResourceId().setText("Resource " + (resource.id - 1));
+            ResourcePaneController rpc = new ResourcePaneController(page11);
+            rpc.getResourceId().setText("R" + (resource.id - 1));
             rpc.setID(resource.id);
-            rpc.getCsl().setText("csl " + resource.csl);
+            rpc.getTipForCsl().setText("length: " + resource.csl);
 
             contentHBox.getChildren().add(rpc);
         }
@@ -338,7 +340,7 @@ public class Controller {
         HBox contentHBox = new HBox();
         for (int i = 0; i < factors.TOTAL_PARTITIONS; i++) {
             ResourcePartitionController rpc = new ResourcePartitionController();
-            rpc.getPartitionId().setText("Partition " + i);
+            rpc.getPartitionId().setText("P" + i);
 
             contentHBox.getChildren().add(rpc);
         }
@@ -494,12 +496,16 @@ public class Controller {
         if (resourceBlock.size() == 0 && restore) {
             ResourcePaneController rpc = (ResourcePaneController) resourcePane.getChildren().get(0);
             rpc.backToNormal("resource-change-when-task-clicked");
+            rpc.getTaskAccessTime().setText("--");
         }
         for (int i = 0; i < resourceBlock.size(); i++) {
             ResourcePaneController rpc = (ResourcePaneController) resourcePane.getChildren().get(resourceBlock.get(i));
-            if (restore) rpc.backToNormal("resource-change-when-task-clicked");
-            else {
-                rpc.getTaskAccessTime().setText("Number of access " + numberOfAccessInOneRelease.get(i));
+            if (restore) {
+                rpc.backToNormal("resource-change-when-task-clicked");
+                rpc.getTaskAccessTime().setText("--");
+                rpc.getTipForCsl().setText("length: --");
+            } else {
+                rpc.getTaskAccessTime().setText(String.valueOf(numberOfAccessInOneRelease.get(i)));
                 rpc.onRespondTask();
             }
         }
@@ -582,7 +588,7 @@ public class Controller {
                                 setStyle("");
                             } else {
                                 if (tasksId.contains((int) item1[0])) {
-                                    setStyle("-fx-background-color: lightsalmon;");
+                                    setStyle("-fx-background-color: linear-gradient(to bottom, rgb(255, 239, 193), rgb(255, 218, 105));");
                                 } else {
                                     setStyle("");
                                 }
@@ -601,7 +607,7 @@ public class Controller {
             for (SporadicTask task : sporadicTasks) {
                 String schedulable = "Unresolved";
                 if (task.schedulable == 1) schedulable = "Accept";
-                else if (task.schedulable == 0)schedulable = "Unschedulable";
+                else if (task.schedulable == 0) schedulable = "Unschedulable";
                 if (systemMode.getValue() == "ModeSwitch" || systemMode.getValue() == "HI") {
                     long Ri = task.Ri_Switch;
                     if (systemMode.getValue() == "HI") Ri = task.Ri_HI;
