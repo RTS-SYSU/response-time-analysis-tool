@@ -6,6 +6,7 @@ import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.Factors;
 import com.demo.tool.responsetimeanalysis.utils.Pair;
+import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -13,10 +14,7 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.geometry.Bounds;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Region;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
 import javafx.util.Callback;
 
 import java.text.DecimalFormat;
@@ -25,6 +23,7 @@ import java.util.HashSet;
 
 import static com.demo.tool.Utils.judgeFloat;
 import static com.demo.tool.Utils.judgeInteger;
+
 
 public class Controller {
     @FXML
@@ -82,15 +81,43 @@ public class Controller {
     @FXML
     private VBox page22;
     @FXML
+    private VBox page3;
+    @FXML
     private StackPane page1btn;
     @FXML
     private StackPane page2btn;
+    @FXML
+    private StackPane page3btn;
     @FXML
     private Tooltip tipsForU;
     @FXML
     private ScrollPane pPartition;
     @FXML
     private ScrollPane pResource;
+
+    @FXML
+    private TextField text_FIFONP_LOCK;
+
+    @FXML
+    private TextField text_FIFONP_UNLOCK;
+
+    @FXML
+    private TextField text_FIFOP_CANCEL;
+
+    @FXML
+    private TextField text_FIFOP_LOCK;
+
+    @FXML
+    private TextField text_FIFOP_UNLOCK;
+
+    @FXML
+    private TextField text_Mrsp_LOCK;
+
+    @FXML
+    private TextField text_Mrsp_UNLOCK;
+
+    @FXML
+    private TextField text_Mrsp_PREEMPTION_AND_MIGRATION;
 
 
     private Factors factors;
@@ -119,6 +146,8 @@ public class Controller {
                 rangeCSL1.setText("1");
                 rangeCSL2.setText("100");
                 allocation.setValue("WF");
+            }else{
+                onChangeToPage1();
             }
         });
     }
@@ -151,8 +180,8 @@ public class Controller {
 
     void initPageBtnStyle() {
         page1btn.getStyleClass().add("round-background");
-        page1btn.getStyleClass().add("basic-hover");
         page2btn.getStyleClass().add("basic-hover");
+        page3btn.getStyleClass().add("basic-hover");
     }
 
     void initAnalysis() {
@@ -744,22 +773,69 @@ public class Controller {
     void onChangeToPage1() {
         page1btn.getStyleClass().add("round-background");
         page2btn.getStyleClass().remove("round-background");
+        page3btn.getStyleClass().remove("round-background");
 
         page11.setVisible(true);
         page12.setVisible(true);
         page21.setVisible(false);
         page22.setVisible(false);
+        page3.setVisible(false);
     }
 
     @FXML
     void onChangeToPage2() {
         page1btn.getStyleClass().remove("round-background");
         page2btn.getStyleClass().add("round-background");
+        page3btn.getStyleClass().remove("round-background");
 
         page11.setVisible(false);
         page12.setVisible(false);
         page21.setVisible(true);
         page22.setVisible(true);
+        page3.setVisible(false);
     }
 
+    @FXML
+    void onChangeToPage3() {
+        page1btn.getStyleClass().remove("round-background");
+        page2btn.getStyleClass().remove("round-background");
+        page3btn.getStyleClass().add("round-background");
+
+        page11.setVisible(false);
+        page12.setVisible(false);
+        page21.setVisible(false);
+        page22.setVisible(false);
+        page3.setVisible(true);
+    }
+    @FXML
+    void onConfigButtonClicked(){
+            AnalysisUtils.FIFONP_LOCK = parseDouble(text_FIFONP_LOCK)==Double.MIN_VALUE?AnalysisUtils.FIFONP_LOCK:parseDouble(text_FIFONP_LOCK);
+            AnalysisUtils.FIFONP_UNLOCK = parseDouble(text_FIFONP_UNLOCK)==Double.MIN_VALUE?AnalysisUtils.FIFONP_UNLOCK:parseDouble(text_FIFONP_UNLOCK);
+            AnalysisUtils.FIFOP_CANCEL = parseDouble(text_FIFOP_CANCEL)==Double.MIN_VALUE?AnalysisUtils.FIFOP_CANCEL:parseDouble(text_FIFOP_CANCEL);
+            AnalysisUtils.FIFOP_LOCK = parseDouble(text_FIFOP_LOCK)==Double.MIN_VALUE?AnalysisUtils.FIFOP_LOCK:parseDouble(text_FIFOP_LOCK);
+            AnalysisUtils.FIFOP_UNLOCK = parseDouble(text_FIFOP_UNLOCK)==Double.MIN_VALUE?AnalysisUtils.FIFOP_UNLOCK:parseDouble(text_FIFOP_UNLOCK);
+            AnalysisUtils.MrsP_LOCK = parseDouble(text_Mrsp_LOCK)==Double.MIN_VALUE?AnalysisUtils.MrsP_LOCK:parseDouble(text_Mrsp_LOCK);
+            AnalysisUtils.MrsP_UNLOCK = parseDouble(text_Mrsp_UNLOCK)==Double.MIN_VALUE?AnalysisUtils.MrsP_UNLOCK:parseDouble(text_Mrsp_UNLOCK);
+            AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION = parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION)==Double.MIN_VALUE?AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION:parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION);
+
+        System.out.println("FIFONP_LOCK: "+text_FIFONP_LOCK.getText()+"\tFIFONP_UNLOCK: "+text_FIFONP_UNLOCK.getText());
+        System.out.println("FIFOP_CANCEL: "+text_FIFOP_CANCEL.getText()+"\tFIFOP_LOCK: "+text_FIFOP_LOCK.getText()+"\tFIFOP_UNLOCK"+text_FIFOP_UNLOCK.getText());
+        System.out.println("MrsP_LOCK:"+text_Mrsp_LOCK.getText()+"\tMrsP_UNLOCK:"+text_Mrsp_UNLOCK.getText()+"\tMrsP_PREEMPTION_AND_MIGRATION:"+text_Mrsp_UNLOCK.getText());
+    }
+
+    /**
+     * 判断参数是否合法并传递为double，不合法为Double.MIN_VALUE
+     * @param textField
+     * @return
+     * @throws NumberFormatException
+     */
+    private static double parseDouble(TextField textField) throws NumberFormatException {
+        double value = Double.MIN_VALUE;
+        try {
+            value = Double.parseDouble(textField.getText());
+        } catch (NumberFormatException e) {
+            textField.setText("illegal value");
+        }
+        return value;
+    }
 }
