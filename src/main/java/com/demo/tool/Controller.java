@@ -119,6 +119,9 @@ public class Controller {
     @FXML
     private TextField text_Mrsp_PREEMPTION_AND_MIGRATION;
 
+    @FXML
+    private TextField text_FULL_CONTEXT_SWITCH2;
+
 
     private Factors factors;
 
@@ -131,6 +134,8 @@ public class Controller {
     private int taskClickCount = 1;
     private int currentShowingResource = -1;
     private int resourceClickCount = 0;
+
+
 
     void test0() {
         page1btn.setOnMouseClicked(mouseEvent -> {
@@ -146,7 +151,7 @@ public class Controller {
                 rangeCSL1.setText("1");
                 rangeCSL2.setText("100");
                 allocation.setValue("WF");
-            }else{
+            } else {
                 onChangeToPage1();
             }
         });
@@ -391,18 +396,6 @@ public class Controller {
         }
     }
 
-    void onWakeUpTaskClicked() {
-        table1.setOnMouseClicked(event -> {
-            if (event.getClickCount() == 2 && !taskClickedFactoryAwake) {
-                // clean first
-                cleanStyleBeforeChange("resource-clicked-change-all");
-
-//                taskClicked();
-                table1.refresh();
-            }
-        });
-    }
-
 //     双击控件弃用，换成按钮
 //    /**
 //     * link task table to resource and partition block by define a new row factory
@@ -458,6 +451,18 @@ public class Controller {
 //            }
 //        }
 //    }
+
+    void onWakeUpTaskClicked() {
+        table1.setOnMouseClicked(event -> {
+            if (event.getClickCount() == 2 && !taskClickedFactoryAwake) {
+                // clean first
+                cleanStyleBeforeChange("resource-clicked-change-all");
+
+//                taskClicked();
+                table1.refresh();
+            }
+        });
+    }
 
     /**
      * click resource access button to show
@@ -807,24 +812,30 @@ public class Controller {
         page22.setVisible(false);
         page3.setVisible(true);
     }
-    @FXML
-    void onConfigButtonClicked(){
-            AnalysisUtils.FIFONP_LOCK = parseDouble(text_FIFONP_LOCK)==Double.MIN_VALUE?AnalysisUtils.FIFONP_LOCK:parseDouble(text_FIFONP_LOCK);
-            AnalysisUtils.FIFONP_UNLOCK = parseDouble(text_FIFONP_UNLOCK)==Double.MIN_VALUE?AnalysisUtils.FIFONP_UNLOCK:parseDouble(text_FIFONP_UNLOCK);
-            AnalysisUtils.FIFOP_CANCEL = parseDouble(text_FIFOP_CANCEL)==Double.MIN_VALUE?AnalysisUtils.FIFOP_CANCEL:parseDouble(text_FIFOP_CANCEL);
-            AnalysisUtils.FIFOP_LOCK = parseDouble(text_FIFOP_LOCK)==Double.MIN_VALUE?AnalysisUtils.FIFOP_LOCK:parseDouble(text_FIFOP_LOCK);
-            AnalysisUtils.FIFOP_UNLOCK = parseDouble(text_FIFOP_UNLOCK)==Double.MIN_VALUE?AnalysisUtils.FIFOP_UNLOCK:parseDouble(text_FIFOP_UNLOCK);
-            AnalysisUtils.MrsP_LOCK = parseDouble(text_Mrsp_LOCK)==Double.MIN_VALUE?AnalysisUtils.MrsP_LOCK:parseDouble(text_Mrsp_LOCK);
-            AnalysisUtils.MrsP_UNLOCK = parseDouble(text_Mrsp_UNLOCK)==Double.MIN_VALUE?AnalysisUtils.MrsP_UNLOCK:parseDouble(text_Mrsp_UNLOCK);
-            AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION = parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION)==Double.MIN_VALUE?AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION:parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION);
 
-        System.out.println("FIFONP_LOCK: "+text_FIFONP_LOCK.getText()+"\tFIFONP_UNLOCK: "+text_FIFONP_UNLOCK.getText());
-        System.out.println("FIFOP_CANCEL: "+text_FIFOP_CANCEL.getText()+"\tFIFOP_LOCK: "+text_FIFOP_LOCK.getText()+"\tFIFOP_UNLOCK"+text_FIFOP_UNLOCK.getText());
-        System.out.println("MrsP_LOCK:"+text_Mrsp_LOCK.getText()+"\tMrsP_UNLOCK:"+text_Mrsp_UNLOCK.getText()+"\tMrsP_PREEMPTION_AND_MIGRATION:"+text_Mrsp_UNLOCK.getText());
+    @FXML
+    void onConfigButtonClicked() {
+        AnalysisUtils.FIFONP_LOCK = parseDouble(text_FIFONP_LOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFONP_LOCK : parseDouble(text_FIFONP_LOCK);
+        AnalysisUtils.FIFONP_UNLOCK = parseDouble(text_FIFONP_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFONP_UNLOCK : parseDouble(text_FIFONP_UNLOCK);
+        AnalysisUtils.FIFOP_CANCEL = parseDouble(text_FIFOP_CANCEL) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_CANCEL : parseDouble(text_FIFOP_CANCEL);
+        AnalysisUtils.FIFOP_LOCK = parseDouble(text_FIFOP_LOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_LOCK : parseDouble(text_FIFOP_LOCK);
+        AnalysisUtils.FIFOP_UNLOCK = parseDouble(text_FIFOP_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_UNLOCK : parseDouble(text_FIFOP_UNLOCK);
+        AnalysisUtils.MrsP_LOCK = parseDouble(text_Mrsp_LOCK) == Double.MIN_VALUE ? AnalysisUtils.MrsP_LOCK : parseDouble(text_Mrsp_LOCK);
+        AnalysisUtils.MrsP_UNLOCK = parseDouble(text_Mrsp_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.MrsP_UNLOCK : parseDouble(text_Mrsp_UNLOCK);
+        AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION = parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION) == Double.MIN_VALUE ? AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION : parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION);
+        AnalysisUtils.FULL_CONTEXT_SWTICH2 = parseDouble(text_FULL_CONTEXT_SWITCH2) == Double.MIN_VALUE ? AnalysisUtils.FULL_CONTEXT_SWTICH2 : parseDouble(text_FULL_CONTEXT_SWITCH2);
+
+        System.out.println("FIFONP_LOCK: " + AnalysisUtils.FIFONP_LOCK + "\tFIFONP_UNLOCK: " + AnalysisUtils.FIFONP_UNLOCK);
+        System.out.println("FIFOP_CANCEL: " + AnalysisUtils.FIFOP_CANCEL + "\tFIFOP_LOCK: " + AnalysisUtils.FIFOP_LOCK + "\tFIFOP_UNLOCK:" + AnalysisUtils.FIFOP_UNLOCK);
+        System.out.println("MrsP_LOCK:" + AnalysisUtils.MrsP_LOCK + "\tMrsP_UNLOCK:" + AnalysisUtils.MrsP_UNLOCK + "\tMrsP_PREEMPTION_AND_MIGRATION:" + AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION);
+        System.out.println("MrsP_LOCK:" + AnalysisUtils.MrsP_LOCK + "\tMrsP_UNLOCK:" + AnalysisUtils.MrsP_UNLOCK + "\tMrsP_PREEMPTION_AND_MIGRATION:" + AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION);
+        System.out.println("FULL_CONTEXT_SWTICH2:" + AnalysisUtils.FULL_CONTEXT_SWTICH2);
+
     }
 
     /**
      * 判断参数是否合法并传递为double，不合法为Double.MIN_VALUE
+     *
      * @param textField
      * @return
      * @throws NumberFormatException
