@@ -7,6 +7,7 @@ import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.Factors;
 import com.demo.tool.responsetimeanalysis.utils.Pair;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import javafx.animation.PauseTransition;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -16,6 +17,7 @@ import javafx.geometry.Bounds;
 import javafx.scene.control.*;
 import javafx.scene.layout.*;
 import javafx.util.Callback;
+import javafx.util.Duration;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
@@ -77,7 +79,7 @@ public class Controller {
     @FXML
     private VBox page12;
     @FXML
-    private VBox page21;
+    private HBox page2;
     @FXML
     private VBox page22;
     @FXML
@@ -122,6 +124,115 @@ public class Controller {
     @FXML
     private TextField text_FULL_CONTEXT_SWITCH2;
 
+    @FXML
+    private Label FIFONP_LOCK_Label;
+
+    @FXML
+    private HBox FIFONP_LOCK_HBox;
+
+    @FXML
+    private TextField FIFONP_LOCK_TextField;
+
+    @FXML
+    private Button FIFONP_LOCK_Button;
+
+    @FXML
+    private Label FIFONP_UNLOCK_Label;
+
+    @FXML
+    private HBox FIFONP_UNLOCK_HBox;
+
+    @FXML
+    private TextField FIFONP_UNLOCK_TextField;
+
+    @FXML
+    private Button FIFONP_UNLOCK_Button;
+
+    @FXML
+    private Label FIFOP_CANCEL_Label;
+
+    @FXML
+    private HBox FIFOP_CANCEL_HBox;
+
+    @FXML
+    private TextField FIFOP_CANCEL_TextField;
+
+    @FXML
+    private Button FIFOP_CANCEL_Button;
+
+    @FXML
+    private Label FIFOP_LOCK_Label;
+
+    @FXML
+    private HBox FIFOP_LOCK_HBox;
+
+    @FXML
+    private TextField FIFOP_LOCK_TextField;
+
+    @FXML
+    private Button FIFOP_LOCK_Button;
+
+    @FXML
+    private Label FIFOP_UNLOCK_Label;
+
+    @FXML
+    private HBox FIFOP_UNLOCK_HBox;
+
+    @FXML
+    private TextField FIFOP_UNLOCK_TextField;
+
+    @FXML
+    private Button FIFOP_UNLOCK_Button;
+
+    @FXML
+    private Label Mrsp_LOCK_Label;
+
+    @FXML
+    private HBox Mrsp_LOCK_HBox;
+
+    @FXML
+    private TextField Mrsp_LOCK_TextField;
+
+    @FXML
+    private Button Mrsp_LOCK_Button;
+
+    @FXML
+    private Label Mrsp_UNLOCK_Label;
+
+    @FXML
+    private HBox Mrsp_UNLOCK_HBox;
+
+    @FXML
+    private TextField Mrsp_UNLOCK_TextField;
+
+    @FXML
+    private Button Mrsp_UNLOCK_Button;
+
+    @FXML
+    private Label Mrsp_MIGRATION_Label;
+
+    @FXML
+    private HBox Mrsp_MIGRATION_HBox;
+
+    @FXML
+    private TextField Mrsp_MIGRATION_TextField;
+
+    @FXML
+    private Button Mrsp_MIGRATION_Button;
+
+    @FXML
+    private Label FULL_CONTEXT_SWITCH2_Label;
+
+    @FXML
+    private HBox FULL_CONTEXT_SWITCH2_HBox;
+
+    @FXML
+    private TextField FULL_CONTEXT_SWITCH2_TextField;
+
+    @FXML
+    private Button FULL_CONTEXT_SWITCH2_Button;
+
+
 
     private Factors factors;
 
@@ -162,6 +273,7 @@ public class Controller {
         initComBox();
         initAnalysis();
         initPageBtnStyle();
+        initConfigUi();
         tipsForU.setShowDelay(javafx.util.Duration.millis(100));
         tipsForU.setHideDelay(javafx.util.Duration.millis(100));
 
@@ -782,8 +894,7 @@ public class Controller {
 
         page11.setVisible(true);
         page12.setVisible(true);
-        page21.setVisible(false);
-        page22.setVisible(false);
+        page2.setVisible(false);
         page3.setVisible(false);
     }
 
@@ -795,8 +906,7 @@ public class Controller {
 
         page11.setVisible(false);
         page12.setVisible(false);
-        page21.setVisible(true);
-        page22.setVisible(true);
+        page2.setVisible(true);
         page3.setVisible(false);
     }
 
@@ -808,8 +918,7 @@ public class Controller {
 
         page11.setVisible(false);
         page12.setVisible(false);
-        page21.setVisible(false);
-        page22.setVisible(false);
+        page2.setVisible(false);
         page3.setVisible(true);
     }
 
@@ -845,8 +954,67 @@ public class Controller {
         try {
             value = Double.parseDouble(textField.getText());
         } catch (NumberFormatException e) {
-            textField.setText("illegal value");
+            //textField.setText("illegal value");
         }
         return value;
+    }
+
+    void initConfigUi(){
+        FIFONP_LOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(FIFONP_LOCK_Label,FIFONP_LOCK_HBox));
+        FIFONP_LOCK_Button.setOnMouseClicked(e->onclickedConfigButton(FIFONP_LOCK_Label,FIFONP_LOCK_TextField,FIFONP_LOCK_HBox));
+
+        FIFONP_UNLOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(FIFONP_UNLOCK_Label,FIFONP_UNLOCK_HBox));
+        FIFONP_UNLOCK_Button.setOnMouseClicked(e->onclickedConfigButton(FIFONP_UNLOCK_Label,FIFONP_UNLOCK_TextField,FIFONP_UNLOCK_HBox));
+
+        FIFOP_CANCEL_Label.setOnMouseClicked(e->onClickedConfigLabel(FIFOP_CANCEL_Label,FIFOP_CANCEL_HBox));
+        FIFOP_CANCEL_Button.setOnMouseClicked(e->onclickedConfigButton(FIFOP_CANCEL_Label,FIFOP_CANCEL_TextField,FIFOP_CANCEL_HBox));
+
+        FIFOP_LOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(FIFOP_LOCK_Label,FIFOP_LOCK_HBox));
+        FIFOP_LOCK_Button.setOnMouseClicked(e->onclickedConfigButton(FIFOP_LOCK_Label,FIFOP_LOCK_TextField,FIFOP_LOCK_HBox));
+
+        FIFOP_UNLOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(FIFOP_UNLOCK_Label,FIFOP_UNLOCK_HBox));
+        FIFOP_UNLOCK_Button.setOnMouseClicked(e->onclickedConfigButton(FIFOP_UNLOCK_Label,FIFOP_UNLOCK_TextField,FIFOP_UNLOCK_HBox));
+
+        Mrsp_LOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(Mrsp_LOCK_Label,Mrsp_LOCK_HBox));
+        Mrsp_LOCK_Button.setOnMouseClicked(e->onclickedConfigButton(Mrsp_LOCK_Label,Mrsp_LOCK_TextField,Mrsp_LOCK_HBox));
+
+        Mrsp_UNLOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(Mrsp_UNLOCK_Label,Mrsp_UNLOCK_HBox));
+        Mrsp_UNLOCK_Button.setOnMouseClicked(e->onclickedConfigButton(Mrsp_UNLOCK_Label,Mrsp_UNLOCK_TextField,Mrsp_UNLOCK_HBox));
+
+        Mrsp_MIGRATION_Label.setOnMouseClicked(e->onClickedConfigLabel(Mrsp_MIGRATION_Label,Mrsp_MIGRATION_HBox));
+        Mrsp_MIGRATION_Button.setOnMouseClicked(e->onclickedConfigButton(Mrsp_MIGRATION_Label,Mrsp_MIGRATION_TextField,Mrsp_MIGRATION_HBox));
+
+        FULL_CONTEXT_SWITCH2_Label.setOnMouseClicked(e->onClickedConfigLabel(FULL_CONTEXT_SWITCH2_Label,FULL_CONTEXT_SWITCH2_HBox));
+        FULL_CONTEXT_SWITCH2_Button.setOnMouseClicked(e->onclickedConfigButton(FULL_CONTEXT_SWITCH2_Label,FULL_CONTEXT_SWITCH2_TextField,FULL_CONTEXT_SWITCH2_HBox));
+    }
+    void onClickedConfigLabel(Label label,HBox hBox){
+        label.setVisible(false);
+        hBox.setVisible(true);
+    }
+
+    void onclickedConfigButton(Label label,TextField textField,HBox hBox){
+        if(parseDouble(FIFONP_LOCK_TextField)==Double.MIN_VALUE){   //不合法字符
+            textField.setText("illegal value");
+            // 创建一个 PauseTransition 对象，设置持续时间为0.5秒
+            PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+            pauseTransition.setOnFinished(e -> {
+                // 当暂停结束后执行的操作
+                label.setVisible(true);
+                hBox.setVisible(false);
+            });
+            pauseTransition.play();
+        }
+        else{
+            AnalysisUtils.FIFONP_LOCK = parseDouble(text_FIFONP_LOCK);
+            textField.setText("successful");
+            // 创建一个 PauseTransition 对象，设置持续时间为0.5秒
+            PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+            pauseTransition.setOnFinished(e -> {
+                // 当暂停结束后执行的操作
+                label.setVisible(true);
+                hBox.setVisible(false);
+            });
+            pauseTransition.play();
+        }
     }
 }
