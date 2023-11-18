@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="200.0" prefWidth="320.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.demo.tool.ConfigController">
+    <children>
+        <VBox fx:id="page3" layoutX="12.0" layoutY="-5.0" prefHeight="587.0" prefWidth="425.0">
+            <children>
+                <HBox alignment="CENTER_LEFT" prefHeight="58.0" prefWidth="422.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="Parameter" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="24.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <Label text="Value">
+                            <font>
+                                <Font name="Bell MT" size="24.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="FIFONP_LOCK" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_FIFONP_LOCK" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="0.979">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="FIFONP_UNLOCK" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_FIFONP_UNLOCK" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="0.602">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="FIFOP_CANCEL" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_FIFOP_CANCEL" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="0.919">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="FIFOP_LOCK" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_FIFOP_LOCK" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="1.255">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="FIFOP_UNLOCK" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_FIFOP_UNLOCK" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="0.602">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="Mrsp_LOCK" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_Mrsp_LOCK" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="1.272">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="Mrsp_UNLOCK" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="14.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_Mrsp_UNLOCK" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="1.642">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="560.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="Mrsp_PREEMPTION_AND_MIGRATION" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="13.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_Mrsp_PREEMPTION_AND_MIGRATION" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="8.378">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER_LEFT" prefHeight="64.0" prefWidth="425.0">
+                    <children>
+                        <Label alignment="CENTER" prefHeight="59.0" prefWidth="129.0" text="FULL_CONTEXT_SWITCH2" textAlignment="CENTER" wrapText="true">
+                            <font>
+                                <Font name="Bell MT" size="13.0" />
+                            </font>
+                        </Label>
+                        <SplitPane prefHeight="66.0" prefWidth="90.0" visible="false" />
+                        <TextField fx:id="text_FULL_CONTEXT_SWITCH2" alignment="CENTER" prefHeight="46.0" prefWidth="198.0" text="10.24">
+                            <font>
+                                <Font name="Berlin Sans FB" size="18.0" />
+                            </font>
+                        </TextField>
+                    </children>
+                </HBox>
+                <HBox alignment="CENTER" prefHeight="71.0" prefWidth="534.0">
+                    <children>
+                        <Button fx:id="configButton" mnemonicParsing="false" onMouseClicked="#onConfigButtonClicked" prefHeight="39.0" prefWidth="87.0" text="confirm" textAlignment="CENTER" textOverrun="CLIP">
+                            <font>
+                                <Font name="Bell MT" size="18.0" />
+                            </font>
+                        </Button>
+                    </children>
+                </HBox>
+
+            </children></VBox>
+    </children>
+</AnchorPane>

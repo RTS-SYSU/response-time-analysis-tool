@@ -47,7 +47,7 @@
       </HBox>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="640.0" prefWidth="1200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <children>
-            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
                      <children>
@@ -284,7 +284,7 @@
                   </StackPane>
                </children>
             </VBox>
-            <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="311.0" prefWidth="841.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                     <columns>
@@ -531,7 +531,7 @@
                   </HBox>
 
                </children></VBox>
-            <HBox fx:id="page2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <HBox fx:id="page2" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
                   <VBox fx:id="page21" alignment="CENTER_LEFT" prefHeight="640.0" prefWidth="188.0" style="-fx-background-color: rgb(243, 243, 243);" stylesheets="@../../../css/exterior.css">
                      <children>
@@ -588,143 +588,9 @@
                   </VBox>
                   <VBox fx:id="page22" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox prefHeight="50.0" prefWidth="970.0">
+                        <HBox prefWidth="100.0">
                            <children>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="FIFONP_LOCK_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="FIFONP_LOCK" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="FIFONP_LOCK_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="FIFONP_LOCK_TextField" prefHeight="27.0" prefWidth="75.0" text="0.979" />
-                                          <Button fx:id="FIFONP_LOCK_Button" mnemonicParsing="false" prefHeight="27.0" prefWidth="26.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="FIFONP_UNLOCK_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="FIFONP_UNLOCK" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="FIFONP_UNLOCK_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="FIFONP_UNLOCK_TextField" prefHeight="27.0" prefWidth="134.0" text="0.602" />
-                                          <Button fx:id="FIFONP_UNLOCK_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="FIFOP_CANCEL_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="FIFOP_CANCEL" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="FIFOP_CANCEL_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="FIFOP_CANCEL_TextField" prefHeight="27.0" prefWidth="134.0" text="0.919" />
-                                          <Button fx:id="FIFOP_CANCEL_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="FIFOP_LOCK_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="FIFOP_LOCK" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="FIFOP_LOCK_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="FIFOP_LOCK_TextField" prefHeight="27.0" prefWidth="134.0" text="1.255" />
-                                          <Button fx:id="FIFOP_LOCK_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="FIFOP_UNLOCK_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="FIFOP_UNLOCK" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="FIFOP_UNLOCK_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="FIFOP_UNLOCK_TextField" prefHeight="27.0" prefWidth="134.0" text="0.602" />
-                                          <Button fx:id="FIFOP_UNLOCK_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="Mrsp_LOCK_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="Mrsp_LOCK" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="Mrsp_LOCK_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="Mrsp_LOCK_TextField" prefHeight="27.0" prefWidth="134.0" text="1.272" />
-                                          <Button fx:id="Mrsp_LOCK_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="Mrsp_UNLOCK_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="Mrsp_UNLOCK" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="Mrsp_UNLOCK_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="Mrsp_UNLOCK_TextField" prefHeight="27.0" prefWidth="134.0" text="1.642" />
-                                          <Button fx:id="Mrsp_UNLOCK_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="Mrsp_MIGRATION_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="Mrsp_MIGRATION" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="Mrsp_MIGRATION_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="Mrsp_MIGRATION_TextField" prefHeight="27.0" prefWidth="134.0" text="8.378" />
-                                          <Button fx:id="Mrsp_MIGRATION_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
-                              <StackPane prefHeight="0.0" prefWidth="200.0">
-                                 <children>
-                                    <Label fx:id="FULL_CONTEXT_SWITCH2_Label" alignment="CENTER" contentDisplay="CENTER" prefHeight="29.0" prefWidth="190.0" text="FULL_CONTEXT_SWITCH2" textAlignment="CENTER" wrapText="true">
-                                       <font>
-                                          <Font name="Bell MT Bold" size="11.0" />
-                                       </font>
-                                    </Label>
-                                    <HBox fx:id="FULL_CONTEXT_SWITCH2_HBox" alignment="CENTER" visible="false">
-                                       <children>
-                                          <TextField fx:id="FULL_CONTEXT_SWITCH2_TextField" prefHeight="27.0" prefWidth="134.0" text="10.24" />
-                                          <Button fx:id="FULL_CONTEXT_SWITCH2_Button" mnemonicParsing="false" prefHeight="26.0" prefWidth="72.0" text="√" />
-                                       </children>
-                                    </HBox>
-                                 </children>
-                              </StackPane>
+                              <Button fx:id="config" onMouseClicked="#openConfigWindow" mnemonicParsing="false" text="config" />
                            </children>
                         </HBox>
                         <TableView fx:id="table2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="963.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
