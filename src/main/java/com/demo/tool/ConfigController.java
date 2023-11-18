@@ -103,17 +103,21 @@ public class ConfigController {
         }
 
         if(!successful){
+            configButton.setStyle("-fx-text-fill: red;");
             configButton.setText("Fail");
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
             pauseTransition.setOnFinished(e -> {
+                configButton.setStyle("");
                 configButton.setText("confirm");
             });
             pauseTransition.play();
         }
         else{
+            configButton.setStyle("-fx-text-fill: red;");
             configButton.setText("Success");
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
             pauseTransition.setOnFinished(e -> {
+                configButton.setStyle("");
                 configButton.setText("confirm");
             });
             pauseTransition.play();
