@@ -533,8 +533,10 @@
                </children></VBox>
             <HBox fx:id="page2" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
-                  <VBox fx:id="page21" alignment="CENTER_LEFT" prefHeight="640.0" prefWidth="188.0" style="-fx-background-color: rgb(243, 243, 243);" stylesheets="@../../../css/exterior.css">
+                  <VBox fx:id="page21" alignment="CENTER" prefHeight="640.0" prefWidth="188.0" style="-fx-background-color: rgb(243, 243, 243);" stylesheets="@../../../css/exterior.css">
                      <children>
+                        <Button fx:id="config" mnemonicParsing="false" onMouseClicked="#openConfigWindow" prefHeight="29.0" prefWidth="64.0" text="config" textAlignment="CENTER" />
+                        <SplitPane prefHeight="40.0" prefWidth="188.0" visible="false" />
                         <StackPane alignment="TOP_CENTER" prefHeight="81.0" prefWidth="236.0">
                            <children>
                               <Label alignment="TOP_CENTER" contentDisplay="CENTER" prefHeight="20.0" prefWidth="139.0" text="System Mode" textAlignment="CENTER" StackPane.alignment="TOP_CENTER" />
@@ -588,11 +590,6 @@
                   </VBox>
                   <VBox fx:id="page22" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <HBox prefWidth="100.0">
-                           <children>
-                              <Button fx:id="config" onMouseClicked="#openConfigWindow" mnemonicParsing="false" text="config" />
-                           </children>
-                        </HBox>
                         <TableView fx:id="table2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="963.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn prefWidth="51.0" text="Task ID" />
