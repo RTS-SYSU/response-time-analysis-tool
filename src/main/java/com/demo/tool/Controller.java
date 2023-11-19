@@ -71,8 +71,6 @@ public class Controller {
     @FXML
     private Label scheduleYES;
     @FXML
-    private Region startIcon;
-    @FXML
     private Label startLabel;
     @FXML
     private Label generateLabel;
@@ -803,7 +801,6 @@ public class Controller {
         factors.ANALYSIS_MODE = RTM.getValue();
 
         /* set the start icon inaccessible */
-        startIcon.setVisible(false);
         startLabel.setVisible(false);
         loading.setVisible(true);
 
@@ -814,7 +811,6 @@ public class Controller {
         showSchedulable(factors.schedulable);
 
         /* set the start icon accessible */
-        startIcon.setVisible(true);
         startLabel.setVisible(true);
         loading.setVisible(false);
     }
