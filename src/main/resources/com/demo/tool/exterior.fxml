@@ -56,7 +56,7 @@
       </HBox>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="640.0" prefWidth="1200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <children>
-            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
                      <children>
@@ -293,7 +293,7 @@
                   </StackPane>
                </children>
             </VBox>
-            <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="311.0" prefWidth="841.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                      <columns>
@@ -377,7 +377,7 @@
                   </HBox>
                </children>
             </VBox>
-            <HBox fx:id="page2" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+            <HBox fx:id="page2" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                <children>
                   <VBox fx:id="page21" alignment="CENTER" prefHeight="640.0" prefWidth="188.0" style="-fx-background-color: rgb(243, 243, 243);" styleClass="panel-default" stylesheets="@../../../css/bootstrapfx.css">
                      <children>
@@ -447,7 +447,7 @@
                   </VBox>
                   <VBox fx:id="page22" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <TableView fx:id="table2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="963.0" styleClass="no-light" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="table2" minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="963.0" styleClass="table-row-cell" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                            <columns>
                               <TableColumn prefWidth="51.0" text="Task ID" />
                               <TableColumn minWidth="9.0" prefWidth="74.0" text="Partition" />
