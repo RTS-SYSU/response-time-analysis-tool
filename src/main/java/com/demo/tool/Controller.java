@@ -89,13 +89,9 @@ public class Controller {
     @FXML
     private HBox page2;
     @FXML
-    private VBox page3;
-    @FXML
     private StackPane page1btn;
     @FXML
     private StackPane page2btn;
-    @FXML
-    private StackPane page3btn;
     @FXML
     private Tooltip tipsForU;
     @FXML
@@ -309,7 +305,6 @@ public class Controller {
     void initPageBtnStyle() {
         page1btn.getStyleClass().add("round-background");
         page2btn.getStyleClass().add("basic-hover");
-        page3btn.getStyleClass().add("basic-hover");
     }
 
     void initAnalysis() {
@@ -901,37 +896,23 @@ public class Controller {
     void onChangeToPage1() {
         page1btn.getStyleClass().add("round-background");
         page2btn.getStyleClass().remove("round-background");
-        page3btn.getStyleClass().remove("round-background");
 
         page11.setVisible(true);
         page12.setVisible(true);
         page2.setVisible(false);
-        page3.setVisible(false);
     }
 
     @FXML
     void onChangeToPage2() {
         page1btn.getStyleClass().remove("round-background");
         page2btn.getStyleClass().add("round-background");
-        page3btn.getStyleClass().remove("round-background");
+
 
         page11.setVisible(false);
         page12.setVisible(false);
         page2.setVisible(true);
-        page3.setVisible(false);
     }
 
-    @FXML
-    void onChangeToPage3() {
-        page1btn.getStyleClass().remove("round-background");
-        page2btn.getStyleClass().remove("round-background");
-        page3btn.getStyleClass().add("round-background");
-
-        page11.setVisible(false);
-        page12.setVisible(false);
-        page2.setVisible(false);
-        page3.setVisible(true);
-    }
 
     @FXML
     void onConfigButtonClicked() {

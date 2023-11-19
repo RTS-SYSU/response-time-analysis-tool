@@ -160,7 +160,7 @@
                 </HBox>
                 <HBox alignment="CENTER" prefHeight="71.0" prefWidth="534.0">
                     <children>
-                        <Button fx:id="configButton" mnemonicParsing="false" onMouseClicked="#onConfigButtonClicked" prefHeight="39.0" prefWidth="87.0" text="confirm" textAlignment="CENTER" textOverrun="CLIP">
+                        <Button fx:id="configButton" mnemonicParsing="false" onMouseClicked="#onConfigButtonClicked" prefHeight="39.0" prefWidth="87.0" styleClass="btn" stylesheets="@../../../css/bootstrapfx.css" text="confirm" textAlignment="CENTER" textOverrun="CLIP">
                             <font>
                                 <Font name="Bell MT" size="18.0" />
                             </font>
