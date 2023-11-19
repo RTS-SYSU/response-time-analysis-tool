@@ -30,6 +30,9 @@ import java.util.HashSet;
 import static com.demo.tool.Utils.judgeFloat;
 import static com.demo.tool.Utils.judgeInteger;
 
+import org.kordamp.bootstrapfx.BootstrapFX;
+import org.kordamp.bootstrapfx.scene.layout.*;
+
 
 public class Controller {
 
@@ -276,6 +279,7 @@ public class Controller {
 
     @FXML
     void initialize() {
+        System.out.println(BootstrapFX.bootstrapFXStylesheet());
         initComBox();
         initAnalysis();
         initPageBtnStyle();

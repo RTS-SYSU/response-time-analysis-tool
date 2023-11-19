@@ -34,6 +34,9 @@ import java.util.HashSet;
 import static com.demo.tool.Utils.judgeFloat;
 import static com.demo.tool.Utils.judgeInteger;
 
+import org.kordamp.bootstrapfx.BootstrapFX;
+import org.kordamp.bootstrapfx.scene.layout.*;
+
 public class ConfigController {
     @FXML
     public Button configButton;
@@ -103,7 +106,7 @@ public class ConfigController {
         }
 
         if(!successful){
-            configButton.setStyle("-fx-text-fill: red;");
+            configButton.setStyle("");
             configButton.setText("Fail");
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
             pauseTransition.setOnFinished(e -> {
