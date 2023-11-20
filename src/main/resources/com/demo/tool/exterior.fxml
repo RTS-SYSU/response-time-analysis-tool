@@ -295,7 +295,7 @@
             </VBox>
             <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
-                  <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="311.0" prefWidth="841.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                  <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="536.0" prefWidth="952.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                      <columns>
                         <TableColumn editable="false" prefWidth="57.0" text="Task ID" />
                         <TableColumn editable="false" prefWidth="78.0" text="Partition" />
@@ -315,16 +315,16 @@
                         <Insets bottom="8.0" left="8.0" right="10.0" top="8.0" />
                      </VBox.margin>
                   </TableView>
-                  <HBox maxHeight="-Infinity" minHeight="-Infinity" prefHeight="240.0" prefWidth="811.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
+                  <HBox prefHeight="240.0" prefWidth="811.0" stylesheets="@../../../css/exterior.css" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                      <children>
-                        <VBox prefHeight="209.6" prefWidth="714.8" HBox.hgrow="ALWAYS">
+                        <VBox HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                            <children>
-                              <HBox maxWidth="1.7976931348623157E308" styleClass="title-vbox">
+                              <HBox maxWidth="1.7976931348623157E308" prefHeight="145.0" prefWidth="951.0" styleClass="title-vbox" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
                                     <Insets bottom="2.0" left="8.0" right="10.0" top="10.0" />
                                  </VBox.margin>
                                  <children>
-                                    <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="140.0" prefWidth="120.0">
+                                    <VBox alignment="TOP_CENTER" maxHeight="-Infinity" maxWidth="-Infinity" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
                                        <children>
                                           <Label alignment="CENTER" maxHeight="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="58.0" prefWidth="120.0" text="Resource">
                                              <VBox.margin>
@@ -344,7 +344,7 @@
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <ScrollPane fx:id="pResource" maxWidth="1.7976931348623157E308" minHeight="-Infinity" prefHeight="140.0" prefWidth="952.0" vbarPolicy="NEVER" vmax="0.0">
+                                    <ScrollPane fx:id="pResource" maxWidth="1.7976931348623157E308" minHeight="-Infinity" vbarPolicy="NEVER" vmax="0.0">
                                        <styleClass>
                                           <String fx:value="no-light" />
                                           <String fx:value="scroll-pane" />
