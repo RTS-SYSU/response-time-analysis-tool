@@ -368,7 +368,7 @@
                                           </Label>
                                        </children>
                                     </VBox>
-                                    <ScrollPane fx:id="pPartition" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" prefHeight="74.0" prefWidth="952.0" styleClass="no-light" vbarPolicy="NEVER" vmax="0.0" />
+                                    <ScrollPane fx:id="pPartition" maxHeight="-Infinity" maxWidth="1.7976931348623157E308" styleClass="no-light" vbarPolicy="NEVER" vmax="0.0" />
                                  </children>
                               </HBox>
                            </children>
