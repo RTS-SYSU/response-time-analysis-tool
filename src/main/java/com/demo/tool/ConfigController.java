@@ -1,41 +1,14 @@
 package com.demo.tool;
 
-import com.demo.tool.resource.ResourcePaneController;
-import com.demo.tool.resource.ResourcePartitionController;
-import com.demo.tool.responsetimeanalysis.entity.Resource;
-import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
-import com.demo.tool.responsetimeanalysis.utils.Factors;
-import com.demo.tool.responsetimeanalysis.utils.Pair;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
 import javafx.animation.PauseTransition;
-import javafx.beans.property.SimpleObjectProperty;
-import javafx.collections.FXCollections;
-import javafx.collections.ListChangeListener;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.geometry.Bounds;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.*;
-import javafx.scene.layout.*;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-import javafx.util.Callback;
+import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.util.Duration;
 
-import java.io.IOException;
-import java.lang.reflect.Field;
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashSet;
-
-import static com.demo.tool.Utils.judgeFloat;
-import static com.demo.tool.Utils.judgeInteger;
-
-import org.kordamp.bootstrapfx.BootstrapFX;
-import org.kordamp.bootstrapfx.scene.layout.*;
 
 public class ConfigController {
     @FXML
@@ -75,38 +48,55 @@ public class ConfigController {
         return value;
     }
 
-    boolean checkParse(TextField textField, Double para) {
-        boolean flag = false;
-        if (parseDouble(textField) == Double.MIN_VALUE) {   //不合法字符
-            textField.setText("illegal value");
-            flag = false;
-        } else {
-            para = parseDouble(textField);
-            flag = true;
-        }
-        return flag;
-    }
-
     @FXML
     void onConfigButtonClicked() throws IllegalAccessException, NoSuchFieldException {
         boolean successful = true;
         ArrayList<Double> paraList = new ArrayList<>(Arrays.asList(AnalysisUtils.FIFONP_LOCK, AnalysisUtils.FIFONP_UNLOCK, AnalysisUtils.FIFOP_CANCEL, AnalysisUtils.FIFOP_LOCK, AnalysisUtils.FIFOP_UNLOCK, AnalysisUtils.MrsP_LOCK, AnalysisUtils.MrsP_UNLOCK, AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION, AnalysisUtils.FULL_CONTEXT_SWTICH2));
+        ArrayList<TextField> textFieldList = new ArrayList<>(Arrays.asList(text_FIFONP_LOCK, text_FIFONP_UNLOCK, text_FIFOP_CANCEL, text_FIFOP_LOCK, text_FIFOP_UNLOCK, text_Mrsp_LOCK, text_Mrsp_UNLOCK, text_Mrsp_PREEMPTION_AND_MIGRATION, text_FULL_CONTEXT_SWITCH2));
 
 //        Class<?> clazz = ConfigController.class;
 //        Field[] fields = clazz.getDeclaredFields();
 //        Field removeField = clazz.getDeclaredField("configButton");
 
-        ArrayList<TextField> textFields = new ArrayList<>(Arrays.asList(text_FIFONP_LOCK,text_FIFONP_UNLOCK,text_FIFOP_CANCEL,text_FIFOP_LOCK,text_FIFOP_UNLOCK,text_Mrsp_LOCK,text_Mrsp_UNLOCK,text_Mrsp_PREEMPTION_AND_MIGRATION,text_FULL_CONTEXT_SWITCH2));
+//        ArrayList<TextField> textFields = new ArrayList<>(Arrays.asList(text_FIFONP_LOCK, text_FIFONP_UNLOCK, text_FIFOP_CANCEL, text_FIFOP_LOCK, text_FIFOP_UNLOCK, text_Mrsp_LOCK, text_Mrsp_UNLOCK, text_Mrsp_PREEMPTION_AND_MIGRATION, text_FULL_CONTEXT_SWITCH2));
+//
+//        for (int i = 0; i < paraList.size(); i++) {
+//            if (!successful)
+//                checkParse(textFields.get(i), paraList.get(i));
+//            else
+//                successful = checkParse(textFields.get(i), paraList.get(i));
+//        }
+//
+//        if (!successful) {
+//            configButton.setStyle("");
+//            configButton.setText("Fail");
+//            PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+//            pauseTransition.setOnFinished(e -> {
+//                configButton.setStyle("");
+//                configButton.setText("confirm");
+//            });
+//            pauseTransition.play();
+//        } else {
+//            configButton.setStyle("-fx-text-fill: red;");
+//            configButton.setText("Success");
+//            PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
+//            pauseTransition.setOnFinished(e -> {
+//                configButton.setStyle("");
+//                configButton.setText("confirm");
+//            });
+//            pauseTransition.play();
+//        }
 
-        for (int i=0;i<paraList.size();i++) {
-            if(!successful)
-                checkParse(textFields.get(i),paraList.get(i));
-            else
-                successful = checkParse(textFields.get(i),paraList.get(i));
+        boolean flag = true;
+        double[] values = new double[paraList.size() + 1];
+        for (int i = 0; i < paraList.size(); i++) {
+            values[i] = parseDouble(textFieldList.get(i));
+            if (values[i] == Double.MIN_VALUE) {
+                flag = false;
+            }
         }
-
-        if(!successful){
-            configButton.setStyle("");
+        if (!flag) {
+            configButton.setStyle("-fx-text-fill: red;");
             configButton.setText("Fail");
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
             pauseTransition.setOnFinished(e -> {
@@ -114,8 +104,18 @@ public class ConfigController {
                 configButton.setText("confirm");
             });
             pauseTransition.play();
-        }
-        else{
+        } else {
+
+            AnalysisUtils.FIFONP_LOCK = values[0];
+            AnalysisUtils.FIFONP_UNLOCK = values[1];
+            AnalysisUtils.FIFOP_CANCEL = values[2];
+            AnalysisUtils.FIFOP_LOCK = values[3];
+            AnalysisUtils.FIFOP_UNLOCK = values[4];
+            AnalysisUtils.MrsP_LOCK = values[5];
+            AnalysisUtils.MrsP_UNLOCK = values[6];
+            AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION = values[7];
+            AnalysisUtils.FULL_CONTEXT_SWTICH2 = values[8];
+
             configButton.setStyle("-fx-text-fill: red;");
             configButton.setText("Success");
             PauseTransition pauseTransition = new PauseTransition(Duration.millis(1000));
@@ -125,6 +125,7 @@ public class ConfigController {
             });
             pauseTransition.play();
         }
+
 //        AnalysisUtils.FIFONP_LOCK = parseDouble(text_FIFONP_LOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFONP_LOCK : parseDouble(text_FIFONP_LOCK);
 //        AnalysisUtils.FIFONP_UNLOCK = parseDouble(text_FIFONP_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFONP_UNLOCK : parseDouble(text_FIFONP_UNLOCK);
 //        AnalysisUtils.FIFOP_CANCEL = parseDouble(text_FIFOP_CANCEL) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_CANCEL : parseDouble(text_FIFOP_CANCEL);

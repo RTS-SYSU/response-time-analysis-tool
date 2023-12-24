@@ -8,6 +8,9 @@ import java.util.ArrayList;
 
 public class MSRPNew {
     long count = 0;
+    long overhead = (long) (AnalysisUtils.FIFONP_LOCK + AnalysisUtils.FIFONP_UNLOCK);
+    long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
+    long CX2 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH2;
 
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean printDebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
@@ -71,7 +74,7 @@ public class MSRPNew {
                 task.interference = highPriorityInterference(task, tasks, response_time[i][j], response_time, resources, btbHit);
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j], btbHit);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local + CX1;
 
                 if (task.Ri > task.deadline)
                     return response_time_plus;
@@ -94,7 +97,7 @@ public class MSRPNew {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).priority > t.priority) {
                 SporadicTask hpTask = tasks.get(i);
-                interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET);
+                interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + CX2 );
 
                 long btb_interference = getIndirectSpinDelay(hpTask, Ri, Ris[partition][i], Ris, allTasks, resources, btbHit);
                 interference += btb_interference;
@@ -119,7 +122,7 @@ public class MSRPNew {
             int number_of_request_with_btb = (int) Math.ceil((double) (Ri + (btbHit ? Rihp : 0)) / (double) hpTask.period)
                     * hpTask.number_of_access_in_one_release.get(i);
 
-            BTBhit += number_of_request_with_btb * resource.csl;
+            BTBhit += number_of_request_with_btb * (resource.csl + overhead);
 
             for (int j = 0; j < resource.partitions.size(); j++) {
                 if (resource.partitions.get(j) != hpTask.partition) {
@@ -130,7 +133,7 @@ public class MSRPNew {
 
                     int spin_delay_with_btb = Integer.min(possible_spin_delay, number_of_request_with_btb);
 
-                    BTBhit += spin_delay_with_btb * resource.csl;
+                    BTBhit += spin_delay_with_btb * (resource.csl + overhead);
                 }
             }
         }
@@ -145,7 +148,7 @@ public class MSRPNew {
         long spin_delay = 0;
         for (int k = 0; k < t.resource_required_index.size(); k++) {
             Resource resource = resources.get(t.resource_required_index.get(k));
-            spin_delay += getNoSpinDelay(t, resource, tasks, Ris, Ri, btbHit) * resource.csl;
+            spin_delay += getNoSpinDelay(t, resource, tasks, Ris, Ri, btbHit) * (resource.csl + overhead);
         }
         return spin_delay;
     }

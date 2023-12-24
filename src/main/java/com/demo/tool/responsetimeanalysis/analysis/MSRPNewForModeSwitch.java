@@ -9,6 +9,10 @@ import java.util.ArrayList;
 public class MSRPNewForModeSwitch {
     long count = 0;
 
+    long overhead = (long) (AnalysisUtils.FIFONP_LOCK + AnalysisUtils.FIFONP_UNLOCK);
+    long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
+    long CX2 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH2;
+
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, ArrayList<ArrayList<SporadicTask>> lowTasks, boolean printDebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
         long[][] response_time = new long[tasks.size()][];
@@ -77,7 +81,7 @@ public class MSRPNewForModeSwitch {
                 task.interference = highPriorityInterference(task, tasks, lowTasks, response_time[i][j]);
                 task.local = localBlocking(task, tasks, lowTasks, resources, response_time, response_time[i][j]);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.interference + task.local + exec_preempted_T;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.interference + task.local + exec_preempted_T + CX1;
 
                 if (task.Ri > task.deadline)
                     return response_time_plus;
@@ -91,7 +95,7 @@ public class MSRPNewForModeSwitch {
         long spin_delay = 0;
         for (int k = 0; k < t.resource_required_index.size(); k++) {
             Resource resource = resources.get(t.resource_required_index.get(k));
-            spin_delay += resource.partitions.size() * resource.csl_low * t.number_of_access_in_one_release.get(k);
+            spin_delay += resource.partitions.size() * (resource.csl_low + overhead) * t.number_of_access_in_one_release.get(k);
         }
         return spin_delay;
     }
@@ -189,12 +193,12 @@ public class MSRPNewForModeSwitch {
                     //min{local, remote m}
                     long indirect_remote_times = number_of_high_request_by_Remote_P - ncs;
                     indirect_spin += indirect_remote_times > 0 ?
-                            ncs * resource.csl_high : number_of_high_request_by_Remote_P * resource.csl_high + Long.min(Math.abs(indirect_remote_times), number_of_low_request_by_Remote_P) * resource.csl_low;
+                            ncs * (resource.csl_high + overhead) : number_of_high_request_by_Remote_P * (resource.csl_high + overhead) + Long.min(Math.abs(indirect_remote_times), number_of_low_request_by_Remote_P) * (resource.csl_low + overhead);
 
                     if (number_of_high_request_by_Remote_P > ncs) {
-                        indirect_spin += ncs * resource.csl_high;
+                        indirect_spin += ncs * (resource.csl_high + overhead);
                     } else {
-                        indirect_spin += number_of_high_request_by_Remote_P * resource.csl_high + Long.min(Math.abs(number_of_high_request_by_Remote_P - ncs), number_of_low_request_by_Remote_P) * resource.csl_low;
+                        indirect_spin += number_of_high_request_by_Remote_P * (resource.csl_high + overhead) + Long.min(Math.abs(number_of_high_request_by_Remote_P - ncs), number_of_low_request_by_Remote_P) * (resource.csl_low + overhead);
                     }
                     //min{N, max(remote_m-local_higher,0)}
 //                    long direct_remote_times_judge = Long.max(indirect_remote_times, 0) + Long.min(N_i_k, Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0))
@@ -206,21 +210,21 @@ public class MSRPNewForModeSwitch {
                     if (number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs <= 0)
                         direct_spin += 0;
                     else if (indirect_remote_times <= 0)
-                        direct_spin += Long.min(Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0), N_i_k) * resource.csl_low;
+                        direct_spin += Long.min(Long.max(number_of_high_request_by_Remote_P + number_of_low_request_by_Remote_P - ncs, 0), N_i_k) * (resource.csl_low + overhead);
                     else
-                        direct_spin += indirect_remote_times > N_i_k ? N_i_k * resource.csl_high
-                                : indirect_remote_times * resource.csl_high + Long.min(N_i_k - indirect_remote_times, number_of_low_request_by_Remote_P) * resource.csl_low;
+                        direct_spin += indirect_remote_times > N_i_k ? N_i_k * (resource.csl_high + overhead)
+                                : indirect_remote_times * (resource.csl_high + overhead) + Long.min(N_i_k - indirect_remote_times, number_of_low_request_by_Remote_P) * (resource.csl_low + overhead);
 
 
                     // 建立RBTQ
                     ArrayList<Long> RBTQ = new ArrayList<>();
                     while (number_of_high_request_by_Remote_P > 0) {
-                        RBTQ.add(resource.csl_high);
+                        RBTQ.add((resource.csl_high + overhead));
                         number_of_high_request_by_Remote_P--;
                     }
                     //min{local, remote m}
                     while (number_of_low_request_by_Remote_P > 0) {
-                        RBTQ.add(resource.csl_low);
+                        RBTQ.add((resource.csl_low + overhead));
                         number_of_low_request_by_Remote_P--;
                     }
 
@@ -239,7 +243,7 @@ public class MSRPNewForModeSwitch {
         ArrayList<Long> spin_all = new ArrayList<>();
         spin_all.add(indirect_spin);
         spin_all.add(direct_spin);
-        spin_all.add(N_i_k * resource.csl_high + ncs_lo * resource.csl_low + ncs_hi * resource.csl_high);
+        spin_all.add(N_i_k * (resource.csl_high + overhead) + ncs_lo * (resource.csl_low + overhead) + ncs_hi * (resource.csl_high + overhead));
 
         return spin_all;
     }
@@ -257,13 +261,13 @@ public class MSRPNewForModeSwitch {
         // HI Task 部分
         for (SporadicTask hpTask : TasksPartition) {
             if (hpTask.priority > t.priority) {
-                interference += Math.ceil((double) (time) / (double) hpTask.period) * hpTask.WCET;
+                interference += Math.ceil((double) (time) / (double) hpTask.period) * (hpTask.WCET + CX2);
             }
         }
         // LO Task 部分
         for (SporadicTask hpTask : LowTasksPartition) {
             if (hpTask.priority > t.priority) {
-                interference += Math.ceil((double) (t.Ri_LO) / (double) hpTask.period) * hpTask.WCET;
+                interference += Math.ceil((double) (t.Ri_LO) / (double) hpTask.period) * (hpTask.WCET + CX2);
             }
         }
         return interference;
@@ -387,12 +391,12 @@ public class MSRPNewForModeSwitch {
                 // 建立RBTQ
                 var RBTQ = new ArrayList<Long>();
                 while (number_of_high_request_by_Remote_P > 0) {
-                    RBTQ.add(resource.csl_high);
+                    RBTQ.add((resource.csl_high + overhead));
                     number_of_high_request_by_Remote_P--;
                 }
                 //min{local, remote m}
                 while (number_of_low_request_by_Remote_P > 0) {
-                    RBTQ.add(resource.csl_low);
+                    RBTQ.add((resource.csl_low + overhead));
                     number_of_low_request_by_Remote_P--;
                 }
                 RBTQs.add(RBTQ);

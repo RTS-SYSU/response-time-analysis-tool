@@ -9,6 +9,10 @@ import java.util.ArrayList;
 public class MSRPOriginal {
     long count = 0;
 
+    long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
+    long CX2 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH2;
+    long overhead = (long) (AnalysisUtils.FIFONP_LOCK + AnalysisUtils.FIFONP_UNLOCK);
+
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean printBebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
 
@@ -69,7 +73,8 @@ public class MSRPOriginal {
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j]);
                 task.indirect_spin = highPriorityIndirectSpin(task, tasks, response_time[i][j]);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local;
+
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local + CX1;
                 if (task.Ri > task.deadline)
                     return response_time_plus;
             }
@@ -87,10 +92,11 @@ public class MSRPOriginal {
         int partition = t.partition;
         ArrayList<SporadicTask> tasks = allTasks.get(partition);
 
+
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).priority > t.priority) {
                 SporadicTask hpTask = tasks.get(i);
-                interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + hpTask.spin);
+                interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + hpTask.spin + CX2);
             }
         }
         return interference;
@@ -120,9 +126,10 @@ public class MSRPOriginal {
      */
     private long resourceAccessingTime(SporadicTask t, ArrayList<Resource> resources) {
         long spin_delay = 0;
+
         for (int k = 0; k < t.resource_required_index.size(); k++) {
             Resource resource = resources.get(t.resource_required_index.get(k));
-            spin_delay += resource.partitions.size() * resource.csl * t.number_of_access_in_one_release.get(k);
+            spin_delay += resource.partitions.size() * (resource.csl + overhead) * t.number_of_access_in_one_release.get(k);
         }
         return spin_delay;
     }

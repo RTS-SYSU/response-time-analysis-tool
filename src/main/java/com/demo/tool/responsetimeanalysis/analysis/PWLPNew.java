@@ -12,6 +12,10 @@ import java.util.Set;
 public class PWLPNew {
     long count = 0;
 
+    long overhead = (long) (AnalysisUtils.FIFOP_LOCK + AnalysisUtils.FIFOP_UNLOCK);
+    long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
+    long CX2 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH2;
+
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean btbHit, boolean printDebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
 
@@ -72,7 +76,7 @@ public class PWLPNew {
                 task.interference = highPriorityInterference(task, tasks, response_time[i][j], response_time, resources);
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j]);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.PWLP_S + task.interference + task.local +exec_preempted_T;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.indirect_spin + task.PWLP_S + task.interference + task.local + exec_preempted_T + CX1;
 
                 if (task.Ri > task.deadline)
                     return response_time_plus;
@@ -124,8 +128,8 @@ public class PWLPNew {
             long max_delay = 0;
             int max_delay_resource_index = -1;
             for (int i = 0; i < resources.size(); i++) {
-                if (max_delay < resources.get(i).csl * requestsLeftOnRemoteP.get(i).size()) {
-                    max_delay = resources.get(i).csl * requestsLeftOnRemoteP.get(i).size();
+                if (max_delay < (resources.get(i).csl + overhead) * requestsLeftOnRemoteP.get(i).size()) {
+                    max_delay = (resources.get(i).csl + overhead) * requestsLeftOnRemoteP.get(i).size();
                     max_delay_resource_index = i;
                 }
             }
@@ -194,9 +198,9 @@ public class PWLPNew {
                         }
                     }
                     //min{local, remote m}
-                    indirect_spin += Long.min(zeta, number_of_request_by_Remote_P) * resource.csl;
+                    indirect_spin += Long.min(zeta, number_of_request_by_Remote_P) * (resource.csl + overhead);
                     //min{N, max(remote_m-local_higher,0)}
-                    direct_spin += Long.min(n, Long.max(number_of_request_by_Remote_P - zeta, 0)) * resource.csl;
+                    direct_spin += Long.min(n, Long.max(number_of_request_by_Remote_P - zeta, 0)) * (resource.csl + overhead);
 
                     long possible_spin_delay = Long.min(number_of_request_by_Remote_P, ncs);
 
@@ -210,7 +214,7 @@ public class PWLPNew {
         ArrayList<Long> spin_all = new ArrayList<>();
         spin_all.add(indirect_spin);
         spin_all.add(direct_spin);
-        spin_all.add(ncs*resource.csl);
+        spin_all.add(ncs * (resource.csl + overhead));
 //        spin * resource.csl + ncs * resource.csl;
         return spin_all;
     }
@@ -230,7 +234,7 @@ public class PWLPNew {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).priority > t.priority) {
                 SporadicTask hpTask = tasks.get(i);
-                interference += Math.ceil((double) (time) / (double) hpTask.period) * (hpTask.WCET);
+                interference += Math.ceil((double) (time) / (double) hpTask.period) * (hpTask.WCET + CX2);
             }
         }
         return interference;
