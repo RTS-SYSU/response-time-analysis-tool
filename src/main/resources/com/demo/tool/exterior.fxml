@@ -38,7 +38,7 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="panel-default" stylesheets="@../../../css/bootstrapfx.css">
                      <children>
-                        <ImageView fitHeight="35.0" fitWidth="39.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="35.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../../icon/analysis.png" />
                            </image>
@@ -57,7 +57,12 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" styleClass="panel-default" stylesheets="@../../../css/bootstrapfx.css">
                      <children>
-                        <Label text="Batch Testing" textAlignment="CENTER">
+                        <ImageView fitHeight="35.0" fitWidth="37.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../icon/020-startup.png" />
+                           </image>
+                        </ImageView>
+                        <Label text=" Batch Testing" textAlignment="CENTER" wrapText="true">
                            <font>
                               <Font size="14.0" />
                            </font></Label>
