@@ -244,7 +244,7 @@ public class Controller {
 
         //test
         test0();
-        log.info("Controller initialization completed.");
+        log.info("Controller initialization completed");
     }
 
     void initPageBtnStyle() {
@@ -951,56 +951,42 @@ public class Controller {
 
         var batchTestAnalyzer = new Analysis();
 
-        var res = new int[3][3];
+        int[][] res = new int[3][3];
         res = batchTestAnalyzer.batchAnalysis(batchTestFactors, sysNum);
 
 
-        for (int i = 0; i < 3; i++) {
-            for (int j = 0; j < 3; j++) {
-                log.warn(res[i][j]);
-            }
-        }
+//        for (int i = 0; i < 3; i++) {
+//            for (int j = 0; j < 3; j++) {
+//                log.debug(res[i][j]);
+//            }
+//        }
 
-        barChart1.setTitle("MSRP Schedulability Chart");
-
-        // 创建数据系列
-        XYChart.Series<String, Number> series = new XYChart.Series<>();
-        series.setName(""); // 系列的名称
-
-        // 向系列中添加数据
-        series.getData().add(new XYChart.Data<>("LO", res[0][0]));
-        series.getData().add(new XYChart.Data<>("HI", res[0][1]));
-        series.getData().add(new XYChart.Data<>("MODE SWITCH", res[0][2]));
-
-        // 将系列添加到柱状图中
-        barChart1.getData().add(series);
+        barChart1.setTitle("LO MODE Schedulability Chart");
+        createBar(barChart1,"MSRP",res[0][0]);
+        createBar(barChart1,"Mrsp",res[1][0]);
+        createBar(barChart1,"PWLP",res[2][0]);
 
 
-        barChart2.setTitle("Mrsp Schedulability Chart");
+        barChart2.setTitle("HI MODE Schedulability Chart");
 
-        // 创建数据系列
-        XYChart.Series<String, Number> series2 = new XYChart.Series<>();
-        // 向系列中添加数据
-        series2.getData().add(new XYChart.Data<>("LO", res[1][0]));
-        series2.getData().add(new XYChart.Data<>("HI", res[1][1]));
-        series2.getData().add(new XYChart.Data<>("MODE SWITCH", res[1][2]));
-
-        // 将系列添加到柱状图中
-        barChart2.getData().add(series2);
+        createBar(barChart2,"MSRP",res[0][1]);
+        createBar(barChart2,"Mrsp",res[1][1]);
+        createBar(barChart2,"PWLP",res[2][1]);
 
         // 创建柱状图
-        barChart3.setTitle("PWLP Schedulability Chart");
+        barChart3.setTitle("SWITCH MODE Schedulability Chart");
 
         // 创建数据系列
-        XYChart.Series<String, Number> series3 = new XYChart.Series<>();
-        // 向系列中添加数据
-        series3.getData().add(new XYChart.Data<>("LO", res[2][0]));
-        series3.getData().add(new XYChart.Data<>("HI", res[2][1]));
-        series3.getData().add(new XYChart.Data<>("MODE SWITCH", res[2][2]));
+        createBar(barChart3,"MSRP",res[0][2]);
+        createBar(barChart3,"Mrsp",res[1][2]);
+        createBar(barChart3,"PWLP",res[2][2]);
+    }
 
-        // 将系列添加到柱状图中
-        barChart3.getData().add(series3);
-
+    public void createBar(BarChart<String, Number> barChart, String str, int num) {
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(str);
+        series.getData().add(new XYChart.Data<>("", num));
+        barChart.getData().add(series);
     }
 
 

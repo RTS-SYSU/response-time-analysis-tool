@@ -69,7 +69,7 @@
       </HBox>
       <AnchorPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="640.0" prefWidth="1200.0" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
          <children>
-            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="page11" alignment="CENTER_LEFT" prefHeight="279.0" prefWidth="218.0" stylesheets="@../../../css/exterior.css" AnchorPane.bottomAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
                      <children>
@@ -306,7 +306,7 @@
                   </StackPane>
                </children>
             </VBox>
-            <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <VBox fx:id="page12" layoutX="230.0" minHeight="-Infinity" minWidth="-Infinity" prefHeight="544.0" prefWidth="864.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="230.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <TableView fx:id="table1" focusTraversable="false" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="536.0" prefWidth="952.0" stylesheets="@../../../css/exterior.css" VBox.vgrow="ALWAYS">
                      <columns>
@@ -485,7 +485,7 @@
                   </VBox>
                </children>
             </HBox>
-            <VBox fx:id="page3" prefHeight="614.0" prefWidth="1200.0">
+            <VBox fx:id="page3" prefHeight="614.0" prefWidth="1200.0" visible="false">
                <children>
                   <HBox prefHeight="536.0" prefWidth="1029.0">
                      <children>
@@ -771,7 +771,7 @@
                   </HBox>
                   <Pane prefHeight="69.0" prefWidth="667.0">
                      <children>
-                        <Button fx:id="batchTest" onMouseClicked="#onBatchTest" layoutX="535.0" layoutY="15.0" mnemonicParsing="false" prefHeight="40.0" prefWidth="131.0" text="Batch Testing" textAlignment="CENTER" />
+                        <Button fx:id="batchTest" layoutX="535.0" layoutY="15.0" mnemonicParsing="false" onMouseClicked="#onBatchTest" prefHeight="40.0" prefWidth="131.0" text="Batch Testing" textAlignment="CENTER" />
                      </children>
                   </Pane>
                </children>
