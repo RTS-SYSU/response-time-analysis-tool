@@ -5,24 +5,47 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.kordamp.bootstrapfx.BootstrapFX;
-
 
 
 import java.io.IOException;
 
 public class Tool extends Application {
-    @Override
-    public void start(Stage primaryStage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Tool.class.getResource("exterior.fxml"));
-        Parent root = fxmlLoader.load();
-        var sence = new Scene(root);
-        sence.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
-        primaryStage.setScene(sence);
-        primaryStage.show();
-    }
+    public static Logger log = LogManager.getLogger();
 
     public static void main() {
         launch();
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws IOException {
+        // Get system properties
+        String osName = System.getProperty("os.name");
+        String osVersion = System.getProperty("os.version");
+        String osArch = System.getProperty("os.arch");
+        String javaVersion = System.getProperty("java.version");
+        String javaVendor = System.getProperty("java.vendor");
+
+        // Log hardware-related information
+        log.info("Operating System: {} (Version: {}, Arch: {})", osName, osVersion, osArch);
+        log.info("Java Version: {} (Vendor: {})", javaVersion, javaVendor);
+
+        log.info("Application started");
+        FXMLLoader fxmlLoader = new FXMLLoader(Tool.class.getResource("exterior.fxml"));
+        Parent root = fxmlLoader.load();
+        log.info("fxml loader loaded");
+        var sence = new Scene(root);
+        sence.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
+        log.info("stylesheets loaded");
+        primaryStage.setScene(sence);
+        primaryStage.show();
+        log.info("Front-end loaded successfully");
+    }
+
+    @Override
+    public void stop() throws Exception {
+        log.info("Application exited");
     }
 }

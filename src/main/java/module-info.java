@@ -4,6 +4,7 @@ open module com.example.demo {
 
     requires org.controlsfx.controls;
     requires org.kordamp.bootstrapfx.core;
+    requires org.apache.logging.log4j;
 
     exports com.demo.tool;
     exports com.demo.tool.resource;

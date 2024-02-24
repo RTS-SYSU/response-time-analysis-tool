@@ -3,10 +3,13 @@ package com.demo.tool.responsetimeanalysis.analysis;
 import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class MSRPNew {
+    public static Logger log = LogManager.getLogger();
     long count = 0;
     long overhead = (long) (AnalysisUtils.FIFONP_LOCK + AnalysisUtils.FIFONP_UNLOCK);
     long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
@@ -44,6 +47,7 @@ public class MSRPNew {
 
             if (missDeadline)
                 break;
+
         }
 
         if (printDebug) {

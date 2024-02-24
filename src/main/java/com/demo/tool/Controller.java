@@ -6,7 +6,6 @@ import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.Factors;
 import com.demo.tool.responsetimeanalysis.utils.Pair;
-import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ListChangeListener;
@@ -16,11 +15,19 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Bounds;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.*;
-import javafx.scene.layout.*;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Region;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Callback;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+import org.kordamp.bootstrapfx.BootstrapFX;
 
 import java.io.IOException;
 import java.text.DecimalFormat;
@@ -30,12 +37,24 @@ import java.util.HashSet;
 import static com.demo.tool.Utils.judgeFloat;
 import static com.demo.tool.Utils.judgeInteger;
 
-import org.kordamp.bootstrapfx.BootstrapFX;
-import org.kordamp.bootstrapfx.scene.layout.*;
-
 
 public class Controller {
 
+    public static Logger log = LogManager.getLogger();
+
+    @FXML
+    public Button batchTest;
+    @FXML
+    public BarChart<String, Number> barChart1;
+
+    @FXML
+    public BarChart<String, Number> barChart2;
+
+    @FXML
+    public BarChart<String, Number> barChart3;
+
+    @FXML
+    public Button config;
     @FXML
     private TextField coreNum;
     @FXML
@@ -67,6 +86,32 @@ public class Controller {
     @FXML
     private ComboBox<String> priority;
     @FXML
+    private TextField sysNum_batch;
+    @FXML
+    private TextField coreNum_batch;
+    @FXML
+    private TextField taskNum_batch;
+    @FXML
+    private TextField utility_batch;
+    @FXML
+    private TextField rangeT1_batch;
+    @FXML
+    private TextField rangeT2_batch;
+    @FXML
+    private TextField resourceNum_batch;
+    @FXML
+    private TextField rsf_batch;
+    @FXML
+    private TextField maxAccess_batch;
+    @FXML
+    private TextField rangeCSL1_batch;
+    @FXML
+    private TextField rangeCSL2_batch;
+    @FXML
+    private ComboBox<String> allocation_batch;
+    @FXML
+    private ComboBox<String> priority_batch;
+    @FXML
     private Label scheduleNO;
     @FXML
     private Label scheduleYES;
@@ -87,169 +132,69 @@ public class Controller {
     @FXML
     private HBox page2;
     @FXML
+    private VBox page3;
+    @FXML
     private StackPane page1btn;
     @FXML
     private StackPane page2btn;
+    @FXML
+    private StackPane page3btn;
     @FXML
     private Tooltip tipsForU;
     @FXML
     private ScrollPane pPartition;
     @FXML
     private ScrollPane pResource;
-
     @FXML
     private TextField text_FIFONP_LOCK;
-
     @FXML
     private TextField text_FIFONP_UNLOCK;
-
     @FXML
     private TextField text_FIFOP_CANCEL;
-
     @FXML
     private TextField text_FIFOP_LOCK;
-
     @FXML
     private TextField text_FIFOP_UNLOCK;
-
     @FXML
     private TextField text_Mrsp_LOCK;
-
     @FXML
     private TextField text_Mrsp_UNLOCK;
-
     @FXML
     private TextField text_Mrsp_PREEMPTION_AND_MIGRATION;
-
     @FXML
     private TextField text_FULL_CONTEXT_SWITCH2;
-
     @FXML
-    public Button config;
-
-    @FXML
-//    private Label FIFONP_LOCK_Label;
-//
-//    @FXML
-//    private HBox FIFONP_LOCK_HBox;
-//
-//    @FXML
-//    private TextField FIFONP_LOCK_TextField;
-//
-//    @FXML
-//    private Button FIFONP_LOCK_Button;
-//
-//    @FXML
-//    private Label FIFONP_UNLOCK_Label;
-//
-//    @FXML
-//    private HBox FIFONP_UNLOCK_HBox;
-//
-//    @FXML
-//    private TextField FIFONP_UNLOCK_TextField;
-//
-//    @FXML
-//    private Button FIFONP_UNLOCK_Button;
-//
-//    @FXML
-//    private Label FIFOP_CANCEL_Label;
-//
-//    @FXML
-//    private HBox FIFOP_CANCEL_HBox;
-//
-//    @FXML
-//    private TextField FIFOP_CANCEL_TextField;
-//
-//    @FXML
-//    private Button FIFOP_CANCEL_Button;
-//
-//    @FXML
-//    private Label FIFOP_LOCK_Label;
-//
-//    @FXML
-//    private HBox FIFOP_LOCK_HBox;
-//
-//    @FXML
-//    private TextField FIFOP_LOCK_TextField;
-//
-//    @FXML
-//    private Button FIFOP_LOCK_Button;
-//
-//    @FXML
-//    private Label FIFOP_UNLOCK_Label;
-//
-//    @FXML
-//    private HBox FIFOP_UNLOCK_HBox;
-//
-//    @FXML
-//    private TextField FIFOP_UNLOCK_TextField;
-//
-//    @FXML
-//    private Button FIFOP_UNLOCK_Button;
-//
-//    @FXML
-//    private Label Mrsp_LOCK_Label;
-//
-//    @FXML
-//    private HBox Mrsp_LOCK_HBox;
-//
-//    @FXML
-//    private TextField Mrsp_LOCK_TextField;
-//
-//    @FXML
-//    private Button Mrsp_LOCK_Button;
-//
-//    @FXML
-//    private Label Mrsp_UNLOCK_Label;
-//
-//    @FXML
-//    private HBox Mrsp_UNLOCK_HBox;
-//
-//    @FXML
-//    private TextField Mrsp_UNLOCK_TextField;
-//
-//    @FXML
-//    private Button Mrsp_UNLOCK_Button;
-//
-//    @FXML
-//    private Label Mrsp_MIGRATION_Label;
-//
-//    @FXML
-//    private HBox Mrsp_MIGRATION_HBox;
-//
-//    @FXML
-//    private TextField Mrsp_MIGRATION_TextField;
-//
-//    @FXML
-//    private Button Mrsp_MIGRATION_Button;
-//
-//    @FXML
-//    private Label FULL_CONTEXT_SWITCH2_Label;
-//
-//    @FXML
-//    private HBox FULL_CONTEXT_SWITCH2_HBox;
-//
-//    @FXML
-//    private TextField FULL_CONTEXT_SWITCH2_TextField;
-//
-//    @FXML
-//    private Button FULL_CONTEXT_SWITCH2_Button;
-
-
-
     private Factors factors;
-
+    private Factors batchTestFactors;
     private Pair<ArrayList<ArrayList<SporadicTask>>, ArrayList<Resource>> pair;
-
+    private Pair<ArrayList<ArrayList<SporadicTask>>, ArrayList<Resource>> batchTestPair;
     private boolean generateDone = false;
-
     private int taskShowing = -1;
     private boolean taskClickedFactoryAwake = false;
     private int taskClickCount = 1;
     private int currentShowingResource = -1;
     private int resourceClickCount = 0;
 
+    /**
+     * 判断参数是否合法并传递为double，不合法为Double.MIN_VALUE
+     *
+     * @param textField
+     * @return
+     * @throws NumberFormatException
+     */
+    private static double parseDouble(TextField textField) throws NumberFormatException {
+        double value = Double.MIN_VALUE;
+        try {
+            value = Double.parseDouble(textField.getText());
+        } catch (NumberFormatException e) {
+            //textField.setText("illegal value");
+        }
+        return value;
+    }
 
+    void batchTesting() {
+
+    }
 
     void test0() {
         page1btn.setOnMouseClicked(mouseEvent -> {
@@ -273,6 +218,7 @@ public class Controller {
 
     @FXML
     void initialize() {
+        log.info("Controller initialization started");
         System.out.println(BootstrapFX.bootstrapFXStylesheet());
         initComBox();
         initAnalysis();
@@ -298,6 +244,7 @@ public class Controller {
 
         //test
         test0();
+        log.info("Controller initialization completed.");
     }
 
     void initPageBtnStyle() {
@@ -310,9 +257,16 @@ public class Controller {
         pair = new Pair<>();
     }
 
+    void initBatchTest() {
+        batchTestFactors = new Factors();
+        batchTestPair = new Pair<>();
+    }
+
     void initComBox() {
         allocation.getItems().addAll("WF", "BF", "FF", "NF");
         priority.getItems().addAll("DMPO");
+        allocation_batch.getItems().addAll("WF", "BF", "FF", "NF");
+        priority_batch.getItems().addAll("DMPO");
         priority.setValue("DMPO");
         systemMode.getItems().addAll("LO", "HI", "ModeSwitch");
         RTM.getItems().addAll("MSRP", "MSRPNew", "Mrsp", "MrspNew", "PWLP", "Dynamic");
@@ -498,20 +452,6 @@ public class Controller {
         pPartition.setContent(contentHBox);
     }
 
-    void cleanStyleBeforeChange(String styleToBeCleaned) {
-        // clean first
-        HBox partitionPane = (HBox) pPartition.getContent();
-        for (int i = 0; i < partitionPane.getChildren().size(); i++) {
-            ResourcePartitionController rpc = (ResourcePartitionController) partitionPane.getChildren().get(i);
-            rpc.backToNormal(styleToBeCleaned);
-        }
-        HBox resourcePane = (HBox) pResource.getContent();
-        for (int i = 0; i < resourcePane.getChildren().size(); i++) {
-            ResourcePaneController rpc = (ResourcePaneController) resourcePane.getChildren().get(i);
-            rpc.backToNormal(styleToBeCleaned);
-        }
-    }
-
 //     双击控件弃用，换成按钮
 //    /**
 //     * link task table to resource and partition block by define a new row factory
@@ -567,6 +507,20 @@ public class Controller {
 //            }
 //        }
 //    }
+
+    void cleanStyleBeforeChange(String styleToBeCleaned) {
+        // clean first
+        HBox partitionPane = (HBox) pPartition.getContent();
+        for (int i = 0; i < partitionPane.getChildren().size(); i++) {
+            ResourcePartitionController rpc = (ResourcePartitionController) partitionPane.getChildren().get(i);
+            rpc.backToNormal(styleToBeCleaned);
+        }
+        HBox resourcePane = (HBox) pResource.getContent();
+        for (int i = 0; i < resourcePane.getChildren().size(); i++) {
+            ResourcePaneController rpc = (ResourcePaneController) resourcePane.getChildren().get(i);
+            rpc.backToNormal(styleToBeCleaned);
+        }
+    }
 
     void onWakeUpTaskClicked() {
         table1.setOnMouseClicked(event -> {
@@ -831,10 +785,17 @@ public class Controller {
             return;
         }
 
+
         factors.MIN_PERIOD = Integer.parseInt(judgeInteger(rangeT1));
         factors.MAX_PERIOD = Integer.parseInt(judgeInteger(rangeT2));
         factors.TOTAL_PARTITIONS = Integer.parseInt(judgeInteger(coreNum));
-
+        if (Double.parseDouble(judgeFloat(utility)) < factors.TOTAL_PARTITIONS * 0.1 || Double.parseDouble(judgeFloat(utility)) > factors.TOTAL_PARTITIONS * 0.7) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Utilization rate out of bounds. The range should be between 10% and 70% of the core count.");
+            alert.showAndWait();
+            return;
+        }
         factors.CL_RANGE_LOW = Integer.parseInt(judgeInteger(rangeCSL1));
         factors.CL_RANGE_HIGH = Integer.parseInt(judgeInteger(rangeCSL2));
         factors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = Integer.parseInt(judgeInteger(maxAccess));
@@ -892,63 +853,41 @@ public class Controller {
     void onChangeToPage1() {
         page1btn.getStyleClass().add("round-background");
         page2btn.getStyleClass().remove("round-background");
+        page3btn.getStyleClass().remove("round-background");
 
         page11.setVisible(true);
         page12.setVisible(true);
         page2.setVisible(false);
+        page3.setVisible(false);
     }
 
     @FXML
     void onChangeToPage2() {
         page1btn.getStyleClass().remove("round-background");
         page2btn.getStyleClass().add("round-background");
-
+        page3btn.getStyleClass().remove("round-background");
 
         page11.setVisible(false);
         page12.setVisible(false);
         page2.setVisible(true);
+        page3.setVisible(false);
     }
-
 
     @FXML
-    void onConfigButtonClicked() {
-        AnalysisUtils.FIFONP_LOCK = parseDouble(text_FIFONP_LOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFONP_LOCK : parseDouble(text_FIFONP_LOCK);
-        AnalysisUtils.FIFONP_UNLOCK = parseDouble(text_FIFONP_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFONP_UNLOCK : parseDouble(text_FIFONP_UNLOCK);
-        AnalysisUtils.FIFOP_CANCEL = parseDouble(text_FIFOP_CANCEL) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_CANCEL : parseDouble(text_FIFOP_CANCEL);
-        AnalysisUtils.FIFOP_LOCK = parseDouble(text_FIFOP_LOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_LOCK : parseDouble(text_FIFOP_LOCK);
-        AnalysisUtils.FIFOP_UNLOCK = parseDouble(text_FIFOP_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.FIFOP_UNLOCK : parseDouble(text_FIFOP_UNLOCK);
-        AnalysisUtils.MrsP_LOCK = parseDouble(text_Mrsp_LOCK) == Double.MIN_VALUE ? AnalysisUtils.MrsP_LOCK : parseDouble(text_Mrsp_LOCK);
-        AnalysisUtils.MrsP_UNLOCK = parseDouble(text_Mrsp_UNLOCK) == Double.MIN_VALUE ? AnalysisUtils.MrsP_UNLOCK : parseDouble(text_Mrsp_UNLOCK);
-        AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION = parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION) == Double.MIN_VALUE ? AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION : parseDouble(text_Mrsp_PREEMPTION_AND_MIGRATION);
-        AnalysisUtils.FULL_CONTEXT_SWTICH2 = parseDouble(text_FULL_CONTEXT_SWITCH2) == Double.MIN_VALUE ? AnalysisUtils.FULL_CONTEXT_SWTICH2 : parseDouble(text_FULL_CONTEXT_SWITCH2);
+    void onChangeToPage3() {
+        page1btn.getStyleClass().remove("round-background");
+        page2btn.getStyleClass().remove("round-background");
+        page3btn.getStyleClass().add("round-background");
 
-        System.out.println("FIFONP_LOCK: " + AnalysisUtils.FIFONP_LOCK + "\tFIFONP_UNLOCK: " + AnalysisUtils.FIFONP_UNLOCK);
-        System.out.println("FIFOP_CANCEL: " + AnalysisUtils.FIFOP_CANCEL + "\tFIFOP_LOCK: " + AnalysisUtils.FIFOP_LOCK + "\tFIFOP_UNLOCK:" + AnalysisUtils.FIFOP_UNLOCK);
-        System.out.println("MrsP_LOCK:" + AnalysisUtils.MrsP_LOCK + "\tMrsP_UNLOCK:" + AnalysisUtils.MrsP_UNLOCK + "\tMrsP_PREEMPTION_AND_MIGRATION:" + AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION);
-        System.out.println("MrsP_LOCK:" + AnalysisUtils.MrsP_LOCK + "\tMrsP_UNLOCK:" + AnalysisUtils.MrsP_UNLOCK + "\tMrsP_PREEMPTION_AND_MIGRATION:" + AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION);
-        System.out.println("FULL_CONTEXT_SWTICH2:" + AnalysisUtils.FULL_CONTEXT_SWTICH2);
 
+        page11.setVisible(false);
+        page12.setVisible(false);
+        page2.setVisible(false);
+        page3.setVisible(true);
     }
 
-    /**
-     * 判断参数是否合法并传递为double，不合法为Double.MIN_VALUE
-     *
-     * @param textField
-     * @return
-     * @throws NumberFormatException
-     */
-    private static double parseDouble(TextField textField) throws NumberFormatException {
-        double value = Double.MIN_VALUE;
-        try {
-            value = Double.parseDouble(textField.getText());
-        } catch (NumberFormatException e) {
-            //textField.setText("illegal value");
-        }
-        return value;
-    }
-
-    private void initConfig(){
-        config.setOnMouseClicked(e->openConfigWindow());
+    private void initConfig() {
+        config.setOnMouseClicked(e -> openConfigWindow());
     }
 
     @FXML
@@ -968,6 +907,102 @@ public class Controller {
             e.printStackTrace();
         }
     }
+
+    @FXML
+    private void onBatchTest() {
+        initBatchTest();
+        int sysNum = Integer.parseInt(judgeInteger(sysNum_batch));
+        if (sysNum_batch.getText().isEmpty() || rangeT1_batch.getText().isEmpty() || rangeT2_batch.getText().isEmpty() || coreNum_batch.getText().isEmpty() || rangeCSL1_batch.getText().isEmpty() || rangeCSL2_batch.getText().isEmpty()
+                || maxAccess_batch.getText().isEmpty() || taskNum_batch.getText().isEmpty() || utility_batch.getText().isEmpty() || resourceNum_batch.getText().isEmpty()
+                || rsf_batch.getText().isEmpty() || allocation_batch.getValue() == null) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Parameter settings are incomplete");
+            alert.showAndWait();
+            return;
+        }
+
+
+        batchTestFactors.MIN_PERIOD = Integer.parseInt(judgeInteger(rangeT1_batch));
+        batchTestFactors.MAX_PERIOD = Integer.parseInt(judgeInteger(rangeT2_batch));
+        batchTestFactors.TOTAL_PARTITIONS = Integer.parseInt(judgeInteger(coreNum_batch));
+        if (Double.parseDouble(judgeFloat(utility_batch)) < batchTestFactors.TOTAL_PARTITIONS * 0.1 || Double.parseDouble(judgeFloat(utility_batch)) > batchTestFactors.TOTAL_PARTITIONS * 0.7) {
+            Alert alert = new Alert(Alert.AlertType.WARNING);
+            alert.setHeaderText(null);
+            alert.setContentText("Utilization rate out of bounds. The range should be between 10% and 70% of the core count.");
+            alert.showAndWait();
+            return;
+        }
+        batchTestFactors.CL_RANGE_LOW = Integer.parseInt(judgeInteger(rangeCSL1_batch));
+        batchTestFactors.CL_RANGE_HIGH = Integer.parseInt(judgeInteger(rangeCSL2_batch));
+        batchTestFactors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE = Integer.parseInt(judgeInteger(maxAccess_batch));
+        batchTestFactors.NUMBER_OF_TASKS = Integer.parseInt(judgeInteger(taskNum_batch));
+        batchTestFactors.UTILISATION = Double.parseDouble(judgeFloat(utility_batch)) < batchTestFactors.TOTAL_PARTITIONS ? Double.parseDouble(judgeFloat(utility_batch)) : batchTestFactors.TOTAL_PARTITIONS;
+        batchTestFactors.ALLOCATION = allocation_batch.getValue();
+
+        batchTestFactors.RESOURCE_SHARING_FACTOR = Math.min(Double.parseDouble(judgeFloat(rsf_batch)), 1.0);
+        batchTestFactors.TOTAL_RESOURCES = Integer.parseInt(judgeInteger(resourceNum_batch));
+        batchTestFactors.PRIORITY = priority_batch.getValue();
+
+        if (batchTestFactors.MIN_PERIOD == -1 || batchTestFactors.MAX_PERIOD == -1 || batchTestFactors.TOTAL_PARTITIONS == -1 || batchTestFactors.CL_RANGE_LOW == -1 || batchTestFactors.CL_RANGE_HIGH == -1 ||
+                batchTestFactors.NUMBER_OF_MAX_ACCESS_TO_ONE_RESOURCE == -1 || batchTestFactors.NUMBER_OF_TASKS == -1 || batchTestFactors.UTILISATION == -1 || batchTestFactors.TOTAL_RESOURCES == -1 ||
+                batchTestFactors.RESOURCE_SHARING_FACTOR == -1 || batchTestFactors.ALLOCATION == null)
+            return;
+
+        var batchTestAnalyzer = new Analysis();
+
+        var res = new int[3][3];
+        res = batchTestAnalyzer.batchAnalysis(batchTestFactors, sysNum);
+
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                log.warn(res[i][j]);
+            }
+        }
+
+        barChart1.setTitle("MSRP Schedulability Chart");
+
+        // 创建数据系列
+        XYChart.Series<String, Number> series = new XYChart.Series<>();
+        series.setName(""); // 系列的名称
+
+        // 向系列中添加数据
+        series.getData().add(new XYChart.Data<>("LO", res[0][0]));
+        series.getData().add(new XYChart.Data<>("HI", res[0][1]));
+        series.getData().add(new XYChart.Data<>("MODE SWITCH", res[0][2]));
+
+        // 将系列添加到柱状图中
+        barChart1.getData().add(series);
+
+
+        barChart2.setTitle("Mrsp Schedulability Chart");
+
+        // 创建数据系列
+        XYChart.Series<String, Number> series2 = new XYChart.Series<>();
+        // 向系列中添加数据
+        series2.getData().add(new XYChart.Data<>("LO", res[1][0]));
+        series2.getData().add(new XYChart.Data<>("HI", res[1][1]));
+        series2.getData().add(new XYChart.Data<>("MODE SWITCH", res[1][2]));
+
+        // 将系列添加到柱状图中
+        barChart2.getData().add(series2);
+
+        // 创建柱状图
+        barChart3.setTitle("PWLP Schedulability Chart");
+
+        // 创建数据系列
+        XYChart.Series<String, Number> series3 = new XYChart.Series<>();
+        // 向系列中添加数据
+        series3.getData().add(new XYChart.Data<>("LO", res[2][0]));
+        series3.getData().add(new XYChart.Data<>("HI", res[2][1]));
+        series3.getData().add(new XYChart.Data<>("MODE SWITCH", res[2][2]));
+
+        // 将系列添加到柱状图中
+        barChart3.getData().add(series3);
+
+    }
+
 
 //    void initConfigUi(){
 //        FIFONP_LOCK_Label.setOnMouseClicked(e->onClickedConfigLabel(FIFONP_LOCK_Label,FIFONP_LOCK_HBox));

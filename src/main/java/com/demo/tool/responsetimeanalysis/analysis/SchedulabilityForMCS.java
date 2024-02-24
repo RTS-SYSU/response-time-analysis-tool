@@ -2,10 +2,13 @@ package com.demo.tool.responsetimeanalysis.analysis;
 
 import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class SchedulabilityForMCS {
+    public static Logger log = LogManager.getLogger();
     public void tasksRefresh(ArrayList<ArrayList<SporadicTask>> tasks) {
         for (ArrayList<SporadicTask> task : tasks) {
             for (SporadicTask sporadicTask : task) {
@@ -123,7 +126,7 @@ public class SchedulabilityForMCS {
 
         long[][] Ris = null;
 
-        //MSRPNew msrp = new MSRPNew();
+        log.info(rtm + " for stable mode analysis started");
         switch (rtm) {
             case "MSRP":
                 MSRPOriginal msrp = new MSRPOriginal();
@@ -150,18 +153,21 @@ public class SchedulabilityForMCS {
                 Ris = dynamic.getResponseTimeByDMPO(tasks, resources, 1, true, true, true, true, false);
                 break;
         }
+        log.info(rtm + " analysis completed");
         for (int i = 0; i < tasks.size(); i++) {
             for (int j = 0; j < tasks.get(i).size(); j++) {
                 if (tasks.get(i).get(j).deadline < Ris[i][j]) {
                     tasks.get(i).get(j).Ri_LO = Ris[i][j];
                     tasks.get(i).get(j).Ri_HI = Ris[i][j];
                     tasks.get(i).get(j).schedulable = 0;
+                    log.info("Analysis result : Unschedulable");
                     return false;
                 } else {
                     tasks.get(i).get(j).schedulable = 1;
                 }
             }
         }
+        log.info("Analysis result : Schedulable");
         return true;
     }
 
@@ -224,7 +230,7 @@ public class SchedulabilityForMCS {
         }
 
         long[][] Ris = null;
-
+        log.info(rtm + " for mode switch analysis started");
         switch (rtm) {
             case "MSRP":
                 MSRPOriginalForModeSwitch modeSwitch0 = new MSRPOriginalForModeSwitch();
@@ -251,12 +257,13 @@ public class SchedulabilityForMCS {
                 Ris = modeSwitch5.getResponseTimeByDMPO(highTasks, resources, lowTasks, 1, true, true, true, true, false);
         }
 
-
+        log.info(rtm + " analysis completed");
         for (int i = 0; i < highTasks.size(); i++) {
             for (int j = 0; j < highTasks.get(i).size(); j++) {
                 highTasks.get(i).get(j).Ri_Switch = Ris[i][j];
                 if (highTasks.get(i).get(j).deadline < Ris[i][j]) {
                     highTasks.get(i).get(j).schedulable = 0;
+                    log.info("Analysis result : Unschedulable");
                     return false;
                 } else {
                     highTasks.get(i).get(j).schedulable = 1;
@@ -272,6 +279,7 @@ public class SchedulabilityForMCS {
 //            }
 //        }
 //        System.out.println("yes");
+        log.info("Analysis result : Schedulable");
         return true;
     }
 }

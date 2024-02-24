@@ -2,6 +2,8 @@ package com.demo.tool.responsetimeanalysis.generator;
 
 import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -18,7 +20,6 @@ public class SystemGenerator {
 //    public AnalysisUtils.RESOURCES_RANGE range;
     public int range;
     public double rsf;
-
     public int total_tasks;
     public int total_partitions;
     public double totalUtil;
@@ -29,6 +30,8 @@ public class SystemGenerator {
 
 
     double maxUtilPerCore = 1;
+
+    public static Logger log = LogManager.getLogger();
 
     AllocationGeneator allocation = new AllocationGeneator();
 
@@ -57,6 +60,8 @@ public class SystemGenerator {
             maxUtilPerCore = 0.65;
         else
             maxUtilPerCore = 1;
+
+        log.debug("System generator constructed");
     }
 
     /*
@@ -70,7 +75,7 @@ public class SystemGenerator {
             if (allocationProtect && tasks != null && allocation.allocateTasks(tasks, null, total_partitions, 0) == null)
                 tasks = null;
         }
-
+        log.debug("tasks generated");
         return tasks;
     }
 
@@ -93,6 +98,7 @@ public class SystemGenerator {
 
             period = result * 1000;
         }
+        log.debug("period generated");
         return period;
     }
 
@@ -186,6 +192,13 @@ public class SystemGenerator {
             tasks.add(t);
         }
         tasks.sort((p1, p2) -> -Double.compare(p1.util_LOW, p2.util_LOW)); /* 按照利用率排序，可以认为就是任务释放时间？ */
+
+        double tu = 0;
+        for (int i = 0; i < tasks.size(); i++) {
+            tu += tasks.get(i).util;
+            //log.debug("task Utils: "+tasks.get(i).util);
+        }
+        log.info("total uitls: "+tu);
 
         return tasks;
     }

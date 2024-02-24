@@ -3,10 +3,14 @@ package com.demo.tool.responsetimeanalysis.analysis;
 import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class MSRPOriginal {
+
+    public static Logger log = LogManager.getLogger();
     long count = 0;
 
     long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;

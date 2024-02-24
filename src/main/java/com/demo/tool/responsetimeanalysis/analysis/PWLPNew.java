@@ -4,12 +4,15 @@ import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
 import com.demo.tool.responsetimeanalysis.utils.Pair;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
 public class PWLPNew {
+    public static Logger log = LogManager.getLogger();
     long count = 0;
 
     long overhead = (long) (AnalysisUtils.FIFOP_LOCK + AnalysisUtils.FIFOP_UNLOCK);

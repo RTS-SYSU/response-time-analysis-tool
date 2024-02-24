@@ -3,17 +3,24 @@ package com.demo.tool.responsetimeanalysis.analysis;
 import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 
 
 public class MrspNew {
+    public static Logger log = LogManager.getLogger();
     static long Cnp = 0;
     static double Cmig = 0;
     long count = 0;
+    long overhead = (long) (AnalysisUtils.MrsP_LOCK + AnalysisUtils.MrsP_UNLOCK);
+    long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
+    long CX2 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH2;
 
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean btbHit, boolean printDebug) {
+
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
 
         long[][] response_time = new long[tasks.size()][];
@@ -81,7 +88,7 @@ public class MrspNew {
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j], btbHit);
                 var migrateCost = getMigrateCost(task, tasks, resources, response_time[i][j], response_time_plus, btbHit);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + Ei + migrateCost + task.local + task.interference;
+                response_time_plus[i][j] = task.Ri = task.WCET + Ei + migrateCost + task.local + task.interference + CX1;
 
                 if (task.Ri > task.deadline) return response_time_plus;
 
@@ -426,9 +433,9 @@ public class MrspNew {
                         }
                     }
                     //min{local, remote m}
-                    indirect_spin += Long.min(zeta, number_of_request_by_Remote_P) * resource.csl;
+                    indirect_spin += Long.min(zeta, number_of_request_by_Remote_P) * (resource.csl + overhead);
                     //min{N, max(remote_m-local_higher,0)}
-                    direct_spin += Long.min(n, Long.max(number_of_request_by_Remote_P - zeta, 0)) * resource.csl;
+                    direct_spin += Long.min(n, Long.max(number_of_request_by_Remote_P - zeta, 0)) * (resource.csl + overhead);
 
                     long possible_spin_delay = Long.min(number_of_request_by_Remote_P, ncs);
 
@@ -442,7 +449,7 @@ public class MrspNew {
         ArrayList<Long> spin_all = new ArrayList<>();
         spin_all.add(indirect_spin);
         spin_all.add(direct_spin);
-        spin_all.add(ncs * resource.csl);
+        spin_all.add(ncs * (resource.csl + overhead));
 //        spin * resource.csl + ncs * resource.csl;
         return spin_all;
     }
@@ -459,7 +466,7 @@ public class MrspNew {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).priority > t.priority) {
                 SporadicTask hpTask = tasks.get(i);
-                interference += Math.ceil((double) (time) / (double) hpTask.period) * (hpTask.WCET);
+                interference += Math.ceil((double) (time) / (double) hpTask.period) * (hpTask.WCET + CX2);
             }
         }
         return interference;

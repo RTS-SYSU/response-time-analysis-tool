@@ -3,11 +3,17 @@ package com.demo.tool.responsetimeanalysis.analysis;
 import com.demo.tool.responsetimeanalysis.entity.Resource;
 import com.demo.tool.responsetimeanalysis.entity.SporadicTask;
 import com.demo.tool.responsetimeanalysis.utils.AnalysisUtils;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 
 public class MrsPOriginal {
+    public static Logger log = LogManager.getLogger();
     long count = 0;
+    long overhead = (long) (AnalysisUtils.MrsP_LOCK + AnalysisUtils.MrsP_UNLOCK);
+    long CX1 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH1;
+    long CX2 = (long) AnalysisUtils.FULL_CONTEXT_SWTICH2;
 
     public long[][] getResponseTime(ArrayList<ArrayList<SporadicTask>> tasks, ArrayList<Resource> resources, boolean printBebug) {
         long[][] init_Ri = new AnalysisUtils().initResponseTime(tasks);
@@ -69,7 +75,7 @@ public class MrsPOriginal {
                 task.local = localBlocking(task, tasks, resources, response_time, response_time[i][j]);
                 task.indirect_spin = highPriorityIndirectSpin(task, tasks, response_time[i][j]);
 
-                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local;
+                response_time_plus[i][j] = task.Ri = task.WCET + task.spin + task.interference + task.local + CX1;
                 if (task.Ri > task.deadline)
                     return response_time_plus;
             }
@@ -90,7 +96,7 @@ public class MrsPOriginal {
         for (int i = 0; i < tasks.size(); i++) {
             if (tasks.get(i).priority > t.priority) {
                 SporadicTask hpTask = tasks.get(i);
-                interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + hpTask.spin);
+                interference += Math.ceil((double) (Ri) / (double) hpTask.period) * (hpTask.WCET + hpTask.spin + CX2);
             }
         }
         return interference;
@@ -122,7 +128,7 @@ public class MrsPOriginal {
         long spin_delay = 0;
         for (int k = 0; k < t.resource_required_index.size(); k++) {
             Resource resource = resources.get(t.resource_required_index.get(k));
-            spin_delay += resource.partitions.size() * resource.csl * t.number_of_access_in_one_release.get(k);
+            spin_delay += resource.partitions.size() * (resource.csl + overhead) * t.number_of_access_in_one_release.get(k);
         }
         return spin_delay;
     }
@@ -150,7 +156,7 @@ public class MrsPOriginal {
     /*
      * gives a set of resources that can cause local blocking for a given task
      */
-    private ArrayList<Resource> getLocalBlockingResources(SporadicTask task, ArrayList<Resource> resources,ArrayList<SporadicTask> localTasks) {
+    private ArrayList<Resource> getLocalBlockingResources(SporadicTask task, ArrayList<Resource> resources, ArrayList<SporadicTask> localTasks) {
         ArrayList<Resource> localBlockingResources = new ArrayList<>();
         int partition = task.partition;
 

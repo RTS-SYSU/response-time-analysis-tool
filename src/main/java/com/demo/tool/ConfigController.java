@@ -31,6 +31,10 @@ public class ConfigController {
     private TextField text_Mrsp_PREEMPTION_AND_MIGRATION;
     @FXML
     private TextField text_FULL_CONTEXT_SWITCH2;
+    @FXML
+    private TextField text_FULL_CONTEXT_SWITCH1;
+
+
 
     /**
      * 判断参数是否合法并传递为double，不合法为Double.MIN_VALUE
@@ -51,8 +55,8 @@ public class ConfigController {
     @FXML
     void onConfigButtonClicked() throws IllegalAccessException, NoSuchFieldException {
         boolean successful = true;
-        ArrayList<Double> paraList = new ArrayList<>(Arrays.asList(AnalysisUtils.FIFONP_LOCK, AnalysisUtils.FIFONP_UNLOCK, AnalysisUtils.FIFOP_CANCEL, AnalysisUtils.FIFOP_LOCK, AnalysisUtils.FIFOP_UNLOCK, AnalysisUtils.MrsP_LOCK, AnalysisUtils.MrsP_UNLOCK, AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION, AnalysisUtils.FULL_CONTEXT_SWTICH2));
-        ArrayList<TextField> textFieldList = new ArrayList<>(Arrays.asList(text_FIFONP_LOCK, text_FIFONP_UNLOCK, text_FIFOP_CANCEL, text_FIFOP_LOCK, text_FIFOP_UNLOCK, text_Mrsp_LOCK, text_Mrsp_UNLOCK, text_Mrsp_PREEMPTION_AND_MIGRATION, text_FULL_CONTEXT_SWITCH2));
+        ArrayList<Double> paraList = new ArrayList<>(Arrays.asList(AnalysisUtils.FIFONP_LOCK, AnalysisUtils.FIFONP_UNLOCK, AnalysisUtils.FIFOP_CANCEL, AnalysisUtils.FIFOP_LOCK, AnalysisUtils.FIFOP_UNLOCK, AnalysisUtils.MrsP_LOCK, AnalysisUtils.MrsP_UNLOCK, AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION, AnalysisUtils.FULL_CONTEXT_SWTICH2,AnalysisUtils.FULL_CONTEXT_SWTICH1));
+        ArrayList<TextField> textFieldList = new ArrayList<>(Arrays.asList(text_FIFONP_LOCK, text_FIFONP_UNLOCK, text_FIFOP_CANCEL, text_FIFOP_LOCK, text_FIFOP_UNLOCK, text_Mrsp_LOCK, text_Mrsp_UNLOCK, text_Mrsp_PREEMPTION_AND_MIGRATION, text_FULL_CONTEXT_SWITCH2,text_FULL_CONTEXT_SWITCH1));
 
 //        Class<?> clazz = ConfigController.class;
 //        Field[] fields = clazz.getDeclaredFields();
@@ -115,6 +119,7 @@ public class ConfigController {
             AnalysisUtils.MrsP_UNLOCK = values[6];
             AnalysisUtils.MrsP_PREEMPTION_AND_MIGRATION = values[7];
             AnalysisUtils.FULL_CONTEXT_SWTICH2 = values[8];
+            AnalysisUtils.FULL_CONTEXT_SWTICH1 = values[9];
 
             configButton.setStyle("-fx-text-fill: red;");
             configButton.setText("Success");
