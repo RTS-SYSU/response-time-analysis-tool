@@ -198,7 +198,7 @@ public class SystemGenerator {
             tu += tasks.get(i).util;
             //log.debug("task Utils: "+tasks.get(i).util);
         }
-        log.info("total uitls: "+tu);
+        log.debug("total uitls: "+tu);
 
         return tasks;
     }
