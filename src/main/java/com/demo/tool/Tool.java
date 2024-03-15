@@ -4,12 +4,13 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.kordamp.bootstrapfx.BootstrapFX;
 
-
+import java.io.File;
 import java.io.IOException;
 
 public class Tool extends Application {
@@ -39,7 +40,12 @@ public class Tool extends Application {
         var sence = new Scene(root);
         sence.getStylesheets().add(BootstrapFX.bootstrapFXStylesheet());
         log.info("stylesheets loaded");
+
+        String parentDirectory = new File("src/main/resources/icon").getAbsolutePath();
+        Image icon = new Image(new File(parentDirectory, "ana.png").toURI().toString());
+        primaryStage.getIcons().add(icon);
         primaryStage.setScene(sence);
+
         primaryStage.show();
         log.info("Front-end loaded successfully");
     }
